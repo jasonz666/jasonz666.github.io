@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/cropped-avatar1-180x180.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/cropped-avatar1-32x32.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/cropped-avatar1-32x32.jpg">
+  <link rel="mask-icon" href="/uploads/cropped-avatar1-512x512.jpg" color="#222">
+  <meta name="google-site-verification" content="IuowGe3Qycy8NKNULpUq4LXpl8LE-raaK898Xns6njU">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"izhaojie.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="非对称加密需要公钥和私钥：你的公钥的作用：别人用来给你发加密的信息(公钥加密)＆别人验证你的签名(公钥解密)，即加密&amp;验证（别人来做）你的私钥的作用：你用来创建签名(私钥加密)＆解密别人发给你的信息的(私钥解密)，即解密&amp;签名（你来做） 具体而言，Alice要想发送加密信息到Bob，则：Alice有Alice的签名私钥和Bob的加密公匙Bob有Alice的签名公匙和Bob的解密私钥">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 GPG 学习非对称加密">
+<meta property="og:url" content="https://izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html">
+<meta property="og:site_name" content="赵杰的小站">
+<meta property="og:description" content="非对称加密需要公钥和私钥：你的公钥的作用：别人用来给你发加密的信息(公钥加密)＆别人验证你的签名(公钥解密)，即加密&amp;验证（别人来做）你的私钥的作用：你用来创建签名(私钥加密)＆解密别人发给你的信息的(私钥解密)，即解密&amp;签名（你来做） 具体而言，Alice要想发送加密信息到Bob，则：Alice有Alice的签名私钥和Bob的加密公匙Bob有Alice的签名公匙和Bob的解密私钥">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-09T09:20:05.000Z">
+<meta property="article:modified_time" content="2020-08-06T17:23:11.299Z">
+<meta property="article:author" content="Jason">
+<meta property="article:tag" content="Gpg">
+<meta property="article:tag" content="Encryption">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用 GPG 学习非对称加密 | 赵杰的小站</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">赵杰的小站</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/cropped-avatar1-180x180.jpg">
+      <meta itemprop="name" content="Jason">
+      <meta itemprop="description" content="君子生非异也，善假于物也。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="赵杰的小站">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用 GPG 学习非对称加密
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-09 17:20:05" itemprop="dateCreated datePublished" datetime="2019-01-09T17:20:05+08:00">2019-01-09</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="非对称加密需要公钥和私钥："><a href="#非对称加密需要公钥和私钥：" class="headerlink" title="非对称加密需要公钥和私钥："></a>非对称加密需要公钥和私钥：</h2><p>你的公钥的作用：别人用来给你发加密的信息(公钥加密)＆别人验证你的签名(公钥解密)，即加密&amp;验证（别人来做）<br>你的私钥的作用：你用来创建签名(私钥加密)＆解密别人发给你的信息的(私钥解密)，即解密&amp;签名（你来做）</p>
+<p>具体而言，Alice要想发送加密信息到Bob，则：<br>Alice有Alice的签名私钥和Bob的加密公匙<br>Bob有Alice的签名公匙和Bob的解密私钥</p>
+<h2 id="使用GPG可以很好的演示这一点："><a href="#使用GPG可以很好的演示这一点：" class="headerlink" title="使用GPG可以很好的演示这一点："></a>使用GPG可以很好的演示这一点：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gpg (GnuPG) 2.1.11</span><br><span class="line">libgcrypt 1.6.5</span><br><span class="line">Copyright (C) 2016 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>首先，我们在安装好GPG之后（<a href="https://www.gnupg.org/howtos/zh/index.html" target="_blank" rel="noopener">GnuPG官方文档</a>），可以使用 <code>gpg --gen-key</code> 生成属于我们自己的一对公钥和私钥（通常一个GPG密钥包含多个RSA密钥对，一对主密钥，若干对不同用途的子密钥，一对密钥包括一个公钥和一个私钥。一般 <code>gpg --gen-key</code> 得到的，就包括一对主密钥，可以用于签名与认证[SC]；一对子密钥用于加密[E]）。之后我们可以使用 <code>gpg --export [UID]</code> 来输出UID所对应的公钥，比如对于我来说：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~ $ gpg --<span class="built_in">export</span> -a 刘海博</span><br><span class="line">-----BEGIN PGP PUBLIC KEY BLOCK-----</span><br><span class="line">Version: GnuPG v2</span><br><span class="line"></span><br><span class="line">mQENBFbnwUkBCADtMQ73lZ1XEbcNbGyaF5IHQ1aoYBrIhj+BpXbV9Qz95OxqOoFP</span><br><span class="line">6s0n1/cBhpjhhqm2hlJFhwrKIDMkTKBY0rif3ZHdHVKK7k7xW0qYWa0HZDtRApao</span><br><span class="line">N3lZ3Ay2EyTSPj6SoFxleLm8LoftlDscp90kK/zGiXf95pslTmk4ziSolOtPTvP7</span><br><span class="line">FpSaYizOO3JfUKUDrTdXRcEx2p7KmXi8v1O33bY0YG6yRmff90DzMxYqQ2LUQBfl</span><br><span class="line">hVSu3mYKpP5IQ0tNgTCbUiyVqOX+TdxQoqMiTWiWvD5OJZf+7RqnbpQ9l6epmUEk</span><br><span class="line">HAJcvhcEfLeDslt2o+x2s7BXW1o71/Xa3Q/fABEBAAG0HuWImOa1t+WNmiA8c2hp</span><br><span class="line">bmluZ2xoYkAxNjMuY29tPokBNwQTAQgAIQUCVufBSQIbAwULCQgHAgYVCAkKCwIE</span><br><span class="line">FgIDAQIeAQIXgAAKCRBbDqAL2u3LWxkXB/96dBtELKkA6hc2BLBxLBxchakEeaMK</span><br><span class="line">lXDEiom6kwiqeI/H3KJchOtlTbBLGUmSdRAm3rX5UkVtaDvxW6iWuNzcbDZN6oCe</span><br><span class="line">YCFqOvmzLZ+YWh48tRBJOTEzrkZrT/OpTGRtRI0cAIAJ68rMc5Vpxl1Vqknp/BzI</span><br><span class="line">z84qPGBWgThy/UlgcFnbkZVLh37FLmIhtTMIbA1whum570/a/bnKP6xWnB4P5ryn</span><br><span class="line">6lXLBMDMA2a0jtgzmywXm60nI6M77lzfd6UXGX0NQOU/AP+v0hNzkl4+KapEOONC</span><br><span class="line">x7MjoL09b946Tqysly5u6gJpK/YmD0UUnVrH2OW6YQy/UmXQk7mKjG/7uQENBFbn</span><br><span class="line">wUkBCACx3kvVDVjuo/LQrODb0wZig7NrsLasQ+dAOo/9UXY53wjrnLPiZLRbtYm1</span><br><span class="line">tPFMykAv/23+vLXmLFW7gd0PjGOPZE4Q0/vR/Re+vJjonH3Z6E+DidE7T9vQmuB4</span><br><span class="line">aLIvDpEcAWKSRN75/zLKzAysqHwEBXeSVD89bSMdH4rPpC70hABZZuVYC3rEkrdZ</span><br><span class="line">6EcW7jca71eKVTKQRznuTZKzpHG8XwcgTt5qtmbZmWxIT4SMdxyI//fpAUjDc913</span><br><span class="line">qN9i/ZY668g8URQLxCUTdFy04p1Vft1yCByZF9Pie5paVO28kgegZf1O6+k1rR42</span><br><span class="line">WHbtLFq7xYgW3vOG9I9yQdA8oOUHABEBAAGJAR8EGAEIAAkFAlbnwUkCGwwACgkQ</span><br><span class="line">Ww6gC9rty1vt+ggAza5faR5AeHgIOnUyI3j28GxFey3E7CbVRO0ubO7Iq5qy+P1z</span><br><span class="line">EQPmnpeQ/FpDabvP4P7qds77U2wFbvsa/Ar4ZuznmNuL9r8fGJn6BrmPLAMxfwOo</span><br><span class="line">c+w6qN0iYp+kl6pRTYYolICyZfq/CLrDKxUaAHlSpZoEI5CUIs/tntcLJRSei/1S</span><br><span class="line">GUjXS7sqlVafNM2Vqxy3XBqVffXGsUNXr1zRGz/Dia9Kt3sztDYDjo3csHlEPVTw</span><br><span class="line">v1gRxVTnsrmoQlJ7+S2tT6hocuD5k6Ye11vyCMYny6BxCYz5CW6HtvAWs9kXT6E3</span><br><span class="line">hTFS5THpkuu+uZLPM2CGJuFLdwNrBzMXHrqRaQ==</span><br><span class="line">=Eh6b</span><br><span class="line">-----END PGP PUBLIC KEY BLOCK-----</span><br></pre></td></tr></table></figure>
+
+<p>以上就是我的公钥，其中 <code>-a</code> 是为了让字符以ASCII形式输出，而不是二进制。隐含地，结果将输出到标准输出（stdout）去，可以用 <code>-o</code> 选项把它放到一个文件里去。<br>之后，我们需要得到别人的公钥，才能用他的公钥加密我们想要发给他的数据。<code>gpg --import [filename]</code> 即可导入别人的公钥，这个存放公钥的文件可以使用 <code>-o</code> 选项导出。<br>我们可以通过 <code>gpg --list-keys</code> 查看当前所有的公钥，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg --list-keys</span><br><span class="line">/home/lgl/.gnupg/pubring.kbx</span><br><span class="line">----------------------------</span><br><span class="line">pub   rsa2048/DAEDCB5B 2016-03-15 [SC]</span><br><span class="line">uid         [ 绝对 ] 刘海博 &lt;shininglhb@163.com&gt;</span><br><span class="line">sub   rsa2048/7D6453AF 2016-03-15 [E]</span><br><span class="line"></span><br><span class="line">pub   dsa1024/C9C40C31 2001-05-25 [SCA]</span><br><span class="line">uid         [ 未知 ] Justin R. Miller &lt;justin@solidlinux.com&gt;</span><br><span class="line">uid         [ 未知 ] Justin R. Miller &lt;justin@voxel.net&gt;</span><br><span class="line">sub   elg1024/59FAB546 2001-05-25 [E]</span><br></pre></td></tr></table></figure>
+
+<p>说明我现在有两个公钥，一个是我自己的，另一个是Justin的。钥匙号分别为 <code>DAEDCB5B</code> 和 <code>C9C40C31</code> ，说到钥匙号，我们也可以使用别人的公钥钥匙号导入公钥 <code>gpg --recv-keys 0xC9C40C31</code> 。<br>如果此时Justin用自己的私钥给文件签名（假设签名后的文件为sample.txt.asc，关于签名的内容我们会在最后再说）然后发给我，那么我就可以用公钥去验证文件签名的真伪：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg --verify sample.txt.asc</span><br><span class="line">gpg: 于 Fri 17 Aug 2001 06:56:01 AM CST 创建的签名，使用 DSA，钥匙号 C9C40C31</span><br><span class="line">gpg: 完好的签名，来自于“Justin R. Miller &lt;justin@solidlinux.com&gt;” [未知]</span><br><span class="line">gpg:               亦即“Justin R. Miller &lt;justin@voxel.net&gt;” [未知]</span><br><span class="line">gpg: 警告：这把密钥未经受信任的签名认证！</span><br><span class="line">gpg:       没有证据表明这个签名属于它所声称的持有者。</span><br><span class="line">主钥指纹： 2231 DFF0 869E E3A5 885A  E7D4 F787 7A2B C9C4 0C31</span><br></pre></td></tr></table></figure>
+
+<p>以上信息可以看出，我们使用Justin的公钥可以认证这个文件，且文件的内容未曾被更改。但是有警告信息，这些信息是在告诉我们：如果这把公钥真的是Justin的，那么这个文件就是Justin的，但是这把公钥的真伪并没有的到验证，可能存在我们当初得到的公钥是被别人替换过的公钥的情况。为此，我们应当跟Justin本人确认此公钥的正确性，如果确认无误，我们可以对这个公钥进行信任程度设置（稍后再讲信任度的设置）。<br>如果使用了 <code>--detach-sign</code> 选项（下文会讲到此选项的含义）将签名保存到单独的文件里，那么完整的验证命令是这样的 <code>gpg --verify signfile [datafile]</code>。比如 <code>gpg --verify sample.txt.asc sample.txt</code> (如果 sample.txt.asc 是单独的签名文件，sample.txt 是原始数据文件的话)。</p>
+<h2 id="接下来看使用GPG加密与解密的过程："><a href="#接下来看使用GPG加密与解密的过程：" class="headerlink" title="接下来看使用GPG加密与解密的过程："></a>接下来看使用GPG加密与解密的过程：</h2><p>首先，我们写一些话，想要发给Justin（Hello.txt）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello, I am Liu Haibo.</span><br><span class="line">This is my sample text sending to Justin.</span><br></pre></td></tr></table></figure>
+
+<p>既然我们想发给Justin，那么我们自然需要用Justin的公钥对其进行加密（然后Justin再用自己的私钥对我发过去的加密内容进行解密），加密使用到的命令是 <code>gpg -e 要加密的文件名</code> 或者是 <code>gpg --encrypt 要加密的文件名</code> ，我们可以再加 <code>-r</code> 参数直接指定要发送的人的UID（即选用指定的公钥），如果此处不使用 <code>-r</code> ，在执行加密的过程中也会要求填写接收人的UID：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg -r justin -e Hello.txt</span><br><span class="line">gpg: 59FAB546：没有证据表明这把密钥真的属于它所声称的持有者</span><br><span class="line">sub  elg1024/59FAB546 2001-05-25 Justin R. Miller &lt;justin@voxel.net&gt;</span><br><span class="line"> 主钥指纹： 2231 DFF0 869E E3A5 885A  E7D4 F787 7A2B C9C4 0C31</span><br><span class="line"> 子钥指纹： 5B6A 9C4D 7C54 5936 B9F5  4D8B EDD4 CD22 59FA B546</span><br><span class="line"></span><br><span class="line">这把密钥并不一定属于用户标识声称的那个人。如果您真的知道自</span><br><span class="line">己在做什么，您可以在下一个问题回答 yes。</span><br><span class="line"></span><br><span class="line">无论如何还是使用这把密钥吗？(y/N)y</span><br></pre></td></tr></table></figure>
+
+<p>以上可以看出，虽然我们对内容进行了加密，但是由于我们还没有对公钥进行信任度设置，gpg仍在提醒我们公钥本身有可能就是假的。<br>接下来看看加密后的内容（Hello.txt.gpg）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ cat Hello.txt.gpg</span><br><span class="line">����<span class="string">"Y��F�����re�5m�j ���</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>乱码，因为这是二进制文件。<br>试试在加密过程中加入 <code>--armor</code> 参数（以ASCII而不是二进制输出）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg -r justin -e --armor Hello.txt</span><br><span class="line">gpg: 59FAB546：没有证据表明这把密钥真的属于它所声称的持有者</span><br><span class="line">sub  elg1024/59FAB546 2001-05-25 Justin R. Miller &lt;justin@voxel.net&gt;</span><br><span class="line"> 主钥指纹： 2231 DFF0 869E E3A5 885A  E7D4 F787 7A2B C9C4 0C31</span><br><span class="line"> 子钥指纹： 5B6A 9C4D 7C54 5936 B9F5  4D8B EDD4 CD22 59FA B546</span><br><span class="line"></span><br><span class="line">这把密钥并不一定属于用户标识声称的那个人。如果您真的知道自</span><br><span class="line">己在做什么，您可以在下一个问题回答 yes。</span><br><span class="line"></span><br><span class="line">无论如何还是使用这把密钥吗？(y/N)y</span><br></pre></td></tr></table></figure>
+
+<p>接下来再查看加密后的文件（Hello.txt.asc）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ cat Hello.txt.asc</span><br><span class="line">-----BEGIN PGP MESSAGE-----</span><br><span class="line">Version: GnuPG v2</span><br><span class="line"></span><br><span class="line">hQEOA+3UzSJZ+rVGEAP/YTDy4HcGP9PyvfKxH30fZtVJ/jqg/+NKJjTecuSdchSc</span><br><span class="line">RxDBwu0zEmpV0pdnllBteayfabPr1JDJdZ5UX6yCpsc/vON6nRVULGHSkACIXsmc</span><br><span class="line">m2vCTIMlbbnclu4bRSoXU5tI2tgWie6xFrZUMH7q4pRVUrL9wMYRyTUsP6wcJDYD</span><br><span class="line">/1ybF3IWEWjYiLWS+KDbiQUcvpLrJzXXNsiYsIUV4no1Uh14SOKraU3sz7zGq/Sy</span><br><span class="line">FuhdMALDENqVX2+tGhi9/u3qJq5NgSn1v+uUwJFqehYbO514LAxSczWSQGE7APUN</span><br><span class="line">vOPhLJURN7iHdN1cHnJvi2zvDHcvMssPwwPjUKtnnR3Z0oEBW8LuO7pICGZ5PDss</span><br><span class="line">4ItACKwNQYPcNGukYvO+LuRbE7uxMegROeqpLPOjVNsNOiCQVHl4pI9KSV+WLFXl</span><br><span class="line">xgurX4Up1uUi1rW1mPZEaXbnMT+rcenY508Dj6ayYAN07XP5/wg5HDQF0S2+OIhW</span><br><span class="line">VQEkj6DiqZfbIEUSz2SDm5zIZiU=</span><br><span class="line">=IMgg</span><br><span class="line">-----END PGP MESSAGE-----</span><br></pre></td></tr></table></figure>
+
+<p>虽然是字符，但显然内容已经被加密了，无法看懂。<br>我们把加密后的信息发给Justin之后，他直接用自己的私钥解密就可以阅读我们想给他传达的信息了（但是我无法演示解密过程，因为我没有Justin的私钥啊，现在这个世界上只有他可以解密这封密信了）。</p>
+<h2 id="为了演示解密过程，我们再举一个例子："><a href="#为了演示解密过程，我们再举一个例子：" class="headerlink" title="为了演示解密过程，我们再举一个例子："></a>为了演示解密过程，我们再举一个例子：</h2><p>还是刚刚那个文件，命名为Hi.txt，这次我们用自己的公钥加密（这样我就可以用自己的私钥解密了）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg -r 刘海博 -e Hi.txt</span><br><span class="line">lgl@pArch ~/tmp/GPGtest $ cat Hi.txt.gpg</span><br><span class="line">�`����5��<span class="comment">#MU\���˧4%</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>显然这个生成的Hi.txt.gpg是二进制的，我们再生成一个ASCII的，名称默认为Hi.txt.asc：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg -r 刘海博 -e --armor Hi.txt</span><br><span class="line"></span><br><span class="line">lgl@pArch ~/tmp/GPGtest $ cat Hi.txt.asc</span><br><span class="line">-----BEGIN PGP MESSAGE-----</span><br><span class="line">Version: GnuPG v2</span><br><span class="line"></span><br><span class="line">hQEMA9RdjQJ9ZFOvAQgAhZ0OTp/AVjE+8eLxFUt5W4UM1ZbsiJ0KMB8gAPm+5Lqx</span><br><span class="line">ewOGtRXN2jWkRIuYXi0UKQmv/uTOUXQFDGpmeBtm2dkX+TV54GCdrarxq32soZzk</span><br><span class="line">Kxbvj0ucpiSP/EUsWtNacuThhzgiibxGZq6LlD71t6UZhVC8MtQ7AOi1yeh9cZV9</span><br><span class="line">KCJLH8a81yU6hL+uk8OnOn6RJW6jMaITNpN36k4kbwLbrYAzSkD/m9zEatVE/Jpm</span><br><span class="line">ozYyV9NznAETLZ3i+RcmTAMzP4Ka1R9luwSvNKdHbdEq/jboJZaS2Ye+JLfW38ID</span><br><span class="line">4P00Z91U0JoM64lqVlskzH2zIfZJpj+uLJiskQDw+NKCAbanCIfDqAn/2LYlDoMI</span><br><span class="line">oHRI6Qq58OSYj4iw2OVmzUYQQVLg0s4RsrMKHtLRWc8KR5wcw8pWxD0gdQrTqUEi</span><br><span class="line">tvv9y2c3afhn7AQzDvtIxrQIt/7MS37e4A6Y6f9Ax43rWLmL0198tRuojrwpk6UR</span><br><span class="line">uTF5oyUpJx2VFYUDtVh2JKCzjQ==</span><br><span class="line">=zvVm</span><br><span class="line">-----END PGP MESSAGE-----</span><br></pre></td></tr></table></figure>
+
+<p>对于这两个加密的文件（一个Hi.txt.gpg，一个Hi.txt.asc），分别对其进行解密，使用 <code>gpg -d 密文文件名</code> 或者 <code>gpg --decrypt 密文文件名</code> ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg -d Hi.txt.asc</span><br><span class="line">gpg: 由 2048 位的 RSA 密钥加密，钥匙号为 7D6453AF、生成于 2016-03-15</span><br><span class="line">  “刘海博 &lt;shininglhb@163.com&gt;”</span><br><span class="line">Hello, I am Liu Haibo.</span><br><span class="line">This is my sample text sending to Justin.</span><br><span class="line"></span><br><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg -d Hi.txt.gpg</span><br><span class="line">gpg: 由 2048 位的 RSA 密钥加密，钥匙号为 7D6453AF、生成于 2016-03-15</span><br><span class="line">  “刘海博 &lt;shininglhb@163.com&gt;”</span><br><span class="line">Hello, I am Liu Haibo.</span><br><span class="line">This is my sample text sending to Justin.</span><br></pre></td></tr></table></figure>
+
+<p>均成功解密，显示了加密之前的信息。<br>此时，如果我们去解密刚刚用Justin的公钥加密过的文件Hello.txt.asc：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg -d Hello.txt.asc</span><br><span class="line">gpg: 由 1024 位的 ELG 密钥加密，钥匙号为 59FAB546、生成于 2001-05-25</span><br><span class="line">  “Justin R. Miller &lt;justin@solidlinux.com&gt;”</span><br><span class="line">gpg: 解密失败：没有秘匙</span><br></pre></td></tr></table></figure>
+
+<p>显然失败了，因为我们只有属于自己的私钥，不可能解开别的公钥加密过的文件。<br>现在我们再来考虑一下信任度的设置。之前由于我们未对Justin的公钥进行信任度设置，每次用到Justin的公钥的时候，gpg都会友善的提醒我们，在我们获取此公钥的时候，有可能公钥已经被篡改了，因此此公钥有可能不是Justin本人的。但是如果我们确信这就是Justin的公钥，我们可以对其设置信任度，使用 <code>gpg --edit-key</code> ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg --edit-key justin@solidlinux.com</span><br><span class="line">gpg (GnuPG) 2.1.11; Copyright (C) 2016 Free Software Foundation, Inc.</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pub  dsa1024/C9C40C31</span><br><span class="line"> 创建于：2001-05-25  有效至：永不过期  可用于：SCA</span><br><span class="line"> 信任度：未知        有效性：未知</span><br><span class="line">sub  elg1024/59FAB546</span><br><span class="line"> 创建于：2001-05-25  有效至：永不过期  可用于：E</span><br><span class="line">[ 未知 ] (1). Justin R. Miller &lt;justin@solidlinux.com&gt;</span><br><span class="line">[ 未知 ] (2)  Justin R. Miller &lt;justin@voxel.net&gt;</span><br><span class="line"></span><br><span class="line">gpg&gt; sign</span><br><span class="line">Really sign all text user IDs? (y/N) y</span><br><span class="line"></span><br><span class="line">pub  dsa1024/C9C40C31</span><br><span class="line"> 创建于：2001-05-25  有效至：永不过期  可用于：SCA</span><br><span class="line"> 信任度：未知        有效性：未知</span><br><span class="line"> 主钥指纹： 2231 DFF0 869E E3A5 885A  E7D4 F787 7A2B C9C4 0C31</span><br><span class="line"></span><br><span class="line"> Justin R. Miller &lt;justin@solidlinux.com&gt;</span><br><span class="line"> Justin R. Miller &lt;justin@voxel.net&gt;</span><br><span class="line"></span><br><span class="line">您真的确定要签名这把密钥，使用您的密钥</span><br><span class="line">“刘海博 &lt;shininglhb@163.com&gt;”(DAEDCB5B)</span><br><span class="line"></span><br><span class="line">真的要签名吗？(y/N)y</span><br><span class="line"></span><br><span class="line">gpg&gt; trust</span><br><span class="line">pub  dsa1024/C9C40C31</span><br><span class="line"> 创建于：2001-05-25  有效至：永不过期  可用于：SCA</span><br><span class="line"> 信任度：未知        有效性：未知</span><br><span class="line">sub  elg1024/59FAB546</span><br><span class="line"> 创建于：2001-05-25  有效至：永不过期  可用于：E</span><br><span class="line">[ 未知 ] (1). Justin R. Miller &lt;justin@solidlinux.com&gt;</span><br><span class="line">[ 未知 ] (2)  Justin R. Miller &lt;justin@voxel.net&gt;</span><br><span class="line"></span><br><span class="line">您是否相信这位用户有能力验证其他用户密钥的有效性(查对身份证、通过不同的渠道检查</span><br><span class="line">指纹等)？</span><br><span class="line"></span><br><span class="line">  1 = 我不知道或我不作答</span><br><span class="line">  2 = 我不相信</span><br><span class="line">  3 = 我勉强相信</span><br><span class="line">  4 = 我完全相信</span><br><span class="line">  5 = 我绝对相信</span><br><span class="line">  m = 回到主菜单</span><br><span class="line"></span><br><span class="line">您的决定是什么？5</span><br><span class="line">您真的要把这把密钥设成绝对信任？(y/N)n</span><br><span class="line">您的决定是什么？4</span><br><span class="line"></span><br><span class="line">pub  dsa1024/C9C40C31</span><br><span class="line"> 创建于：2001-05-25  有效至：永不过期  可用于：SCA</span><br><span class="line"> 信任度：完全        有效性：未知</span><br><span class="line">sub  elg1024/59FAB546</span><br><span class="line"> 创建于：2001-05-25  有效至：永不过期  可用于：E</span><br><span class="line">[ 未知 ] (1). Justin R. Miller &lt;justin@solidlinux.com&gt;</span><br><span class="line">[ 未知 ] (2)  Justin R. Miller &lt;justin@voxel.net&gt;</span><br><span class="line">请注意，在您重启程序之前，显示的密钥有效性未必正确，</span><br><span class="line"></span><br><span class="line">gpg&gt; quit</span><br><span class="line">要保存变动吗？(y/N)y</span><br></pre></td></tr></table></figure>
+
+<p>之后再查看公钥列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/GPGtest $ gpg --list-keys</span><br><span class="line">gpg: 正在检查信任度数据库</span><br><span class="line">gpg: marginals needed: 3  completes needed: 1  trust model: PGP</span><br><span class="line">gpg: 深度：0 有效性：  1 已签名：  1 信任度：0-，0q，0n，0m，0f，1u</span><br><span class="line">gpg: 深度：1 有效性：  1 已签名：  0 信任度：0-，0q，0n，0m，1f，0u</span><br><span class="line">/home/lgl/.gnupg/pubring.kbx</span><br><span class="line">----------------------------</span><br><span class="line">pub   rsa2048/DAEDCB5B 2016-03-15 [SC]</span><br><span class="line">uid         [ 绝对 ] 刘海博 &lt;shininglhb@163.com&gt;</span><br><span class="line">sub   rsa2048/7D6453AF 2016-03-15 [E]</span><br><span class="line"></span><br><span class="line">pub   dsa1024/C9C40C31 2001-05-25 [SCA]</span><br><span class="line">uid         [ 完全 ] Justin R. Miller &lt;justin@solidlinux.com&gt;</span><br><span class="line">uid         [ 完全 ] Justin R. Miller &lt;justin@voxel.net&gt;</span><br><span class="line">sub   elg1024/59FAB546 2001-05-25 [E]</span><br></pre></td></tr></table></figure>
+
+<p>原来Justin的公钥之前显示的[未知]已经变成我们设置的[完全]了。我们可以发现我们自己的公钥被默认设置为绝对信任，这显然是必须的，也是肯定正确的。我们还可以发现修改完信任度之后再查询公钥时，gpg会先查询信任度数据库，这说明这些信任信息不是存在储存钥匙的文件里，而是存在另一个文件里的。</p>
+<h2 id="最后，我们说一下签名："><a href="#最后，我们说一下签名：" class="headerlink" title="最后，我们说一下签名："></a>最后，我们说一下签名：</h2><p>为避免 “别人宣称是你” 这样的风险，对所有你加密的东西签名是有用的。签名的意义在于两个方面：Authenticity(身份认证)和Integrity(数据完整性)。即数字签名可以证明数据是你发送的，并同时证明发送的内容未曾被别人修改过。<br>签名的命令为 <code>gpg -s [Data]</code> 或者 <code>gpg --sign [Data]</code> 。这样做的时候，同时数据也被压缩。也就是说，最终结果是无法直接读懂的。若你想要一个能直接读懂的结果，你可以用 <code>gpg --clearsign [Data]</code> ，这样就能保证结果是清晰可读的。同时它也照样对数据签名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/minecraft $ gpg -s Hi.txt</span><br><span class="line">lgl@pArch ~/tmp/minecraft $ gpg --clearsign Hi.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其实也可以对加密后的信息进行签名</span></span><br><span class="line">lgl@pArch ~/tmp/minecraft $ gpg --clearsign Hi.txt.asc</span><br></pre></td></tr></table></figure>
+
+<p>上面两条命令分别生成了Hi.txt.gpg和Hi.txt.asc两个文件。<br>需要注意的是，刚刚的签名自然是签的我们自己的名，所以用的是我们自己的私钥，需要用我们自己的公钥认证签名 <code>gpg --verify 签名文件</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/minecraft $ gpg --verify Hi.txt.asc</span><br><span class="line">gpg: 于 Wed 16 Mar 2016 02:33:42 AM CST 创建的签名，使用 RSA，钥匙号 DAEDCB5B</span><br><span class="line">gpg: 完好的签名，来自于“刘海博 &lt;shininglhb@163.com&gt;” [绝对]</span><br><span class="line">lgl@pArch ~/tmp/minecraft $ gpg --verify Hi.txt.gpg</span><br><span class="line">gpg: 于 Wed 16 Mar 2016 02:33:18 AM CST 创建的签名，使用 RSA，钥匙号 DAEDCB5B</span><br><span class="line">gpg: 完好的签名，来自于“刘海博 &lt;shininglhb@163.com&gt;” [绝对]</span><br></pre></td></tr></table></figure>
+
+<p>两个文件均验证为正确，说明这两个文件是“刘海博”签的名。<br>用 <code>gpg -b (--detach-sign) [Data]</code>，还可以将签名写进另一个文件。我们高度推荐这种用法，尤其是对二进制文件（如文档）签名的时候。另外，<code>--armor</code> 选项在这儿也非常有用。<br>签名后的文件，我们还可以使用解密来读取：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/minecraft $ gpg -d Hi.txt.asc</span><br><span class="line">Hello, I am Liu Haibo.</span><br><span class="line">This is my sample text sending to Justin.</span><br><span class="line">gpg: 于 Wed 16 Mar 2016 02:33:42 AM CST 创建的签名，使用 RSA，钥匙号 DAEDCB5B</span><br><span class="line">gpg: 完好的签名，来自于“刘海博 &lt;shininglhb@163.com&gt;” [绝对]</span><br></pre></td></tr></table></figure>
+
+<p>可以看到区别就在与 <code>verify</code> 只显示认证的结果，而 <code>decrypt</code> 同时也显示出了原数据的内容。<br>如果这个时候我们对认证后的动动手脚，修改一些内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lgl@pArch ~/tmp/minecraft $ gpg --verify Hi.txt.asc</span><br><span class="line">gpg: 于 Wed 16 Mar 2016 02:33:42 AM CST 创建的签名，使用 RSA，钥匙号 DAEDCB5B</span><br><span class="line">gpg: 已损坏的签名，来自于“刘海博 &lt;shininglhb@163.com&gt;” [绝对]</span><br><span class="line"></span><br><span class="line">lgl@pArch ~/tmp/minecraft $ gpg -d Hi.txt.asc</span><br><span class="line">Hello, I am Liu Haibdddddo.</span><br><span class="line">This is my sample text sending to Justin.</span><br><span class="line">gpg: 于 Wed 16 Mar 2016 02:33:42 AM CST 创建的签名，使用 RSA，钥匙号 DAEDCB5B</span><br><span class="line">gpg: 已损坏的签名，来自于“刘海博 &lt;shininglhb@163.com&gt;” [绝对]</span><br></pre></td></tr></table></figure>
+
+<p>可以看出签名的第二个功能生效了，我们可以根据签名验证文件内容是否被修改。<br>有趣的是，如果再把修改过后的内容修改回去，则认证又会再次通过。这也说明了签名的确就是对整个文件的内容进行Hash产生的。<br>而且，不管什么样的文件，签名的时候只是单纯的在文件内容前后添加头尾，即以下格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN PGP SIGNED MESSAGE-----</span><br><span class="line">Hash: SHA256</span><br><span class="line"></span><br><span class="line">// 此处为原文件内容或者是加密后的密文</span><br><span class="line"></span><br><span class="line">-----BEGIN PGP SIGNATURE-----</span><br><span class="line">Version: GnuPG v2</span><br><span class="line">// 此处为加密后的签名信息</span><br><span class="line">-----END PGP SIGNATURE-----</span><br></pre></td></tr></table></figure>
+
+<h2 id="为什么要先签名后加密？"><a href="#为什么要先签名后加密？" class="headerlink" title="为什么要先签名后加密？"></a>为什么要先签名后加密？</h2><p>答：<br>主要是为了抵御中间人攻击和公钥伪造。<br>比如Alice要发送信息给Bob。</p>
+<p>1）如果Alice与Bob之间交换公钥没有其他任何人截获，那先加密再签名也没事。因为Bob明确地知道Alice的公钥只有自己才有，只要有人篡改信息，Bob这边验证就会失败。<br>2）如果Alice与Bob通过网络传递公钥，可能中间人Eve会截获他们的公钥。此时Eve有Alice的公钥，他可以解密文件中的签名信息，然后用自己的私钥签名文件内容来冒充Alice（从上文的内容可看到先加密后签名生成的文件签名部分与原文内容部分是分开的），Eve很容易用自己的假签名替换Alice的签名。然后Eve再把自己的公钥传递给Bob，在Bob收到文件后，用假公钥进行了验证却把假公钥误认为是Alice。</p>
+<p>但是，如果先签名后加密，那么原文内容和签名信息是合在一起被加密的。即使Eve截获文件，也无法解密内容来替换成假签名。因为只有Bob才有私钥可以解密文件。但这样还是无法避免Alice和Bob交换公钥时被Eve截获然后冒充。</p>
+<p>因此，更安全的办法是：<br>Alice对自己的公钥也进行签名，GnuPG默认就是这么做的。签名后就会有一个公钥的指纹。Alice把自己公钥的指纹放在一个十分安全且无法被篡改的地方。Bob拿到Alice的公钥后，读取公钥指纹，然后去这个十分安全的地方对照指纹是不是一样，从而确定这个公钥是不是真的属于Alice。</p>
+<p>要做到既加密又签名，完整的命令行大致如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpg [-u Sender] [-r Recipient] [--armor] --sign --encrypt [Data]</span><br></pre></td></tr></table></figure>
+
+<h2 id="最后说一下密钥迁移的问题："><a href="#最后说一下密钥迁移的问题：" class="headerlink" title="最后说一下密钥迁移的问题："></a>最后说一下密钥迁移的问题：</h2><p>如果我们现在想换电脑，无疑我们需要把之前的公钥和自己的私钥全部都导出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gpg --<span class="built_in">export</span> puppylpg &gt; puppylpg.public</span><br><span class="line">gpg --<span class="built_in">export</span>-secret-key puppylpg &gt; puppylpg.private</span><br></pre></td></tr></table></figure>
+
+<p>我们将puppylpg的两个密钥导出成为两个文件，之后再导入另一个电脑。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gpg --import puppylpg.public</span><br><span class="line">gpg --allow-secret-key-import --import puppylpg.private</span><br></pre></td></tr></table></figure>
+
+<p>注意导入私钥的时候需要添加 <code>--allow-secret-key-import</code> 给予允许添加私钥的权限，并且也不能遗漏 <code>--import</code> 参数。</p>
+<p>即便用导出密钥的方式来备份密钥，主机系统上的 GPG 密钥仍有被盗的风险。为了获得最佳安全性，可以使用 USB 类型的智能卡配合 GPG 从而保护密钥。这样的智能卡有 <code>Nitrokey Pro</code> 和 <code>Yubikey 4</code> 等等。查看下面链接获取这些智能卡的使用详情：</p>
+<p><a href="https://zh.wikipedia.org/wiki/YubiKey" target="_blank" rel="noopener">Yubikey Wiki</a><br><a href="https://www.jebbs.co/2017/01/20/use-gpg-with-smart-card/" target="_blank" rel="noopener">在 GPG 中使用智能卡</a><br><a href="http://www.shafa.com/articles/zhPd9zCFMDay8Nax.html" target="_blank" rel="noopener">Yubikey 4 简介与配置</a><br><a href="https://mechanus.io/ke-neng-shi-zui-hao-de-yubikey-gpg-ssh-zhi-neng-qia-jiao-cheng/" target="_blank" rel="noopener">可能是最好的 Yubikey + GPG/SSH 智能卡教程</a></p>
+<p>参考：</p>
+<blockquote>
+<p>原文：<a href="https://blog.csdn.net/puppylpg/article/details/50901779" target="_blank" rel="noopener">https://blog.csdn.net/puppylpg/article/details/50901779</a><br>参考：<a href="http://blog.csdn.net/puppylpg/article/details/50899484" target="_blank" rel="noopener">http://blog.csdn.net/puppylpg/article/details/50899484</a><br>参考：<a href="http://www.shafa.com/articles/zhPd9zCFMDay8Nax.html" target="_blank" rel="noopener">http://www.shafa.com/articles/zhPd9zCFMDay8Nax.html</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Jason
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html" title="使用 GPG 学习非对称加密">https://izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Gpg/" rel="tag"># Gpg</a>
+              <a href="/tags/Encryption/" rel="tag"># Encryption</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/02/stdin-stdout-and-redirection.html" rel="prev" title="Bash 的输入输出重定向详解">
+      <i class="fa fa-chevron-left"></i> Bash 的输入输出重定向详解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/28/ubuntu-install-nvidia-driver.html" rel="next" title="Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动">
+      Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#非对称加密需要公钥和私钥："><span class="nav-number">1.</span> <span class="nav-text">非对称加密需要公钥和私钥：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用GPG可以很好的演示这一点："><span class="nav-number">2.</span> <span class="nav-text">使用GPG可以很好的演示这一点：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接下来看使用GPG加密与解密的过程："><span class="nav-number">3.</span> <span class="nav-text">接下来看使用GPG加密与解密的过程：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为了演示解密过程，我们再举一个例子："><span class="nav-number">4.</span> <span class="nav-text">为了演示解密过程，我们再举一个例子：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后，我们说一下签名："><span class="nav-number">5.</span> <span class="nav-text">最后，我们说一下签名：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要先签名后加密？"><span class="nav-number">6.</span> <span class="nav-text">为什么要先签名后加密？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后说一下密钥迁移的问题："><span class="nav-number">7.</span> <span class="nav-text">最后说一下密钥迁移的问题：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason"
+      src="/uploads/cropped-avatar1-180x180.jpg">
+  <p class="site-author-name" itemprop="name">Jason</p>
+  <div class="site-description" itemprop="description">君子生非异也，善假于物也。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.51cto.com/damiaomiao" title="http:&#x2F;&#x2F;blog.51cto.com&#x2F;damiaomiao" rel="noopener" target="_blank">51CTO</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/damiaomiao666" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;damiaomiao666" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">56k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">51 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1273541044&web_id=1273541044"></script>
+  </div>
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
