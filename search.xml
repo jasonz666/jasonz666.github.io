@@ -217,46 +217,6 @@
       </tags>
   </entry>
   <entry>
-    <title>设置 Ubuntu 18.04 夜灯的色温</title>
-    <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
-    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
-<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-01-58%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
-
-<p>但是，没有调整夜灯色温的功能。</p>
-<a id="more"></a>
-
-<h2 id="设置夜灯色温"><a href="#设置夜灯色温" class="headerlink" title="设置夜灯色温"></a>设置夜灯色温</h2><ol>
-<li>安装软件</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打开软件 <code>dconf-editor</code>：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dconf-editor</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>鼠标点击找到如下路径：</li>
-</ol>
-<p><code>/org/gnome/settings-daemon/plugins/color/night-light-temperature</code></p>
-<ol start="4">
-<li>设置自定义值：</li>
-</ol>
-<p>关闭 <code>使用默认值</code>，然后输入一个 <code>自定义值</code>：</p>
-<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-11-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
-
-<h2 id="色温值参考"><a href="#色温值参考" class="headerlink" title="色温值参考"></a>色温值参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1000  —  最低值（最暖色调/效果最红）</span><br><span class="line">4000  —  默认值</span><br><span class="line">5500  —  适中值</span><br><span class="line">6500  —  关闭夜灯时的色温值</span><br><span class="line">10000 —  最高值（最冷色调/效果最蓝）</span><br></pre></td></tr></table></figure>
-
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git 使用总结 01</title>
     <url>/2018/12/21/pro-git-summary-1.html</url>
     <content><![CDATA[<h2 id="Git-的三种状态"><a href="#Git-的三种状态" class="headerlink" title="Git 的三种状态"></a>Git 的三种状态</h2><blockquote>
@@ -447,6 +407,46 @@
 ]]></content>
       <tags>
         <tag>Github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设置 Ubuntu 18.04 夜灯的色温</title>
+    <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
+<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-01-58%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
+
+<p>但是，没有调整夜灯色温的功能。</p>
+<a id="more"></a>
+
+<h2 id="设置夜灯色温"><a href="#设置夜灯色温" class="headerlink" title="设置夜灯色温"></a>设置夜灯色温</h2><ol>
+<li>安装软件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开软件 <code>dconf-editor</code>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dconf-editor</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>鼠标点击找到如下路径：</li>
+</ol>
+<p><code>/org/gnome/settings-daemon/plugins/color/night-light-temperature</code></p>
+<ol start="4">
+<li>设置自定义值：</li>
+</ol>
+<p>关闭 <code>使用默认值</code>，然后输入一个 <code>自定义值</code>：</p>
+<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-11-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
+
+<h2 id="色温值参考"><a href="#色温值参考" class="headerlink" title="色温值参考"></a>色温值参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1000  —  最低值（最暖色调/效果最红）</span><br><span class="line">4000  —  默认值</span><br><span class="line">5500  —  适中值</span><br><span class="line">6500  —  关闭夜灯时的色温值</span><br><span class="line">10000 —  最高值（最冷色调/效果最蓝）</span><br></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
