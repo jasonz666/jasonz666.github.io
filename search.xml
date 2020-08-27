@@ -257,105 +257,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Bash 的输入输出重定向详解</title>
-    <url>/2019/01/02/stdin-stdout-and-redirection.html</url>
-    <content><![CDATA[<p>Linux 中每个进程维护了一个文件描述符表，如 shell 终端，默认有三个文件已打开，他们的文件描述符和文件对应关系为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fd 0: /dev/stdin -&gt; /proc/self/fd/0（前者是指向后者的软链接，下同）</span><br><span class="line">fd 1: /dev/stdout -&gt; /proc/self/fd/1</span><br><span class="line">fd 2: /dev/stderr -&gt; /proc/self/fd/2</span><br></pre></td></tr></table></figure>
-
-<p>所以在该 shell 中创建新的的文件的描述符就从3开始。</p>
-<p><strong>用于输入输出重定向使用的文件描述符大于9，所以安全可用的自定义文件描述符范围就是：3-9</strong></p>
-<p>因为 Bash <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">文档</a> 里有这样一句话：</p>
-<blockquote>
-<p>Redirections using file descriptors greater than 9 should be used with care, as they may conflict with file descriptors the shell uses internally.</p>
-</blockquote>
-<h2 id="下面的几个例子会分别演示"><a href="#下面的几个例子会分别演示" class="headerlink" title="下面的几个例子会分别演示"></a>下面的几个例子会分别演示</h2><p>1）输入输出重定向<br>2）复制输入输出文件描述符<br>3）移动输入输出文件描述符<br>4）关闭文件描述符和同时读写文件<br>5）将已重定向的输入/输出恢复到标准输入/标准输出</p>
-<a id="more"></a>
-
-<h3 id="脚本例子1"><a href="#脚本例子1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>输出重定向</code> 和 <code>复制输出文件描述符</code></p>
-<p>脚本内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd4..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd4"</span> &gt;&amp;4</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd5..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd5"</span> &gt;&amp;5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd6..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd6"</span> &gt;&amp;6</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&gt;file3 4&gt;file4 5&gt;file5 6&gt;file6</span></span><br><span class="line">write to fd3...</span><br><span class="line">write to fd4...</span><br><span class="line">write to fd5...</span><br><span class="line">write to fd6...</span><br><span class="line">[root@jz ~]<span class="comment"># cat file*</span></span><br><span class="line">fd3</span><br><span class="line">fd4</span><br><span class="line">fd5</span><br><span class="line">fd6</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>创建自定义的文件描述符（fd）从 3 开始。test.sh 脚本中 &gt;&amp;n（n 表示文件描述符，为 3, 4, 5, 6）表示：<br>复制 fd n 作为 fd 1（1 即标准输出的文件描述符）的值（这里的复制可以理解为复制 fd n 指向的文件指针，fd n 的值 n 实际上是数组下标，数组元素才是指向文件的指针）<br>也就是说，fd 1 复制了 fd n 的值之后，fd 1 原本指向文件 /dev/stdout，而现在与 fd n 指向相同的文件，n 必须与实际文件关联，这个文件描述符 n 才是有效的<br>在上文的例子中，通过执行脚本 test.sh，fd 3 关联（重定向）到了实际文件 file3，fd 4 关联到了实际文件 file4 等等<br>fd 3, 4, 5, 6 关联了实际文件之后，脚本中的 echo “fdN” &gt;&amp;N 就可以依次把标准输出的内容保存到不同的文件了</p>
-<h3 id="脚本例子2"><a href="#脚本例子2" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>输入重定向</code> 和 <code>复制输入文件描述符</code></p>
-<p>脚本内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd4..."</span></span><br><span class="line">cat &lt;&amp;4</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&lt;file3 4&lt;file4</span></span><br><span class="line"><span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line"><span class="built_in">read</span> from fd4...</span><br><span class="line">fd4</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>和输出重定向差不多，例子2脚本中标准输入分别复制了：输入文件描述符3、输入文件描述符4，使得标准输入分别指向 file3、file4<br>执行脚本时，fd 3、fd 4 分别重定向到了 file3、file4，所以脚本中 cat &lt;&amp;N 就会依次从 file3、file4 读取内容（file3、file 4 是例子1脚本执行后创建的）<br>上面两个例子讲的是“<strong>复制文件描述符</strong>”和“<strong>输入输出重定向</strong>”，bash shell 也支持“<strong>移动文件描述符</strong>”，下面的脚本将实验移动文件描述符。</p>
-<h3 id="脚本例子1-1"><a href="#脚本例子1-1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>移动输出文件描述符</code></p>
-<p>脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&gt;file3</span></span><br><span class="line">1: write to fd3...</span><br><span class="line">2: write to fd3...</span><br><span class="line">3: write to fd3...</span><br><span class="line">move_fn.sh: line 8: 3: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>1）与复制文件描述符不同的是，脚本中 &gt;&amp;3- 表示在 fd 1 复制了 fd 3 的文件指针以后，fd 3 就会关闭，就好像 fd 3 移动到了 fd 1 一样<br>注意脚本执行结果，第1次写入内容到 fd 3 是正常的，第2次写入时也正常，但之后 fd 3 就被关闭，即 fd 3 不再重定向到文件 file3<br>所以第3次写入内容时，就会报错，显示坏掉的文件描述符</p>
-<p><strong>2）还有，一开始 file3 只有一行，最后变成了二行，因为脚本中的 echo 操作的文件从始至终都是 file3，脚本执行时，因为输出文件 fd 3 重定向到 file3</strong><br>脚本开始执行，file3 被打开，直到脚本结束，file3 文件才被关闭，所以脚本中每次执行完 echo “fd3” &gt;&amp;3[-] 都是向 file3 新增一行<br>而不会像终端下直接执行：echo “fd3” &gt; file3，每次都是覆盖文件，因为终端下每次执行 echo 都会单独打开/关闭文件 file3</p>
-<h3 id="脚本例子2-1"><a href="#脚本例子2-1" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>移动输入文件描述符</code></p>
-<p>脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3-; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">move_fd.sh: line 8: 3: Bad file descriptor</span><br><span class="line"></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>脚本中使用 read 命令而不是 cat，因为 read 可以逐行读取文件，而 cat 会一次把文件所有行都读取完<br>类似脚本例子1，这里 &lt;&amp;3- 把输入文件描述符3关闭之后，下次执行 read 命令就会报错</p>
-<p><strong>如果脚本例子2内容如下：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>输出结果是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>可以看到，cat 并不会报错，可能是在 cat 一次读完文件后，cat 先判断文件是否读完，再判断文件描述符3是否可用（因为已读完就无需判断是否可用），所以不会报错</strong></p>
-<h2 id="创建文件描述符来同时读写文件"><a href="#创建文件描述符来同时读写文件" class="headerlink" title="创建文件描述符来同时读写文件"></a>创建文件描述符来同时读写文件</h2><p>语法：<code>n&lt;&gt;filename</code></p>
-<p>n 为文件描述符<br>filename 为实际文件名<br>n 不写时表示 fd 0</p>
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="comment"># 如下命令行表示把输入/输出同时重定向到 inputfile 文件，而文件描述符是3</span></span><br><span class="line"><span class="comment"># 然后让标准输入指向 inputfile 文件，标准输出也指向 inputfile 文件</span></span><br><span class="line"><span class="comment"># 执行 exec 后，下面的命令标准输出都保存到 inputfile 文件，标准输入都读取自 inputfile</span></span><br><span class="line"><span class="comment"># 只有标准错误输出依旧是屏幕</span></span><br><span class="line"><span class="built_in">exec</span> 3&lt;&gt;inputfile &lt;&amp;3 &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"1234"</span></span><br><span class="line">ls xxxx</span><br><span class="line">cat</span><br></pre></td></tr></table></figure>
-
-<p>结果：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">abcde</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">ls: cannot access xxxx: No such file or directory</span><br><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">1234e</span><br><span class="line">dsfsf</span><br><span class="line">e</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>以上输出结果很复杂，涉及到文件读写操作的实现细节，猜测如下：<br>脚本执行后，执行到 exec 命令行，文件 inputfile 被打开，文件读写指针应该是指向文件开头的<br>此时运行 echo 命令行，把 1234 写入到文件开头位置，覆盖掉 abcde 前4个字符变成 1234e，读写指针在字符 e 的位置<br>执行 ls 时因为文件不存在，信息输出到标准错误，所以文件 inputfile 读写指针位置不变<br>执行 cat 从字符 e 开始读取，直到文件结尾，读到的内容是：<br>e<br>dsfsf</p>
-<p>因为文件被 exec 打开，cat 并不会关闭文件，cat 读取出来的内容会再次写入 inputfile 文件，此时读写指针在文件结尾<br>cat 读出的内容添加到文件结尾之后，变成：<br>1234e<br>dsfsf<br>e<br>dsfsf</p>
-<h2 id="关闭文件描述符"><a href="#关闭文件描述符" class="headerlink" title="关闭文件描述符"></a>关闭文件描述符</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;&amp;- 关闭标准输入</span><br><span class="line">&gt;&amp;- 关闭标准输出</span><br><span class="line">n&lt;&amp;- 表示将 n 号输入关闭</span><br><span class="line">n&gt;&amp;- 表示将 n 号输出关闭</span><br></pre></td></tr></table></figure>
-
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat &lt;&amp;-           # 关闭标准输入</span></span><br><span class="line">cat: -: Bad file descriptor</span><br><span class="line">cat: closing standard input: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls &gt;&amp;-            # 关闭标准输出</span></span><br><span class="line">ls: write error: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls xxxx 2&gt;&amp;-      # xxxx 文件不存在，关闭标准错误后，错误信息不会输出</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="最后，说说怎么恢复到标准输入-标准输出"><a href="#最后，说说怎么恢复到标准输入-标准输出" class="headerlink" title="最后，说说怎么恢复到标准输入/标准输出"></a>最后，说说怎么恢复到标准输入/标准输出</h2><p>其实很简单，上文已经讲了复制文件描述符，只需要把标准输入输出，或标准错误先复制保存，之后恢复即可。</p>
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span></span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">Enter to <span class="built_in">continue</span> ...</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh &lt;file3    # 脚本的输入被重定向到 file3 后，read 命令直接读取了 file3 的行，不再显示 Enter ...</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>那么，怎么把 read 的输入恢复到标准输入，再次询问用户按回车继续呢？</strong></p>
-<p>把脚本改成：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span> &lt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>然后用如下方式执行脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh test.sh 3&lt;&amp;0 &lt;file3</span><br></pre></td></tr></table></figure>
-
-<p>执行脚本时，它的含义是先创建一个新的文件描述符3，fd 3 复制 fd 0 的值，就把 fd 0 保存到 fd 3 了，然后在脚本中 read 命令的标准输入文件描述符从 fd 3 复制回来即可。</p>
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">https://www.gnu.org/software/bash/manual/html_node/Redirections.html</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Bash</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git 使用总结 01</title>
     <url>/2018/12/21/pro-git-summary-1.html</url>
     <content><![CDATA[<h2 id="Git-的三种状态"><a href="#Git-的三种状态" class="headerlink" title="Git 的三种状态"></a>Git 的三种状态</h2><blockquote>
@@ -546,6 +447,105 @@
 ]]></content>
       <tags>
         <tag>Github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Bash 的输入输出重定向详解</title>
+    <url>/2019/01/02/stdin-stdout-and-redirection.html</url>
+    <content><![CDATA[<p>Linux 中每个进程维护了一个文件描述符表，如 shell 终端，默认有三个文件已打开，他们的文件描述符和文件对应关系为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fd 0: /dev/stdin -&gt; /proc/self/fd/0（前者是指向后者的软链接，下同）</span><br><span class="line">fd 1: /dev/stdout -&gt; /proc/self/fd/1</span><br><span class="line">fd 2: /dev/stderr -&gt; /proc/self/fd/2</span><br></pre></td></tr></table></figure>
+
+<p>所以在该 shell 中创建新的的文件的描述符就从3开始。</p>
+<p><strong>用于输入输出重定向使用的文件描述符大于9，所以安全可用的自定义文件描述符范围就是：3-9</strong></p>
+<p>因为 Bash <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">文档</a> 里有这样一句话：</p>
+<blockquote>
+<p>Redirections using file descriptors greater than 9 should be used with care, as they may conflict with file descriptors the shell uses internally.</p>
+</blockquote>
+<h2 id="下面的几个例子会分别演示"><a href="#下面的几个例子会分别演示" class="headerlink" title="下面的几个例子会分别演示"></a>下面的几个例子会分别演示</h2><p>1）输入输出重定向<br>2）复制输入输出文件描述符<br>3）移动输入输出文件描述符<br>4）关闭文件描述符和同时读写文件<br>5）将已重定向的输入/输出恢复到标准输入/标准输出</p>
+<a id="more"></a>
+
+<h3 id="脚本例子1"><a href="#脚本例子1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>输出重定向</code> 和 <code>复制输出文件描述符</code></p>
+<p>脚本内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd4..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd4"</span> &gt;&amp;4</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd5..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd5"</span> &gt;&amp;5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd6..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd6"</span> &gt;&amp;6</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&gt;file3 4&gt;file4 5&gt;file5 6&gt;file6</span></span><br><span class="line">write to fd3...</span><br><span class="line">write to fd4...</span><br><span class="line">write to fd5...</span><br><span class="line">write to fd6...</span><br><span class="line">[root@jz ~]<span class="comment"># cat file*</span></span><br><span class="line">fd3</span><br><span class="line">fd4</span><br><span class="line">fd5</span><br><span class="line">fd6</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>创建自定义的文件描述符（fd）从 3 开始。test.sh 脚本中 &gt;&amp;n（n 表示文件描述符，为 3, 4, 5, 6）表示：<br>复制 fd n 作为 fd 1（1 即标准输出的文件描述符）的值（这里的复制可以理解为复制 fd n 指向的文件指针，fd n 的值 n 实际上是数组下标，数组元素才是指向文件的指针）<br>也就是说，fd 1 复制了 fd n 的值之后，fd 1 原本指向文件 /dev/stdout，而现在与 fd n 指向相同的文件，n 必须与实际文件关联，这个文件描述符 n 才是有效的<br>在上文的例子中，通过执行脚本 test.sh，fd 3 关联（重定向）到了实际文件 file3，fd 4 关联到了实际文件 file4 等等<br>fd 3, 4, 5, 6 关联了实际文件之后，脚本中的 echo “fdN” &gt;&amp;N 就可以依次把标准输出的内容保存到不同的文件了</p>
+<h3 id="脚本例子2"><a href="#脚本例子2" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>输入重定向</code> 和 <code>复制输入文件描述符</code></p>
+<p>脚本内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd4..."</span></span><br><span class="line">cat &lt;&amp;4</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&lt;file3 4&lt;file4</span></span><br><span class="line"><span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line"><span class="built_in">read</span> from fd4...</span><br><span class="line">fd4</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>和输出重定向差不多，例子2脚本中标准输入分别复制了：输入文件描述符3、输入文件描述符4，使得标准输入分别指向 file3、file4<br>执行脚本时，fd 3、fd 4 分别重定向到了 file3、file4，所以脚本中 cat &lt;&amp;N 就会依次从 file3、file4 读取内容（file3、file 4 是例子1脚本执行后创建的）<br>上面两个例子讲的是“<strong>复制文件描述符</strong>”和“<strong>输入输出重定向</strong>”，bash shell 也支持“<strong>移动文件描述符</strong>”，下面的脚本将实验移动文件描述符。</p>
+<h3 id="脚本例子1-1"><a href="#脚本例子1-1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>移动输出文件描述符</code></p>
+<p>脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&gt;file3</span></span><br><span class="line">1: write to fd3...</span><br><span class="line">2: write to fd3...</span><br><span class="line">3: write to fd3...</span><br><span class="line">move_fn.sh: line 8: 3: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>1）与复制文件描述符不同的是，脚本中 &gt;&amp;3- 表示在 fd 1 复制了 fd 3 的文件指针以后，fd 3 就会关闭，就好像 fd 3 移动到了 fd 1 一样<br>注意脚本执行结果，第1次写入内容到 fd 3 是正常的，第2次写入时也正常，但之后 fd 3 就被关闭，即 fd 3 不再重定向到文件 file3<br>所以第3次写入内容时，就会报错，显示坏掉的文件描述符</p>
+<p><strong>2）还有，一开始 file3 只有一行，最后变成了二行，因为脚本中的 echo 操作的文件从始至终都是 file3，脚本执行时，因为输出文件 fd 3 重定向到 file3</strong><br>脚本开始执行，file3 被打开，直到脚本结束，file3 文件才被关闭，所以脚本中每次执行完 echo “fd3” &gt;&amp;3[-] 都是向 file3 新增一行<br>而不会像终端下直接执行：echo “fd3” &gt; file3，每次都是覆盖文件，因为终端下每次执行 echo 都会单独打开/关闭文件 file3</p>
+<h3 id="脚本例子2-1"><a href="#脚本例子2-1" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>移动输入文件描述符</code></p>
+<p>脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3-; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">move_fd.sh: line 8: 3: Bad file descriptor</span><br><span class="line"></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>脚本中使用 read 命令而不是 cat，因为 read 可以逐行读取文件，而 cat 会一次把文件所有行都读取完<br>类似脚本例子1，这里 &lt;&amp;3- 把输入文件描述符3关闭之后，下次执行 read 命令就会报错</p>
+<p><strong>如果脚本例子2内容如下：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>输出结果是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>可以看到，cat 并不会报错，可能是在 cat 一次读完文件后，cat 先判断文件是否读完，再判断文件描述符3是否可用（因为已读完就无需判断是否可用），所以不会报错</strong></p>
+<h2 id="创建文件描述符来同时读写文件"><a href="#创建文件描述符来同时读写文件" class="headerlink" title="创建文件描述符来同时读写文件"></a>创建文件描述符来同时读写文件</h2><p>语法：<code>n&lt;&gt;filename</code></p>
+<p>n 为文件描述符<br>filename 为实际文件名<br>n 不写时表示 fd 0</p>
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="comment"># 如下命令行表示把输入/输出同时重定向到 inputfile 文件，而文件描述符是3</span></span><br><span class="line"><span class="comment"># 然后让标准输入指向 inputfile 文件，标准输出也指向 inputfile 文件</span></span><br><span class="line"><span class="comment"># 执行 exec 后，下面的命令标准输出都保存到 inputfile 文件，标准输入都读取自 inputfile</span></span><br><span class="line"><span class="comment"># 只有标准错误输出依旧是屏幕</span></span><br><span class="line"><span class="built_in">exec</span> 3&lt;&gt;inputfile &lt;&amp;3 &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"1234"</span></span><br><span class="line">ls xxxx</span><br><span class="line">cat</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">abcde</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">ls: cannot access xxxx: No such file or directory</span><br><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">1234e</span><br><span class="line">dsfsf</span><br><span class="line">e</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>以上输出结果很复杂，涉及到文件读写操作的实现细节，猜测如下：<br>脚本执行后，执行到 exec 命令行，文件 inputfile 被打开，文件读写指针应该是指向文件开头的<br>此时运行 echo 命令行，把 1234 写入到文件开头位置，覆盖掉 abcde 前4个字符变成 1234e，读写指针在字符 e 的位置<br>执行 ls 时因为文件不存在，信息输出到标准错误，所以文件 inputfile 读写指针位置不变<br>执行 cat 从字符 e 开始读取，直到文件结尾，读到的内容是：<br>e<br>dsfsf</p>
+<p>因为文件被 exec 打开，cat 并不会关闭文件，cat 读取出来的内容会再次写入 inputfile 文件，此时读写指针在文件结尾<br>cat 读出的内容添加到文件结尾之后，变成：<br>1234e<br>dsfsf<br>e<br>dsfsf</p>
+<h2 id="关闭文件描述符"><a href="#关闭文件描述符" class="headerlink" title="关闭文件描述符"></a>关闭文件描述符</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;&amp;- 关闭标准输入</span><br><span class="line">&gt;&amp;- 关闭标准输出</span><br><span class="line">n&lt;&amp;- 表示将 n 号输入关闭</span><br><span class="line">n&gt;&amp;- 表示将 n 号输出关闭</span><br></pre></td></tr></table></figure>
+
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat &lt;&amp;-           # 关闭标准输入</span></span><br><span class="line">cat: -: Bad file descriptor</span><br><span class="line">cat: closing standard input: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls &gt;&amp;-            # 关闭标准输出</span></span><br><span class="line">ls: write error: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls xxxx 2&gt;&amp;-      # xxxx 文件不存在，关闭标准错误后，错误信息不会输出</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="最后，说说怎么恢复到标准输入-标准输出"><a href="#最后，说说怎么恢复到标准输入-标准输出" class="headerlink" title="最后，说说怎么恢复到标准输入/标准输出"></a>最后，说说怎么恢复到标准输入/标准输出</h2><p>其实很简单，上文已经讲了复制文件描述符，只需要把标准输入输出，或标准错误先复制保存，之后恢复即可。</p>
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span></span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">Enter to <span class="built_in">continue</span> ...</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh &lt;file3    # 脚本的输入被重定向到 file3 后，read 命令直接读取了 file3 的行，不再显示 Enter ...</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>那么，怎么把 read 的输入恢复到标准输入，再次询问用户按回车继续呢？</strong></p>
+<p>把脚本改成：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span> &lt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>然后用如下方式执行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh test.sh 3&lt;&amp;0 &lt;file3</span><br></pre></td></tr></table></figure>
+
+<p>执行脚本时，它的含义是先创建一个新的文件描述符3，fd 3 复制 fd 0 的值，就把 fd 0 保存到 fd 3 了，然后在脚本中 read 命令的标准输入文件描述符从 fd 3 复制回来即可。</p>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">https://www.gnu.org/software/bash/manual/html_node/Redirections.html</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Bash</tag>
       </tags>
   </entry>
   <entry>
