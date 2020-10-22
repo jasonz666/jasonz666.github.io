@@ -79,6 +79,49 @@
 ]]></content>
   </entry>
   <entry>
+    <title>使用 GPG 密钥登录 SSH</title>
+    <url>/2019/02/03/login-ssh-via-gpg-key.html</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>SSH 通常有密码登录和密钥登录两种方式。密钥登录时使用的是 SSH 的密钥，由 ssh-agent 来处理。这里介绍使用 GnuPG 生成的 PGP 密钥来登录 SSH。此时使用 gpg-agent 来处理登录过程。</p>
+<p>使用 GPG 密钥登录的好处是便于管理服务器。只要把 GPG 密钥的公钥放到服务器上面，用同一个密钥可以登录所有这些服务器。还有，GnuPG 可以使用智能卡来保存密钥，使 SSH 密钥更加安全。</p>
+<p><strong>注意：</strong></p>
+<p>这篇文章使用 Ubuntu 18.04，并使用 GnuPG v2.2.X 来演示，小于 v2.2.X 的版本下文某些命令可能是无效的。运行如下命令查看版本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gpg --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成-GnuPG-密钥并添加认证密钥"><a href="#生成-GnuPG-密钥并添加认证密钥" class="headerlink" title="生成 GnuPG 密钥并添加认证密钥"></a>生成 GnuPG 密钥并添加认证密钥</h2><p>快速生成 GnuPG 密钥的方法详见 <a href="https://he.izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html" target="_blank" rel="noopener">这里</a></p>
+<p>分步生成 GnuPG 密钥的方法详见：</p>
+<ol>
+<li><a href="https://linux.cn/article-9529-1.html" target="_blank" rel="noopener">生成主密钥</a></li>
+<li><a href="https://linux.cn/article-9607-1.html" target="_blank" rel="noopener">生成认证密钥等子密钥</a></li>
+</ol>
+<p>生成属于自己的一对密钥后，再向这个密钥中添加一个认证密钥[A]。</p>
+<a id="more"></a>
+
+<p>最后，密钥看起来像下面这样。[A] 子密钥用于认证，即用于 SSH 登录：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ gpg --list-key 0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">pub   rsa4096 2019-XX-XX [C] [有效至：20XX-XX-XX]</span><br><span class="line">      0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">uid           [ 绝对 ] Jason &lt;example@example.com&gt;</span><br><span class="line">sub   rsa4096 2019-01-15 [E]</span><br><span class="line">sub   rsa4096 2019-01-15 [A]</span><br><span class="line">sub   rsa4096 2019-01-15 [S]</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置用于-SSH-登录"><a href="#设置用于-SSH-登录" class="headerlink" title="设置用于 SSH 登录"></a>设置用于 SSH 登录</h2><h3 id="配置-gpg-agent-选项"><a href="#配置-gpg-agent-选项" class="headerlink" title="配置 gpg-agent 选项"></a>配置 gpg-agent 选项</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.gnupg/gpg-agent.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入下面三行</span></span><br><span class="line"><span class="comment"># 三行分别表示</span></span><br><span class="line"><span class="comment"># 输入一次 GPG 密码后，600 秒内不用重复输入，600 秒内再次使用密码会重置这个时间</span></span><br><span class="line"><span class="comment"># 从首次输入密码算起，不管最近一次使用密码是什么时间，只要最大 TTL 过期，就需要重新输入密码</span></span><br><span class="line"><span class="comment"># 启用 SSH 支持</span></span><br><span class="line"></span><br><span class="line">default-cache-ttl 600</span><br><span class="line">max-cache-ttl 7200</span><br><span class="line"><span class="built_in">enable</span>-ssh-support</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改-bashrc-文件"><a href="#修改-bashrc-文件" class="headerlink" title="修改 .bashrc 文件"></a>修改 .bashrc 文件</h3><p>让 ssh 与 gpg-agent 通信，而不是 ssh-agent。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在 .bashrc 文件末尾添加如下一行</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)</span><br></pre></td></tr></table></figure>
+
+<p>为了使更改生效，运行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">killall gpg-agent</span><br><span class="line">bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取认证密钥的-keygrip"><a href="#获取认证密钥的-keygrip" class="headerlink" title="获取认证密钥的 keygrip"></a>获取认证密钥的 keygrip</h3><p>为了告诉 gpg-agent 应该使用哪个认证子密钥，需要先获取认证子密钥的 keygrip。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 记录下认证子密钥的 keygrip</span></span><br><span class="line"><span class="comment"># 下面的结果中 keygrip 就是</span></span><br><span class="line"><span class="comment"># 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC</span></span><br><span class="line"></span><br><span class="line">$ gpg --with-keygrip --list-key 0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">...</span><br><span class="line">sub   rsa4096 2019-01-15 [A]</span><br><span class="line">      Keygrip = 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加 keygrip</span></span><br><span class="line"><span class="built_in">echo</span> 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC &gt;&gt; ~/.gnupg/sshcontrol</span><br></pre></td></tr></table></figure>
+
+<h3 id="列出-SSH-格式的-GPG-认证密钥的公钥"><a href="#列出-SSH-格式的-GPG-认证密钥的公钥" class="headerlink" title="列出 SSH 格式的 GPG 认证密钥的公钥"></a>列出 SSH 格式的 GPG 认证密钥的公钥</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令会列出 GPG 认证密钥的公钥</span></span><br><span class="line">ssh-add -L</span><br></pre></td></tr></table></figure>
+
+<p>把列出的公钥，放到服务器上的文件 ~/.ssh/authorized_keys 里，就能通过 GPG 来使用 SSH 登录远程主机了。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行如下命令测试是否能成功登入远程主机：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -p port username@remote_ip</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>Gpg</tag>
+        <tag>SSH</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用 GPG 学习非对称加密</title>
     <url>/2019/01/09/learn-asymmetric-encryption-by-gpg.html</url>
     <content><![CDATA[<h2 id="非对称加密需要公钥和私钥："><a href="#非对称加密需要公钥和私钥：" class="headerlink" title="非对称加密需要公钥和私钥："></a>非对称加密需要公钥和私钥：</h2><p>你的公钥的作用：别人用来给你发加密的信息(公钥加密)＆别人验证你的签名(公钥解密)，即加密&amp;验证（别人来做）<br>你的私钥的作用：你用来创建签名(私钥加密)＆解密别人发给你的信息的(私钥解密)，即解密&amp;签名（你来做）</p>
@@ -174,49 +217,6 @@
       </tags>
   </entry>
   <entry>
-    <title>使用 GPG 密钥登录 SSH</title>
-    <url>/2019/02/03/login-ssh-via-gpg-key.html</url>
-    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>SSH 通常有密码登录和密钥登录两种方式。密钥登录时使用的是 SSH 的密钥，由 ssh-agent 来处理。这里介绍使用 GnuPG 生成的 PGP 密钥来登录 SSH。此时使用 gpg-agent 来处理登录过程。</p>
-<p>使用 GPG 密钥登录的好处是便于管理服务器。只要把 GPG 密钥的公钥放到服务器上面，用同一个密钥可以登录所有这些服务器。还有，GnuPG 可以使用智能卡来保存密钥，使 SSH 密钥更加安全。</p>
-<p><strong>注意：</strong></p>
-<p>这篇文章使用 Ubuntu 18.04，并使用 GnuPG v2.2.X 来演示，小于 v2.2.X 的版本下文某些命令可能是无效的。运行如下命令查看版本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gpg --version</span><br></pre></td></tr></table></figure>
-
-<h2 id="生成-GnuPG-密钥并添加认证密钥"><a href="#生成-GnuPG-密钥并添加认证密钥" class="headerlink" title="生成 GnuPG 密钥并添加认证密钥"></a>生成 GnuPG 密钥并添加认证密钥</h2><p>快速生成 GnuPG 密钥的方法详见 <a href="https://he.izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html" target="_blank" rel="noopener">这里</a></p>
-<p>分步生成 GnuPG 密钥的方法详见：</p>
-<ol>
-<li><a href="https://linux.cn/article-9529-1.html" target="_blank" rel="noopener">生成主密钥</a></li>
-<li><a href="https://linux.cn/article-9607-1.html" target="_blank" rel="noopener">生成认证密钥等子密钥</a></li>
-</ol>
-<p>生成属于自己的一对密钥后，再向这个密钥中添加一个认证密钥[A]。</p>
-<a id="more"></a>
-
-<p>最后，密钥看起来像下面这样。[A] 子密钥用于认证，即用于 SSH 登录：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ gpg --list-key 0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">pub   rsa4096 2019-XX-XX [C] [有效至：20XX-XX-XX]</span><br><span class="line">      0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">uid           [ 绝对 ] Jason &lt;example@example.com&gt;</span><br><span class="line">sub   rsa4096 2019-01-15 [E]</span><br><span class="line">sub   rsa4096 2019-01-15 [A]</span><br><span class="line">sub   rsa4096 2019-01-15 [S]</span><br></pre></td></tr></table></figure>
-
-<h2 id="设置用于-SSH-登录"><a href="#设置用于-SSH-登录" class="headerlink" title="设置用于 SSH 登录"></a>设置用于 SSH 登录</h2><h3 id="配置-gpg-agent-选项"><a href="#配置-gpg-agent-选项" class="headerlink" title="配置 gpg-agent 选项"></a>配置 gpg-agent 选项</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.gnupg/gpg-agent.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入下面三行</span></span><br><span class="line"><span class="comment"># 三行分别表示</span></span><br><span class="line"><span class="comment"># 输入一次 GPG 密码后，600 秒内不用重复输入，600 秒内再次使用密码会重置这个时间</span></span><br><span class="line"><span class="comment"># 从首次输入密码算起，不管最近一次使用密码是什么时间，只要最大 TTL 过期，就需要重新输入密码</span></span><br><span class="line"><span class="comment"># 启用 SSH 支持</span></span><br><span class="line"></span><br><span class="line">default-cache-ttl 600</span><br><span class="line">max-cache-ttl 7200</span><br><span class="line"><span class="built_in">enable</span>-ssh-support</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改-bashrc-文件"><a href="#修改-bashrc-文件" class="headerlink" title="修改 .bashrc 文件"></a>修改 .bashrc 文件</h3><p>让 ssh 与 gpg-agent 通信，而不是 ssh-agent。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在 .bashrc 文件末尾添加如下一行</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)</span><br></pre></td></tr></table></figure>
-
-<p>为了使更改生效，运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">killall gpg-agent</span><br><span class="line">bash</span><br></pre></td></tr></table></figure>
-
-<h3 id="获取认证密钥的-keygrip"><a href="#获取认证密钥的-keygrip" class="headerlink" title="获取认证密钥的 keygrip"></a>获取认证密钥的 keygrip</h3><p>为了告诉 gpg-agent 应该使用哪个认证子密钥，需要先获取认证子密钥的 keygrip。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 记录下认证子密钥的 keygrip</span></span><br><span class="line"><span class="comment"># 下面的结果中 keygrip 就是</span></span><br><span class="line"><span class="comment"># 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC</span></span><br><span class="line"></span><br><span class="line">$ gpg --with-keygrip --list-key 0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">...</span><br><span class="line">sub   rsa4096 2019-01-15 [A]</span><br><span class="line">      Keygrip = 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加 keygrip</span></span><br><span class="line"><span class="built_in">echo</span> 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC &gt;&gt; ~/.gnupg/sshcontrol</span><br></pre></td></tr></table></figure>
-
-<h3 id="列出-SSH-格式的-GPG-认证密钥的公钥"><a href="#列出-SSH-格式的-GPG-认证密钥的公钥" class="headerlink" title="列出 SSH 格式的 GPG 认证密钥的公钥"></a>列出 SSH 格式的 GPG 认证密钥的公钥</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令会列出 GPG 认证密钥的公钥</span></span><br><span class="line">ssh-add -L</span><br></pre></td></tr></table></figure>
-
-<p>把列出的公钥，放到服务器上的文件 ~/.ssh/authorized_keys 里，就能通过 GPG 来使用 SSH 登录远程主机了。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行如下命令测试是否能成功登入远程主机：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -p port username@remote_ip</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>Gpg</tag>
-        <tag>SSH</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>设置 Ubuntu 18.04 夜灯的色温</title>
     <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
     <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
@@ -251,6 +251,61 @@
 <blockquote>
 <p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
 </blockquote>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
+    <url>/2019/01/28/ubuntu-install-nvidia-driver.html</url>
+    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1）从 NVIDIA 官网下载对应显卡的驱动备用</p>
+<p><a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
+<p>我下载的驱动是：NVIDIA-Linux-x86_64-410.93.run<br>安装环境：华硕笔记本 Ubuntu 18.04</p>
+<p><strong>注意</strong>：<br>主板 BIOS 必须关闭安全启动 (Secure Boot)，不然安装的 NVIDIA 驱动无法加载。<br>但此时，还是能正常进 Ubuntu 桌面，可能是此时使用的是 Intel 核显有关。</p>
+<p>2）首次运行 NVIDIA 驱动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +x NVIDIA-Linux-x86_64-410.93.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
+
+<p>首次运行驱动程序，不会安装，因为系统中有 nouveau 驱动存在。<br>但是 NVIDIA-Linux-x86_64-410.93.run 会生成 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件。用于禁用系统自带的 nouveau 驱动。该文件内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modprobe.d/nvidia-installer-disable-nouveau.conf</span><br><span class="line"><span class="comment"># generated by nvidia-installer</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
+
+<p>3）使禁用生效</p>
+<p>只有 blacklist 并不能真的禁用 nouveau 驱动。执行如下命令更新 initramfs：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+
+<p>然后，重启系统，禁用就成功了。执行如下命令验证：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 输出结果为空说明已经禁用 nouveau 驱动</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h2><p>1）开始安装 NVIDIA 驱动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
+
+<p>安装完，重启系统</p>
+<p>2）查看是否安装成功</p>
+<p>运行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 运行下面命令查看显卡驱动部分，如果有 Kernel driver in use: nvidia 则成功</span></span><br><span class="line">lspci -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以运行如下命令，看看 nvidia 模块是否加载成功</span></span><br><span class="line">lsmod | grep nvidia</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行 <code>glxgears</code>，如果帧数远大于 60 FPS，说明 nvidia 驱动已在使用，因为 NVIDIA 驱动安装后，默认不会开启垂直同步。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mesa-utils</span><br><span class="line">glxgears</span><br></pre></td></tr></table></figure>
+
+<p>最后，笔记本盒盖睡眠，再打开，没有黑屏，唤醒成功。</p>
+<h2 id="可选：开启垂直同步解决画面撕裂"><a href="#可选：开启垂直同步解决画面撕裂" class="headerlink" title="可选：开启垂直同步解决画面撕裂"></a>可选：开启垂直同步解决画面撕裂</h2><p>安装完 NVIDIA 驱动后，默认不开启同步，有可能出现画面撕裂。解决办法如下。</p>
+<p>1）在终端运行命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/modprobe.d/nvidia-drm-nomodeset.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入如下一行</span></span><br><span class="line">options nvidia-drm modeset=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新到 initramfs</span></span><br><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+
+<p>重启系统。</p>
+<p>2）重启系统后查看结果</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令应该是输出 "Y" 而不是 "N"</span></span><br><span class="line">sudo cat /sys/module/nvidia_drm/parameters/modeset</span><br></pre></td></tr></table></figure>
+
+<p>3）设置 NVIDIA 驱动</p>
+<p>终端运行命令 <code>nvidia-settings</code> 打开驱动设置窗口。<br>在窗口左侧选择 <code>GPU 0-(xxx)</code> –&gt; <code>PowerMizer</code> –&gt; 设置 <code>PowerMizer Settings</code> 为 <code>Prefer Maximum Performance</code>。</p>
+<p>4）让系统尽可能地使用物理内存而不是交换空间</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文末加入两行（默认值为 60）：</span></span><br><span class="line"><span class="comment"># User defines</span></span><br><span class="line">vm.swappiness=10</span><br></pre></td></tr></table></figure>
+
+<p>然后，重启系统。运行 <code>cat /proc/sys/vm/swappiness</code> 查看结果。</p>
+<h2 id="如果要卸载驱动"><a href="#如果要卸载驱动" class="headerlink" title="如果要卸载驱动"></a>如果要卸载驱动</h2><p>装完 NVIDIA 驱动后，如果要卸载，会有一个命令 <code>nvidia-uninstall</code> 用来卸载驱动。但是同时要删除文件 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件，然后运行 <code>sudo update-initramfs -u</code>，让 nouveau 驱动再次生效。</p>
+<p>参考：<br><a href="https://blog.csdn.net/u012442845/article/details/78855573" target="_blank" rel="noopener">https://blog.csdn.net/u012442845/article/details/78855573</a><br><a href="https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04" target="_blank" rel="noopener">https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04</a><br><a href="https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver" target="_blank" rel="noopener">https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver</a><br><a href="http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/" target="_blank" rel="noopener">http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/</a></p>
 ]]></content>
       <tags>
         <tag>Ubuntu</tag>
@@ -353,61 +408,6 @@
 ]]></content>
       <tags>
         <tag>Bash</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
-    <url>/2019/01/28/ubuntu-install-nvidia-driver.html</url>
-    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1）从 NVIDIA 官网下载对应显卡的驱动备用</p>
-<p><a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
-<p>我下载的驱动是：NVIDIA-Linux-x86_64-410.93.run<br>安装环境：华硕笔记本 Ubuntu 18.04</p>
-<p><strong>注意</strong>：<br>主板 BIOS 必须关闭安全启动 (Secure Boot)，不然安装的 NVIDIA 驱动无法加载。<br>但此时，还是能正常进 Ubuntu 桌面，可能是此时使用的是 Intel 核显有关。</p>
-<p>2）首次运行 NVIDIA 驱动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +x NVIDIA-Linux-x86_64-410.93.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
-
-<p>首次运行驱动程序，不会安装，因为系统中有 nouveau 驱动存在。<br>但是 NVIDIA-Linux-x86_64-410.93.run 会生成 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件。用于禁用系统自带的 nouveau 驱动。该文件内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modprobe.d/nvidia-installer-disable-nouveau.conf</span><br><span class="line"><span class="comment"># generated by nvidia-installer</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
-
-<p>3）使禁用生效</p>
-<p>只有 blacklist 并不能真的禁用 nouveau 驱动。执行如下命令更新 initramfs：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
-
-<p>然后，重启系统，禁用就成功了。执行如下命令验证：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 输出结果为空说明已经禁用 nouveau 驱动</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h2 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h2><p>1）开始安装 NVIDIA 驱动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
-
-<p>安装完，重启系统</p>
-<p>2）查看是否安装成功</p>
-<p>运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 运行下面命令查看显卡驱动部分，如果有 Kernel driver in use: nvidia 则成功</span></span><br><span class="line">lspci -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以运行如下命令，看看 nvidia 模块是否加载成功</span></span><br><span class="line">lsmod | grep nvidia</span><br></pre></td></tr></table></figure>
-
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行 <code>glxgears</code>，如果帧数远大于 60 FPS，说明 nvidia 驱动已在使用，因为 NVIDIA 驱动安装后，默认不会开启垂直同步。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mesa-utils</span><br><span class="line">glxgears</span><br></pre></td></tr></table></figure>
-
-<p>最后，笔记本盒盖睡眠，再打开，没有黑屏，唤醒成功。</p>
-<h2 id="可选：开启垂直同步解决画面撕裂"><a href="#可选：开启垂直同步解决画面撕裂" class="headerlink" title="可选：开启垂直同步解决画面撕裂"></a>可选：开启垂直同步解决画面撕裂</h2><p>安装完 NVIDIA 驱动后，默认不开启同步，有可能出现画面撕裂。解决办法如下。</p>
-<p>1）在终端运行命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/modprobe.d/nvidia-drm-nomodeset.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入如下一行</span></span><br><span class="line">options nvidia-drm modeset=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新到 initramfs</span></span><br><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
-
-<p>重启系统。</p>
-<p>2）重启系统后查看结果</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令应该是输出 "Y" 而不是 "N"</span></span><br><span class="line">sudo cat /sys/module/nvidia_drm/parameters/modeset</span><br></pre></td></tr></table></figure>
-
-<p>3）设置 NVIDIA 驱动</p>
-<p>终端运行命令 <code>nvidia-settings</code> 打开驱动设置窗口。<br>在窗口左侧选择 <code>GPU 0-(xxx)</code> –&gt; <code>PowerMizer</code> –&gt; 设置 <code>PowerMizer Settings</code> 为 <code>Prefer Maximum Performance</code>。</p>
-<p>4）让系统尽可能地使用物理内存而不是交换空间</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文末加入两行（默认值为 60）：</span></span><br><span class="line"><span class="comment"># User defines</span></span><br><span class="line">vm.swappiness=10</span><br></pre></td></tr></table></figure>
-
-<p>然后，重启系统。运行 <code>cat /proc/sys/vm/swappiness</code> 查看结果。</p>
-<h2 id="如果要卸载驱动"><a href="#如果要卸载驱动" class="headerlink" title="如果要卸载驱动"></a>如果要卸载驱动</h2><p>装完 NVIDIA 驱动后，如果要卸载，会有一个命令 <code>nvidia-uninstall</code> 用来卸载驱动。但是同时要删除文件 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件，然后运行 <code>sudo update-initramfs -u</code>，让 nouveau 驱动再次生效。</p>
-<p>参考：<br><a href="https://blog.csdn.net/u012442845/article/details/78855573" target="_blank" rel="noopener">https://blog.csdn.net/u012442845/article/details/78855573</a><br><a href="https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04" target="_blank" rel="noopener">https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04</a><br><a href="https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver" target="_blank" rel="noopener">https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver</a><br><a href="http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/" target="_blank" rel="noopener">http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/</a></p>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
