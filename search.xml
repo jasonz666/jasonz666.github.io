@@ -24,6 +24,41 @@
       </tags>
   </entry>
   <entry>
+    <title>Git 使用指定的 SSH 密钥克隆和提交</title>
+    <url>/2018/12/23/git-commit-via-ssh-key.html</url>
+    <content><![CDATA[<h2 id="Git-使用指定的密钥"><a href="#Git-使用指定的密钥" class="headerlink" title="Git 使用指定的密钥"></a>Git 使用指定的密钥</h2><p>默认情况，Git 会使用 <code>~/.ssh/id_ecdsa</code> 来登录远程仓库，比如登录 <code>github.com</code>。我这里使用的是 <code>ecdsa</code> 算法，所以是 <code>id_ecdsa</code>。</p>
+<p>怎么样使用指定的密钥呢？比如使用 <code>id_ecdsa_123</code>。创建 ssh 配置文件 <code>config</code> 即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置文件内容</span></span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_ecdsa_github</span><br><span class="line">    IdentitiesOnly yes</span><br></pre></td></tr></table></figure>
+
+<p>配置文件的含义：</p>
+<ul>
+<li><code>Host github.com</code>：指定一个主机</li>
+<li><code>HostName github.com</code>：上面指定的主机的主机名</li>
+<li><code>User git</code>：登录该主机的用户名，如果是登录 <code>github.com</code>，就必须是 <code>git</code></li>
+<li><code>IdentityFile ~/.ssh/id_ecdsa_github</code>：关键配置，这里指定了使用哪个私钥文件</li>
+<li><code>IdentitiesOnly yes</code>：它指示 ssh 仅使用在命令行上指定的私钥文件或在 <code>config</code> 文件中配置的私钥文件</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="使用密钥克隆"><a href="#使用密钥克隆" class="headerlink" title="使用密钥克隆"></a>使用密钥克隆</h2><p>配置完上面的 <code>config</code> 文件之后，就可以使用指定的私钥文件来克隆。比如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:jasonz666/shell-utils</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用密钥提交修改"><a href="#使用密钥提交修改" class="headerlink" title="使用密钥提交修改"></a>使用密钥提交修改</h2><p>如果我们使用 HTTPS 方式克隆了一个仓库，而不是像上面那样使用 SSH 密钥方式。先要将 SSH 密钥登录远程服务器 <code>github.com</code> 的方式关联到本地仓库。执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入本地仓库目录</span></span><br><span class="line">$ <span class="built_in">cd</span> shell-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已关联的远程仓库服务器</span></span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (fetch)</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (push)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加新的远程仓库服务器</span></span><br><span class="line">$ git remote add ssh git@github.com:jasonz666/shell-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次查看远程仓库服务器</span></span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (fetch)</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (push)</span><br><span class="line">ssh	gitgit@github.com:jasonz666/shell-utils (fetch)</span><br><span class="line">ssh	gitgit@github.com:jasonz666/shell-utils (push)</span><br></pre></td></tr></table></figure>
+
+<p>使用 SSH 密钥方式提交：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push ssh master</span><br></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.jianshu.com/p/82aa1678411e" target="_blank" rel="noopener">https://www.jianshu.com/p/82aa1678411e</a><br><a href="https://www.howtoing.com/fix-ssh-too-many-authentication-failures-error" target="_blank" rel="noopener">https://www.howtoing.com/fix-ssh-too-many-authentication-failures-error</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Github</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2018/12/21/hello-world.html</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
@@ -182,41 +217,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Git 使用指定的 SSH 密钥克隆和提交</title>
-    <url>/2018/12/23/git-commit-via-ssh-key.html</url>
-    <content><![CDATA[<h2 id="Git-使用指定的密钥"><a href="#Git-使用指定的密钥" class="headerlink" title="Git 使用指定的密钥"></a>Git 使用指定的密钥</h2><p>默认情况，Git 会使用 <code>~/.ssh/id_ecdsa</code> 来登录远程仓库，比如登录 <code>github.com</code>。我这里使用的是 <code>ecdsa</code> 算法，所以是 <code>id_ecdsa</code>。</p>
-<p>怎么样使用指定的密钥呢？比如使用 <code>id_ecdsa_123</code>。创建 ssh 配置文件 <code>config</code> 即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置文件内容</span></span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_ecdsa_github</span><br><span class="line">    IdentitiesOnly yes</span><br></pre></td></tr></table></figure>
-
-<p>配置文件的含义：</p>
-<ul>
-<li><code>Host github.com</code>：指定一个主机</li>
-<li><code>HostName github.com</code>：上面指定的主机的主机名</li>
-<li><code>User git</code>：登录该主机的用户名，如果是登录 <code>github.com</code>，就必须是 <code>git</code></li>
-<li><code>IdentityFile ~/.ssh/id_ecdsa_github</code>：关键配置，这里指定了使用哪个私钥文件</li>
-<li><code>IdentitiesOnly yes</code>：它指示 ssh 仅使用在命令行上指定的私钥文件或在 <code>config</code> 文件中配置的私钥文件</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="使用密钥克隆"><a href="#使用密钥克隆" class="headerlink" title="使用密钥克隆"></a>使用密钥克隆</h2><p>配置完上面的 <code>config</code> 文件之后，就可以使用指定的私钥文件来克隆。比如：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:jasonz666/shell-utils</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用密钥提交修改"><a href="#使用密钥提交修改" class="headerlink" title="使用密钥提交修改"></a>使用密钥提交修改</h2><p>如果我们使用 HTTPS 方式克隆了一个仓库，而不是像上面那样使用 SSH 密钥方式。先要将 SSH 密钥登录远程服务器 <code>github.com</code> 的方式关联到本地仓库。执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入本地仓库目录</span></span><br><span class="line">$ <span class="built_in">cd</span> shell-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已关联的远程仓库服务器</span></span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (fetch)</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (push)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加新的远程仓库服务器</span></span><br><span class="line">$ git remote add ssh git@github.com:jasonz666/shell-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次查看远程仓库服务器</span></span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (fetch)</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (push)</span><br><span class="line">ssh	gitgit@github.com:jasonz666/shell-utils (fetch)</span><br><span class="line">ssh	gitgit@github.com:jasonz666/shell-utils (push)</span><br></pre></td></tr></table></figure>
-
-<p>使用 SSH 密钥方式提交：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push ssh master</span><br></pre></td></tr></table></figure>
-
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.jianshu.com/p/82aa1678411e" target="_blank" rel="noopener">https://www.jianshu.com/p/82aa1678411e</a><br><a href="https://www.howtoing.com/fix-ssh-too-many-authentication-failures-error" target="_blank" rel="noopener">https://www.howtoing.com/fix-ssh-too-many-authentication-failures-error</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Github</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>设置 Ubuntu 18.04 夜灯的色温</title>
     <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
     <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
@@ -251,61 +251,6 @@
 <blockquote>
 <p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
 </blockquote>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
-    <url>/2019/01/28/ubuntu-install-nvidia-driver.html</url>
-    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1）从 NVIDIA 官网下载对应显卡的驱动备用</p>
-<p><a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
-<p>我下载的驱动是：NVIDIA-Linux-x86_64-410.93.run<br>安装环境：华硕笔记本 Ubuntu 18.04</p>
-<p><strong>注意</strong>：<br>主板 BIOS 必须关闭安全启动 (Secure Boot)，不然安装的 NVIDIA 驱动无法加载。<br>但此时，还是能正常进 Ubuntu 桌面，可能是此时使用的是 Intel 核显有关。</p>
-<p>2）首次运行 NVIDIA 驱动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +x NVIDIA-Linux-x86_64-410.93.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
-
-<p>首次运行驱动程序，不会安装，因为系统中有 nouveau 驱动存在。<br>但是 NVIDIA-Linux-x86_64-410.93.run 会生成 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件。用于禁用系统自带的 nouveau 驱动。该文件内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modprobe.d/nvidia-installer-disable-nouveau.conf</span><br><span class="line"><span class="comment"># generated by nvidia-installer</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
-
-<p>3）使禁用生效</p>
-<p>只有 blacklist 并不能真的禁用 nouveau 驱动。执行如下命令更新 initramfs：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
-
-<p>然后，重启系统，禁用就成功了。执行如下命令验证：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 输出结果为空说明已经禁用 nouveau 驱动</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h2 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h2><p>1）开始安装 NVIDIA 驱动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
-
-<p>安装完，重启系统</p>
-<p>2）查看是否安装成功</p>
-<p>运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 运行下面命令查看显卡驱动部分，如果有 Kernel driver in use: nvidia 则成功</span></span><br><span class="line">lspci -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以运行如下命令，看看 nvidia 模块是否加载成功</span></span><br><span class="line">lsmod | grep nvidia</span><br></pre></td></tr></table></figure>
-
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行 <code>glxgears</code>，如果帧数远大于 60 FPS，说明 nvidia 驱动已在使用，因为 NVIDIA 驱动安装后，默认不会开启垂直同步。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mesa-utils</span><br><span class="line">glxgears</span><br></pre></td></tr></table></figure>
-
-<p>最后，笔记本盒盖睡眠，再打开，没有黑屏，唤醒成功。</p>
-<h2 id="可选：开启垂直同步解决画面撕裂"><a href="#可选：开启垂直同步解决画面撕裂" class="headerlink" title="可选：开启垂直同步解决画面撕裂"></a>可选：开启垂直同步解决画面撕裂</h2><p>安装完 NVIDIA 驱动后，默认不开启同步，有可能出现画面撕裂。解决办法如下。</p>
-<p>1）在终端运行命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/modprobe.d/nvidia-drm-nomodeset.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入如下一行</span></span><br><span class="line">options nvidia-drm modeset=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新到 initramfs</span></span><br><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
-
-<p>重启系统。</p>
-<p>2）重启系统后查看结果</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令应该是输出 "Y" 而不是 "N"</span></span><br><span class="line">sudo cat /sys/module/nvidia_drm/parameters/modeset</span><br></pre></td></tr></table></figure>
-
-<p>3）设置 NVIDIA 驱动</p>
-<p>终端运行命令 <code>nvidia-settings</code> 打开驱动设置窗口。<br>在窗口左侧选择 <code>GPU 0-(xxx)</code> –&gt; <code>PowerMizer</code> –&gt; 设置 <code>PowerMizer Settings</code> 为 <code>Prefer Maximum Performance</code>。</p>
-<p>4）让系统尽可能地使用物理内存而不是交换空间</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文末加入两行（默认值为 60）：</span></span><br><span class="line"><span class="comment"># User defines</span></span><br><span class="line">vm.swappiness=10</span><br></pre></td></tr></table></figure>
-
-<p>然后，重启系统。运行 <code>cat /proc/sys/vm/swappiness</code> 查看结果。</p>
-<h2 id="如果要卸载驱动"><a href="#如果要卸载驱动" class="headerlink" title="如果要卸载驱动"></a>如果要卸载驱动</h2><p>装完 NVIDIA 驱动后，如果要卸载，会有一个命令 <code>nvidia-uninstall</code> 用来卸载驱动。但是同时要删除文件 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件，然后运行 <code>sudo update-initramfs -u</code>，让 nouveau 驱动再次生效。</p>
-<p>参考：<br><a href="https://blog.csdn.net/u012442845/article/details/78855573" target="_blank" rel="noopener">https://blog.csdn.net/u012442845/article/details/78855573</a><br><a href="https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04" target="_blank" rel="noopener">https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04</a><br><a href="https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver" target="_blank" rel="noopener">https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver</a><br><a href="http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/" target="_blank" rel="noopener">http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/</a></p>
 ]]></content>
       <tags>
         <tag>Ubuntu</tag>
@@ -408,6 +353,61 @@
 ]]></content>
       <tags>
         <tag>Bash</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
+    <url>/2019/01/28/ubuntu-install-nvidia-driver.html</url>
+    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1）从 NVIDIA 官网下载对应显卡的驱动备用</p>
+<p><a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
+<p>我下载的驱动是：NVIDIA-Linux-x86_64-410.93.run<br>安装环境：华硕笔记本 Ubuntu 18.04</p>
+<p><strong>注意</strong>：<br>主板 BIOS 必须关闭安全启动 (Secure Boot)，不然安装的 NVIDIA 驱动无法加载。<br>但此时，还是能正常进 Ubuntu 桌面，可能是此时使用的是 Intel 核显有关。</p>
+<p>2）首次运行 NVIDIA 驱动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +x NVIDIA-Linux-x86_64-410.93.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
+
+<p>首次运行驱动程序，不会安装，因为系统中有 nouveau 驱动存在。<br>但是 NVIDIA-Linux-x86_64-410.93.run 会生成 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件。用于禁用系统自带的 nouveau 驱动。该文件内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modprobe.d/nvidia-installer-disable-nouveau.conf</span><br><span class="line"><span class="comment"># generated by nvidia-installer</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
+
+<p>3）使禁用生效</p>
+<p>只有 blacklist 并不能真的禁用 nouveau 驱动。执行如下命令更新 initramfs：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+
+<p>然后，重启系统，禁用就成功了。执行如下命令验证：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 输出结果为空说明已经禁用 nouveau 驱动</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h2><p>1）开始安装 NVIDIA 驱动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
+
+<p>安装完，重启系统</p>
+<p>2）查看是否安装成功</p>
+<p>运行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 运行下面命令查看显卡驱动部分，如果有 Kernel driver in use: nvidia 则成功</span></span><br><span class="line">lspci -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以运行如下命令，看看 nvidia 模块是否加载成功</span></span><br><span class="line">lsmod | grep nvidia</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行 <code>glxgears</code>，如果帧数远大于 60 FPS，说明 nvidia 驱动已在使用，因为 NVIDIA 驱动安装后，默认不会开启垂直同步。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mesa-utils</span><br><span class="line">glxgears</span><br></pre></td></tr></table></figure>
+
+<p>最后，笔记本盒盖睡眠，再打开，没有黑屏，唤醒成功。</p>
+<h2 id="可选：开启垂直同步解决画面撕裂"><a href="#可选：开启垂直同步解决画面撕裂" class="headerlink" title="可选：开启垂直同步解决画面撕裂"></a>可选：开启垂直同步解决画面撕裂</h2><p>安装完 NVIDIA 驱动后，默认不开启同步，有可能出现画面撕裂。解决办法如下。</p>
+<p>1）在终端运行命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/modprobe.d/nvidia-drm-nomodeset.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入如下一行</span></span><br><span class="line">options nvidia-drm modeset=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新到 initramfs</span></span><br><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+
+<p>重启系统。</p>
+<p>2）重启系统后查看结果</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令应该是输出 "Y" 而不是 "N"</span></span><br><span class="line">sudo cat /sys/module/nvidia_drm/parameters/modeset</span><br></pre></td></tr></table></figure>
+
+<p>3）设置 NVIDIA 驱动</p>
+<p>终端运行命令 <code>nvidia-settings</code> 打开驱动设置窗口。<br>在窗口左侧选择 <code>GPU 0-(xxx)</code> –&gt; <code>PowerMizer</code> –&gt; 设置 <code>PowerMizer Settings</code> 为 <code>Prefer Maximum Performance</code>。</p>
+<p>4）让系统尽可能地使用物理内存而不是交换空间</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文末加入两行（默认值为 60）：</span></span><br><span class="line"><span class="comment"># User defines</span></span><br><span class="line">vm.swappiness=10</span><br></pre></td></tr></table></figure>
+
+<p>然后，重启系统。运行 <code>cat /proc/sys/vm/swappiness</code> 查看结果。</p>
+<h2 id="如果要卸载驱动"><a href="#如果要卸载驱动" class="headerlink" title="如果要卸载驱动"></a>如果要卸载驱动</h2><p>装完 NVIDIA 驱动后，如果要卸载，会有一个命令 <code>nvidia-uninstall</code> 用来卸载驱动。但是同时要删除文件 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件，然后运行 <code>sudo update-initramfs -u</code>，让 nouveau 驱动再次生效。</p>
+<p>参考：<br><a href="https://blog.csdn.net/u012442845/article/details/78855573" target="_blank" rel="noopener">https://blog.csdn.net/u012442845/article/details/78855573</a><br><a href="https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04" target="_blank" rel="noopener">https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04</a><br><a href="https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver" target="_blank" rel="noopener">https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver</a><br><a href="http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/" target="_blank" rel="noopener">http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/</a></p>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
