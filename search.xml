@@ -1,29 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Sh 和 Bash 之间的区别</title>
-    <url>/2018/12/24/diff-between-sh-and-bash.html</url>
-    <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一般情况下，<code>sh</code> 是指向 <code>bash</code> 的链接。查看 bash 的手册页可知，bash 作为 sh 运行时，相当于 <code>bash --posix</code>，即 sh 以符合 POSIX 标准的方式来运行。</p>
-<p>在一次使用脚本的过程中，发现脚本中 <code>alias</code> 命令设置的别名始终无效。后来查资料发现，<code>bash</code> 和 <code>sh</code> 运行脚本的结果是不同的。</p>
-<p>默认情况下，bash 运行非交互式 shell 时，是关闭 <code>alias</code> 别名扩展功能的，而脚本就是非交互式 shell。但是，sh 同样的情况下是开启别名扩展功能的。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>① 使用 sh 运行脚本。</p>
-<p>② 在脚本文件中显式地指出开启别名扩展功能，方法：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在脚本的 alias 命令之前添加如下命令</span></span><br><span class="line"><span class="comment"># 最好是在脚本的开头位置添加</span></span><br><span class="line"><span class="built_in">shopt</span> -s expand_aliases</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>关于 <code>bash</code> 与 <code>sh</code> 的差别可能还有更多，写脚本后应该充分测试。</p>
-<p>参考：</p>
-<blockquote>
-<p><a href="https://blog.csdn.net/liuxiangke0210/article/details/66476970" target="_blank" rel="noopener">https://blog.csdn.net/liuxiangke0210/article/details/66476970</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Shell</tag>
-        <tag>Bash</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git 使用指定的 SSH 密钥克隆和提交</title>
     <url>/2018/12/23/git-commit-via-ssh-key.html</url>
     <content><![CDATA[<h2 id="Git-使用指定的密钥"><a href="#Git-使用指定的密钥" class="headerlink" title="Git 使用指定的密钥"></a>Git 使用指定的密钥</h2><p>默认情况，Git 会使用 <code>~/.ssh/id_ecdsa</code> 来登录远程仓库，比如登录 <code>github.com</code>。我这里使用的是 <code>ecdsa</code> 算法，所以是 <code>id_ecdsa</code>。</p>
@@ -77,49 +54,6 @@
 
 <p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>使用 GPG 密钥登录 SSH</title>
-    <url>/2019/02/03/login-ssh-via-gpg-key.html</url>
-    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>SSH 通常有密码登录和密钥登录两种方式。密钥登录时使用的是 SSH 的密钥，由 ssh-agent 来处理。这里介绍使用 GnuPG 生成的 PGP 密钥来登录 SSH。此时使用 gpg-agent 来处理登录过程。</p>
-<p>使用 GPG 密钥登录的好处是便于管理服务器。只要把 GPG 密钥的公钥放到服务器上面，用同一个密钥可以登录所有这些服务器。还有，GnuPG 可以使用智能卡来保存密钥，使 SSH 密钥更加安全。</p>
-<p><strong>注意：</strong></p>
-<p>这篇文章使用 Ubuntu 18.04，并使用 GnuPG v2.2.X 来演示，小于 v2.2.X 的版本下文某些命令可能是无效的。运行如下命令查看版本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gpg --version</span><br></pre></td></tr></table></figure>
-
-<h2 id="生成-GnuPG-密钥并添加认证密钥"><a href="#生成-GnuPG-密钥并添加认证密钥" class="headerlink" title="生成 GnuPG 密钥并添加认证密钥"></a>生成 GnuPG 密钥并添加认证密钥</h2><p>快速生成 GnuPG 密钥的方法详见 <a href="https://he.izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html" target="_blank" rel="noopener">这里</a></p>
-<p>分步生成 GnuPG 密钥的方法详见：</p>
-<ol>
-<li><a href="https://linux.cn/article-9529-1.html" target="_blank" rel="noopener">生成主密钥</a></li>
-<li><a href="https://linux.cn/article-9607-1.html" target="_blank" rel="noopener">生成认证密钥等子密钥</a></li>
-</ol>
-<p>生成属于自己的一对密钥后，再向这个密钥中添加一个认证密钥[A]。</p>
-<a id="more"></a>
-
-<p>最后，密钥看起来像下面这样。[A] 子密钥用于认证，即用于 SSH 登录：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ gpg --list-key 0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">pub   rsa4096 2019-XX-XX [C] [有效至：20XX-XX-XX]</span><br><span class="line">      0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">uid           [ 绝对 ] Jason &lt;example@example.com&gt;</span><br><span class="line">sub   rsa4096 2019-01-15 [E]</span><br><span class="line">sub   rsa4096 2019-01-15 [A]</span><br><span class="line">sub   rsa4096 2019-01-15 [S]</span><br></pre></td></tr></table></figure>
-
-<h2 id="设置用于-SSH-登录"><a href="#设置用于-SSH-登录" class="headerlink" title="设置用于 SSH 登录"></a>设置用于 SSH 登录</h2><h3 id="配置-gpg-agent-选项"><a href="#配置-gpg-agent-选项" class="headerlink" title="配置 gpg-agent 选项"></a>配置 gpg-agent 选项</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.gnupg/gpg-agent.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入下面三行</span></span><br><span class="line"><span class="comment"># 三行分别表示</span></span><br><span class="line"><span class="comment"># 输入一次 GPG 密码后，600 秒内不用重复输入，600 秒内再次使用密码会重置这个时间</span></span><br><span class="line"><span class="comment"># 从首次输入密码算起，不管最近一次使用密码是什么时间，只要最大 TTL 过期，就需要重新输入密码</span></span><br><span class="line"><span class="comment"># 启用 SSH 支持</span></span><br><span class="line"></span><br><span class="line">default-cache-ttl 600</span><br><span class="line">max-cache-ttl 7200</span><br><span class="line"><span class="built_in">enable</span>-ssh-support</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改-bashrc-文件"><a href="#修改-bashrc-文件" class="headerlink" title="修改 .bashrc 文件"></a>修改 .bashrc 文件</h3><p>让 ssh 与 gpg-agent 通信，而不是 ssh-agent。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在 .bashrc 文件末尾添加如下一行</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)</span><br></pre></td></tr></table></figure>
-
-<p>为了使更改生效，运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">killall gpg-agent</span><br><span class="line">bash</span><br></pre></td></tr></table></figure>
-
-<h3 id="获取认证密钥的-keygrip"><a href="#获取认证密钥的-keygrip" class="headerlink" title="获取认证密钥的 keygrip"></a>获取认证密钥的 keygrip</h3><p>为了告诉 gpg-agent 应该使用哪个认证子密钥，需要先获取认证子密钥的 keygrip。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 记录下认证子密钥的 keygrip</span></span><br><span class="line"><span class="comment"># 下面的结果中 keygrip 就是</span></span><br><span class="line"><span class="comment"># 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC</span></span><br><span class="line"></span><br><span class="line">$ gpg --with-keygrip --list-key 0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">...</span><br><span class="line">sub   rsa4096 2019-01-15 [A]</span><br><span class="line">      Keygrip = 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加 keygrip</span></span><br><span class="line"><span class="built_in">echo</span> 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC &gt;&gt; ~/.gnupg/sshcontrol</span><br></pre></td></tr></table></figure>
-
-<h3 id="列出-SSH-格式的-GPG-认证密钥的公钥"><a href="#列出-SSH-格式的-GPG-认证密钥的公钥" class="headerlink" title="列出 SSH 格式的 GPG 认证密钥的公钥"></a>列出 SSH 格式的 GPG 认证密钥的公钥</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令会列出 GPG 认证密钥的公钥</span></span><br><span class="line">ssh-add -L</span><br></pre></td></tr></table></figure>
-
-<p>把列出的公钥，放到服务器上的文件 ~/.ssh/authorized_keys 里，就能通过 GPG 来使用 SSH 登录远程主机了。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行如下命令测试是否能成功登入远程主机：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -p port username@remote_ip</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>Gpg</tag>
-        <tag>SSH</tag>
-      </tags>
   </entry>
   <entry>
     <title>使用 GPG 学习非对称加密</title>
@@ -217,6 +151,49 @@
       </tags>
   </entry>
   <entry>
+    <title>使用 GPG 密钥登录 SSH</title>
+    <url>/2019/02/03/login-ssh-via-gpg-key.html</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>SSH 通常有密码登录和密钥登录两种方式。密钥登录时使用的是 SSH 的密钥，由 ssh-agent 来处理。这里介绍使用 GnuPG 生成的 PGP 密钥来登录 SSH。此时使用 gpg-agent 来处理登录过程。</p>
+<p>使用 GPG 密钥登录的好处是便于管理服务器。只要把 GPG 密钥的公钥放到服务器上面，用同一个密钥可以登录所有这些服务器。还有，GnuPG 可以使用智能卡来保存密钥，使 SSH 密钥更加安全。</p>
+<p><strong>注意：</strong></p>
+<p>这篇文章使用 Ubuntu 18.04，并使用 GnuPG v2.2.X 来演示，小于 v2.2.X 的版本下文某些命令可能是无效的。运行如下命令查看版本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gpg --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成-GnuPG-密钥并添加认证密钥"><a href="#生成-GnuPG-密钥并添加认证密钥" class="headerlink" title="生成 GnuPG 密钥并添加认证密钥"></a>生成 GnuPG 密钥并添加认证密钥</h2><p>快速生成 GnuPG 密钥的方法详见 <a href="https://he.izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html" target="_blank" rel="noopener">这里</a></p>
+<p>分步生成 GnuPG 密钥的方法详见：</p>
+<ol>
+<li><a href="https://linux.cn/article-9529-1.html" target="_blank" rel="noopener">生成主密钥</a></li>
+<li><a href="https://linux.cn/article-9607-1.html" target="_blank" rel="noopener">生成认证密钥等子密钥</a></li>
+</ol>
+<p>生成属于自己的一对密钥后，再向这个密钥中添加一个认证密钥[A]。</p>
+<a id="more"></a>
+
+<p>最后，密钥看起来像下面这样。[A] 子密钥用于认证，即用于 SSH 登录：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ gpg --list-key 0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">pub   rsa4096 2019-XX-XX [C] [有效至：20XX-XX-XX]</span><br><span class="line">      0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">uid           [ 绝对 ] Jason &lt;example@example.com&gt;</span><br><span class="line">sub   rsa4096 2019-01-15 [E]</span><br><span class="line">sub   rsa4096 2019-01-15 [A]</span><br><span class="line">sub   rsa4096 2019-01-15 [S]</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置用于-SSH-登录"><a href="#设置用于-SSH-登录" class="headerlink" title="设置用于 SSH 登录"></a>设置用于 SSH 登录</h2><h3 id="配置-gpg-agent-选项"><a href="#配置-gpg-agent-选项" class="headerlink" title="配置 gpg-agent 选项"></a>配置 gpg-agent 选项</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.gnupg/gpg-agent.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入下面三行</span></span><br><span class="line"><span class="comment"># 三行分别表示</span></span><br><span class="line"><span class="comment"># 输入一次 GPG 密码后，600 秒内不用重复输入，600 秒内再次使用密码会重置这个时间</span></span><br><span class="line"><span class="comment"># 从首次输入密码算起，不管最近一次使用密码是什么时间，只要最大 TTL 过期，就需要重新输入密码</span></span><br><span class="line"><span class="comment"># 启用 SSH 支持</span></span><br><span class="line"></span><br><span class="line">default-cache-ttl 600</span><br><span class="line">max-cache-ttl 7200</span><br><span class="line"><span class="built_in">enable</span>-ssh-support</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改-bashrc-文件"><a href="#修改-bashrc-文件" class="headerlink" title="修改 .bashrc 文件"></a>修改 .bashrc 文件</h3><p>让 ssh 与 gpg-agent 通信，而不是 ssh-agent。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在 .bashrc 文件末尾添加如下一行</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)</span><br></pre></td></tr></table></figure>
+
+<p>为了使更改生效，运行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">killall gpg-agent</span><br><span class="line">bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取认证密钥的-keygrip"><a href="#获取认证密钥的-keygrip" class="headerlink" title="获取认证密钥的 keygrip"></a>获取认证密钥的 keygrip</h3><p>为了告诉 gpg-agent 应该使用哪个认证子密钥，需要先获取认证子密钥的 keygrip。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 记录下认证子密钥的 keygrip</span></span><br><span class="line"><span class="comment"># 下面的结果中 keygrip 就是</span></span><br><span class="line"><span class="comment"># 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC</span></span><br><span class="line"></span><br><span class="line">$ gpg --with-keygrip --list-key 0AAABBCCDDDDDDDDDDDDDDDDFFFFFFFXXXXXXXXZ</span><br><span class="line">...</span><br><span class="line">sub   rsa4096 2019-01-15 [A]</span><br><span class="line">      Keygrip = 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加 keygrip</span></span><br><span class="line"><span class="built_in">echo</span> 0BBBBBBBBBBZZZZZZZZZZZZZZXXXXXXXXZZBBBCC &gt;&gt; ~/.gnupg/sshcontrol</span><br></pre></td></tr></table></figure>
+
+<h3 id="列出-SSH-格式的-GPG-认证密钥的公钥"><a href="#列出-SSH-格式的-GPG-认证密钥的公钥" class="headerlink" title="列出 SSH 格式的 GPG 认证密钥的公钥"></a>列出 SSH 格式的 GPG 认证密钥的公钥</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令会列出 GPG 认证密钥的公钥</span></span><br><span class="line">ssh-add -L</span><br></pre></td></tr></table></figure>
+
+<p>把列出的公钥，放到服务器上的文件 ~/.ssh/authorized_keys 里，就能通过 GPG 来使用 SSH 登录远程主机了。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行如下命令测试是否能成功登入远程主机：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -p port username@remote_ip</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>Gpg</tag>
+        <tag>SSH</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>设置 Ubuntu 18.04 夜灯的色温</title>
     <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
     <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
@@ -254,160 +231,6 @@
 ]]></content>
       <tags>
         <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
-    <url>/2019/01/28/ubuntu-install-nvidia-driver.html</url>
-    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1）从 NVIDIA 官网下载对应显卡的驱动备用</p>
-<p><a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
-<p>我下载的驱动是：NVIDIA-Linux-x86_64-410.93.run<br>安装环境：华硕笔记本 Ubuntu 18.04</p>
-<p><strong>注意</strong>：<br>主板 BIOS 必须关闭安全启动 (Secure Boot)，不然安装的 NVIDIA 驱动无法加载。<br>但此时，还是能正常进 Ubuntu 桌面，可能是此时使用的是 Intel 核显有关。</p>
-<p>2）首次运行 NVIDIA 驱动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +x NVIDIA-Linux-x86_64-410.93.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
-
-<p>首次运行驱动程序，不会安装，因为系统中有 nouveau 驱动存在。<br>但是 NVIDIA-Linux-x86_64-410.93.run 会生成 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件。用于禁用系统自带的 nouveau 驱动。该文件内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modprobe.d/nvidia-installer-disable-nouveau.conf</span><br><span class="line"><span class="comment"># generated by nvidia-installer</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
-
-<p>3）使禁用生效</p>
-<p>只有 blacklist 并不能真的禁用 nouveau 驱动。执行如下命令更新 initramfs：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
-
-<p>然后，重启系统，禁用就成功了。执行如下命令验证：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 输出结果为空说明已经禁用 nouveau 驱动</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h2 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h2><p>1）开始安装 NVIDIA 驱动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
-
-<p>安装完，重启系统</p>
-<p>2）查看是否安装成功</p>
-<p>运行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 运行下面命令查看显卡驱动部分，如果有 Kernel driver in use: nvidia 则成功</span></span><br><span class="line">lspci -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以运行如下命令，看看 nvidia 模块是否加载成功</span></span><br><span class="line">lsmod | grep nvidia</span><br></pre></td></tr></table></figure>
-
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行 <code>glxgears</code>，如果帧数远大于 60 FPS，说明 nvidia 驱动已在使用，因为 NVIDIA 驱动安装后，默认不会开启垂直同步。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mesa-utils</span><br><span class="line">glxgears</span><br></pre></td></tr></table></figure>
-
-<p>最后，笔记本盒盖睡眠，再打开，没有黑屏，唤醒成功。</p>
-<h2 id="可选：开启垂直同步解决画面撕裂"><a href="#可选：开启垂直同步解决画面撕裂" class="headerlink" title="可选：开启垂直同步解决画面撕裂"></a>可选：开启垂直同步解决画面撕裂</h2><p>安装完 NVIDIA 驱动后，默认不开启同步，有可能出现画面撕裂。解决办法如下。</p>
-<p>1）在终端运行命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/modprobe.d/nvidia-drm-nomodeset.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入如下一行</span></span><br><span class="line">options nvidia-drm modeset=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新到 initramfs</span></span><br><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
-
-<p>重启系统。</p>
-<p>2）重启系统后查看结果</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令应该是输出 "Y" 而不是 "N"</span></span><br><span class="line">sudo cat /sys/module/nvidia_drm/parameters/modeset</span><br></pre></td></tr></table></figure>
-
-<p>3）设置 NVIDIA 驱动</p>
-<p>终端运行命令 <code>nvidia-settings</code> 打开驱动设置窗口。<br>在窗口左侧选择 <code>GPU 0-(xxx)</code> –&gt; <code>PowerMizer</code> –&gt; 设置 <code>PowerMizer Settings</code> 为 <code>Prefer Maximum Performance</code>。</p>
-<p>4）让系统尽可能地使用物理内存而不是交换空间</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文末加入两行（默认值为 60）：</span></span><br><span class="line"><span class="comment"># User defines</span></span><br><span class="line">vm.swappiness=10</span><br></pre></td></tr></table></figure>
-
-<p>然后，重启系统。运行 <code>cat /proc/sys/vm/swappiness</code> 查看结果。</p>
-<h2 id="如果要卸载驱动"><a href="#如果要卸载驱动" class="headerlink" title="如果要卸载驱动"></a>如果要卸载驱动</h2><p>装完 NVIDIA 驱动后，如果要卸载，会有一个命令 <code>nvidia-uninstall</code> 用来卸载驱动。但是同时要删除文件 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件，然后运行 <code>sudo update-initramfs -u</code>，让 nouveau 驱动再次生效。</p>
-<p>参考：<br><a href="https://blog.csdn.net/u012442845/article/details/78855573" target="_blank" rel="noopener">https://blog.csdn.net/u012442845/article/details/78855573</a><br><a href="https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04" target="_blank" rel="noopener">https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04</a><br><a href="https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver" target="_blank" rel="noopener">https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver</a><br><a href="http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/" target="_blank" rel="noopener">http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/</a></p>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Bash 的输入输出重定向详解</title>
-    <url>/2019/01/02/stdin-stdout-and-redirection.html</url>
-    <content><![CDATA[<p>Linux 中每个进程维护了一个文件描述符表，如 shell 终端，默认有三个文件已打开，他们的文件描述符和文件对应关系为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fd 0: /dev/stdin -&gt; /proc/self/fd/0（前者是指向后者的软链接，下同）</span><br><span class="line">fd 1: /dev/stdout -&gt; /proc/self/fd/1</span><br><span class="line">fd 2: /dev/stderr -&gt; /proc/self/fd/2</span><br></pre></td></tr></table></figure>
-
-<p>所以在该 shell 中创建新的的文件的描述符就从3开始。</p>
-<p><strong>用于输入输出重定向使用的文件描述符大于9，所以安全可用的自定义文件描述符范围就是：3-9</strong></p>
-<p>因为 Bash <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">文档</a> 里有这样一句话：</p>
-<blockquote>
-<p>Redirections using file descriptors greater than 9 should be used with care, as they may conflict with file descriptors the shell uses internally.</p>
-</blockquote>
-<h2 id="下面的几个例子会分别演示"><a href="#下面的几个例子会分别演示" class="headerlink" title="下面的几个例子会分别演示"></a>下面的几个例子会分别演示</h2><p>1）输入输出重定向<br>2）复制输入输出文件描述符<br>3）移动输入输出文件描述符<br>4）关闭文件描述符和同时读写文件<br>5）将已重定向的输入/输出恢复到标准输入/标准输出</p>
-<a id="more"></a>
-
-<h3 id="脚本例子1"><a href="#脚本例子1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>输出重定向</code> 和 <code>复制输出文件描述符</code></p>
-<p>脚本内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd4..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd4"</span> &gt;&amp;4</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd5..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd5"</span> &gt;&amp;5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd6..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd6"</span> &gt;&amp;6</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&gt;file3 4&gt;file4 5&gt;file5 6&gt;file6</span></span><br><span class="line">write to fd3...</span><br><span class="line">write to fd4...</span><br><span class="line">write to fd5...</span><br><span class="line">write to fd6...</span><br><span class="line">[root@jz ~]<span class="comment"># cat file*</span></span><br><span class="line">fd3</span><br><span class="line">fd4</span><br><span class="line">fd5</span><br><span class="line">fd6</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>创建自定义的文件描述符（fd）从 3 开始。test.sh 脚本中 &gt;&amp;n（n 表示文件描述符，为 3, 4, 5, 6）表示：<br>复制 fd n 作为 fd 1（1 即标准输出的文件描述符）的值（这里的复制可以理解为复制 fd n 指向的文件指针，fd n 的值 n 实际上是数组下标，数组元素才是指向文件的指针）<br>也就是说，fd 1 复制了 fd n 的值之后，fd 1 原本指向文件 /dev/stdout，而现在与 fd n 指向相同的文件，n 必须与实际文件关联，这个文件描述符 n 才是有效的<br>在上文的例子中，通过执行脚本 test.sh，fd 3 关联（重定向）到了实际文件 file3，fd 4 关联到了实际文件 file4 等等<br>fd 3, 4, 5, 6 关联了实际文件之后，脚本中的 echo “fdN” &gt;&amp;N 就可以依次把标准输出的内容保存到不同的文件了</p>
-<h3 id="脚本例子2"><a href="#脚本例子2" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>输入重定向</code> 和 <code>复制输入文件描述符</code></p>
-<p>脚本内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd4..."</span></span><br><span class="line">cat &lt;&amp;4</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&lt;file3 4&lt;file4</span></span><br><span class="line"><span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line"><span class="built_in">read</span> from fd4...</span><br><span class="line">fd4</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>和输出重定向差不多，例子2脚本中标准输入分别复制了：输入文件描述符3、输入文件描述符4，使得标准输入分别指向 file3、file4<br>执行脚本时，fd 3、fd 4 分别重定向到了 file3、file4，所以脚本中 cat &lt;&amp;N 就会依次从 file3、file4 读取内容（file3、file 4 是例子1脚本执行后创建的）<br>上面两个例子讲的是“<strong>复制文件描述符</strong>”和“<strong>输入输出重定向</strong>”，bash shell 也支持“<strong>移动文件描述符</strong>”，下面的脚本将实验移动文件描述符。</p>
-<h3 id="脚本例子1-1"><a href="#脚本例子1-1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>移动输出文件描述符</code></p>
-<p>脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&gt;file3</span></span><br><span class="line">1: write to fd3...</span><br><span class="line">2: write to fd3...</span><br><span class="line">3: write to fd3...</span><br><span class="line">move_fn.sh: line 8: 3: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>1）与复制文件描述符不同的是，脚本中 &gt;&amp;3- 表示在 fd 1 复制了 fd 3 的文件指针以后，fd 3 就会关闭，就好像 fd 3 移动到了 fd 1 一样<br>注意脚本执行结果，第1次写入内容到 fd 3 是正常的，第2次写入时也正常，但之后 fd 3 就被关闭，即 fd 3 不再重定向到文件 file3<br>所以第3次写入内容时，就会报错，显示坏掉的文件描述符</p>
-<p><strong>2）还有，一开始 file3 只有一行，最后变成了二行，因为脚本中的 echo 操作的文件从始至终都是 file3，脚本执行时，因为输出文件 fd 3 重定向到 file3</strong><br>脚本开始执行，file3 被打开，直到脚本结束，file3 文件才被关闭，所以脚本中每次执行完 echo “fd3” &gt;&amp;3[-] 都是向 file3 新增一行<br>而不会像终端下直接执行：echo “fd3” &gt; file3，每次都是覆盖文件，因为终端下每次执行 echo 都会单独打开/关闭文件 file3</p>
-<h3 id="脚本例子2-1"><a href="#脚本例子2-1" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>移动输入文件描述符</code></p>
-<p>脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3-; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">move_fd.sh: line 8: 3: Bad file descriptor</span><br><span class="line"></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>脚本中使用 read 命令而不是 cat，因为 read 可以逐行读取文件，而 cat 会一次把文件所有行都读取完<br>类似脚本例子1，这里 &lt;&amp;3- 把输入文件描述符3关闭之后，下次执行 read 命令就会报错</p>
-<p><strong>如果脚本例子2内容如下：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>输出结果是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>可以看到，cat 并不会报错，可能是在 cat 一次读完文件后，cat 先判断文件是否读完，再判断文件描述符3是否可用（因为已读完就无需判断是否可用），所以不会报错</strong></p>
-<h2 id="创建文件描述符来同时读写文件"><a href="#创建文件描述符来同时读写文件" class="headerlink" title="创建文件描述符来同时读写文件"></a>创建文件描述符来同时读写文件</h2><p>语法：<code>n&lt;&gt;filename</code></p>
-<p>n 为文件描述符<br>filename 为实际文件名<br>n 不写时表示 fd 0</p>
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="comment"># 如下命令行表示把输入/输出同时重定向到 inputfile 文件，而文件描述符是3</span></span><br><span class="line"><span class="comment"># 然后让标准输入指向 inputfile 文件，标准输出也指向 inputfile 文件</span></span><br><span class="line"><span class="comment"># 执行 exec 后，下面的命令标准输出都保存到 inputfile 文件，标准输入都读取自 inputfile</span></span><br><span class="line"><span class="comment"># 只有标准错误输出依旧是屏幕</span></span><br><span class="line"><span class="built_in">exec</span> 3&lt;&gt;inputfile &lt;&amp;3 &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"1234"</span></span><br><span class="line">ls xxxx</span><br><span class="line">cat</span><br></pre></td></tr></table></figure>
-
-<p>结果：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">abcde</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">ls: cannot access xxxx: No such file or directory</span><br><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">1234e</span><br><span class="line">dsfsf</span><br><span class="line">e</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>以上输出结果很复杂，涉及到文件读写操作的实现细节，猜测如下：<br>脚本执行后，执行到 exec 命令行，文件 inputfile 被打开，文件读写指针应该是指向文件开头的<br>此时运行 echo 命令行，把 1234 写入到文件开头位置，覆盖掉 abcde 前4个字符变成 1234e，读写指针在字符 e 的位置<br>执行 ls 时因为文件不存在，信息输出到标准错误，所以文件 inputfile 读写指针位置不变<br>执行 cat 从字符 e 开始读取，直到文件结尾，读到的内容是：<br>e<br>dsfsf</p>
-<p>因为文件被 exec 打开，cat 并不会关闭文件，cat 读取出来的内容会再次写入 inputfile 文件，此时读写指针在文件结尾<br>cat 读出的内容添加到文件结尾之后，变成：<br>1234e<br>dsfsf<br>e<br>dsfsf</p>
-<h2 id="关闭文件描述符"><a href="#关闭文件描述符" class="headerlink" title="关闭文件描述符"></a>关闭文件描述符</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;&amp;- 关闭标准输入</span><br><span class="line">&gt;&amp;- 关闭标准输出</span><br><span class="line">n&lt;&amp;- 表示将 n 号输入关闭</span><br><span class="line">n&gt;&amp;- 表示将 n 号输出关闭</span><br></pre></td></tr></table></figure>
-
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat &lt;&amp;-           # 关闭标准输入</span></span><br><span class="line">cat: -: Bad file descriptor</span><br><span class="line">cat: closing standard input: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls &gt;&amp;-            # 关闭标准输出</span></span><br><span class="line">ls: write error: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls xxxx 2&gt;&amp;-      # xxxx 文件不存在，关闭标准错误后，错误信息不会输出</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="最后，说说怎么恢复到标准输入-标准输出"><a href="#最后，说说怎么恢复到标准输入-标准输出" class="headerlink" title="最后，说说怎么恢复到标准输入/标准输出"></a>最后，说说怎么恢复到标准输入/标准输出</h2><p>其实很简单，上文已经讲了复制文件描述符，只需要把标准输入输出，或标准错误先复制保存，之后恢复即可。</p>
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span></span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">Enter to <span class="built_in">continue</span> ...</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh &lt;file3    # 脚本的输入被重定向到 file3 后，read 命令直接读取了 file3 的行，不再显示 Enter ...</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>那么，怎么把 read 的输入恢复到标准输入，再次询问用户按回车继续呢？</strong></p>
-<p>把脚本改成：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span> &lt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>然后用如下方式执行脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh test.sh 3&lt;&amp;0 &lt;file3</span><br></pre></td></tr></table></figure>
-
-<p>执行脚本时，它的含义是先创建一个新的文件描述符3，fd 3 复制 fd 0 的值，就把 fd 0 保存到 fd 3 了，然后在脚本中 read 命令的标准输入文件描述符从 fd 3 复制回来即可。</p>
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">https://www.gnu.org/software/bash/manual/html_node/Redirections.html</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Bash</tag>
       </tags>
   </entry>
   <entry>
@@ -601,6 +424,183 @@
 ]]></content>
       <tags>
         <tag>Github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
+    <url>/2019/01/28/ubuntu-install-nvidia-driver.html</url>
+    <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1）从 NVIDIA 官网下载对应显卡的驱动备用</p>
+<p><a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
+<p>我下载的驱动是：NVIDIA-Linux-x86_64-410.93.run<br>安装环境：华硕笔记本 Ubuntu 18.04</p>
+<p><strong>注意</strong>：<br>主板 BIOS 必须关闭安全启动 (Secure Boot)，不然安装的 NVIDIA 驱动无法加载。<br>但此时，还是能正常进 Ubuntu 桌面，可能是此时使用的是 Intel 核显有关。</p>
+<p>2）首次运行 NVIDIA 驱动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod +x NVIDIA-Linux-x86_64-410.93.run</span><br><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
+
+<p>首次运行驱动程序，不会安装，因为系统中有 nouveau 驱动存在。<br>但是 NVIDIA-Linux-x86_64-410.93.run 会生成 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件。用于禁用系统自带的 nouveau 驱动。该文件内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/modprobe.d/nvidia-installer-disable-nouveau.conf</span><br><span class="line"><span class="comment"># generated by nvidia-installer</span></span><br><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
+
+<p>3）使禁用生效</p>
+<p>只有 blacklist 并不能真的禁用 nouveau 驱动。执行如下命令更新 initramfs：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+
+<p>然后，重启系统，禁用就成功了。执行如下命令验证：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 输出结果为空说明已经禁用 nouveau 驱动</span></span><br><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h2 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h2><p>1）开始安装 NVIDIA 驱动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ./NVIDIA-Linux-x86_64-410.93.run</span><br></pre></td></tr></table></figure>
+
+<p>安装完，重启系统</p>
+<p>2）查看是否安装成功</p>
+<p>运行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 运行下面命令查看显卡驱动部分，如果有 Kernel driver in use: nvidia 则成功</span></span><br><span class="line">lspci -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以运行如下命令，看看 nvidia 模块是否加载成功</span></span><br><span class="line">lsmod | grep nvidia</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>运行 <code>glxgears</code>，如果帧数远大于 60 FPS，说明 nvidia 驱动已在使用，因为 NVIDIA 驱动安装后，默认不会开启垂直同步。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install mesa-utils</span><br><span class="line">glxgears</span><br></pre></td></tr></table></figure>
+
+<p>最后，笔记本盒盖睡眠，再打开，没有黑屏，唤醒成功。</p>
+<h2 id="可选：开启垂直同步解决画面撕裂"><a href="#可选：开启垂直同步解决画面撕裂" class="headerlink" title="可选：开启垂直同步解决画面撕裂"></a>可选：开启垂直同步解决画面撕裂</h2><p>安装完 NVIDIA 驱动后，默认不开启同步，有可能出现画面撕裂。解决办法如下。</p>
+<p>1）在终端运行命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/modprobe.d/nvidia-drm-nomodeset.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加入如下一行</span></span><br><span class="line">options nvidia-drm modeset=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新到 initramfs</span></span><br><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+
+<p>重启系统。</p>
+<p>2）重启系统后查看结果</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 下面命令应该是输出 "Y" 而不是 "N"</span></span><br><span class="line">sudo cat /sys/module/nvidia_drm/parameters/modeset</span><br></pre></td></tr></table></figure>
+
+<p>3）设置 NVIDIA 驱动</p>
+<p>终端运行命令 <code>nvidia-settings</code> 打开驱动设置窗口。<br>在窗口左侧选择 <code>GPU 0-(xxx)</code> –&gt; <code>PowerMizer</code> –&gt; 设置 <code>PowerMizer Settings</code> 为 <code>Prefer Maximum Performance</code>。</p>
+<p>4）让系统尽可能地使用物理内存而不是交换空间</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文末加入两行（默认值为 60）：</span></span><br><span class="line"><span class="comment"># User defines</span></span><br><span class="line">vm.swappiness=10</span><br></pre></td></tr></table></figure>
+
+<p>然后，重启系统。运行 <code>cat /proc/sys/vm/swappiness</code> 查看结果。</p>
+<h2 id="如果要卸载驱动"><a href="#如果要卸载驱动" class="headerlink" title="如果要卸载驱动"></a>如果要卸载驱动</h2><p>装完 NVIDIA 驱动后，如果要卸载，会有一个命令 <code>nvidia-uninstall</code> 用来卸载驱动。但是同时要删除文件 <code>/etc/modprobe.d/nvidia-installer-disable-nouveau.conf</code> 文件，然后运行 <code>sudo update-initramfs -u</code>，让 nouveau 驱动再次生效。</p>
+<p>参考：<br><a href="https://blog.csdn.net/u012442845/article/details/78855573" target="_blank" rel="noopener">https://blog.csdn.net/u012442845/article/details/78855573</a><br><a href="https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04" target="_blank" rel="noopener">https://askubuntu.com/questions/1031511/cant-disable-nouveau-drivers-in-ubuntu-18-04</a><br><a href="https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver" target="_blank" rel="noopener">https://askubuntu.com/questions/1056363/how-to-disable-gui-on-boot-in-18-04-bionic-beaver</a><br><a href="http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/" target="_blank" rel="noopener">http://ubuntuhandbook.org/index.php/2018/07/fix-screen-tearing-ubuntu-18-04-optimus-laptops/</a></p>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Bash 的输入输出重定向详解</title>
+    <url>/2019/01/02/stdin-stdout-and-redirection.html</url>
+    <content><![CDATA[<p>Linux 中每个进程维护了一个文件描述符表，如 shell 终端，默认有三个文件已打开，他们的文件描述符和文件对应关系为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fd 0: /dev/stdin -&gt; /proc/self/fd/0（前者是指向后者的软链接，下同）</span><br><span class="line">fd 1: /dev/stdout -&gt; /proc/self/fd/1</span><br><span class="line">fd 2: /dev/stderr -&gt; /proc/self/fd/2</span><br></pre></td></tr></table></figure>
+
+<p>所以在该 shell 中创建新的的文件的描述符就从3开始。</p>
+<p><strong>用于输入输出重定向使用的文件描述符大于9，所以安全可用的自定义文件描述符范围就是：3-9</strong></p>
+<p>因为 Bash <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">文档</a> 里有这样一句话：</p>
+<blockquote>
+<p>Redirections using file descriptors greater than 9 should be used with care, as they may conflict with file descriptors the shell uses internally.</p>
+</blockquote>
+<h2 id="下面的几个例子会分别演示"><a href="#下面的几个例子会分别演示" class="headerlink" title="下面的几个例子会分别演示"></a>下面的几个例子会分别演示</h2><p>1）输入输出重定向<br>2）复制输入输出文件描述符<br>3）移动输入输出文件描述符<br>4）关闭文件描述符和同时读写文件<br>5）将已重定向的输入/输出恢复到标准输入/标准输出</p>
+<a id="more"></a>
+
+<h3 id="脚本例子1"><a href="#脚本例子1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>输出重定向</code> 和 <code>复制输出文件描述符</code></p>
+<p>脚本内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd4..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd4"</span> &gt;&amp;4</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd5..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd5"</span> &gt;&amp;5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd6..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd6"</span> &gt;&amp;6</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&gt;file3 4&gt;file4 5&gt;file5 6&gt;file6</span></span><br><span class="line">write to fd3...</span><br><span class="line">write to fd4...</span><br><span class="line">write to fd5...</span><br><span class="line">write to fd6...</span><br><span class="line">[root@jz ~]<span class="comment"># cat file*</span></span><br><span class="line">fd3</span><br><span class="line">fd4</span><br><span class="line">fd5</span><br><span class="line">fd6</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>创建自定义的文件描述符（fd）从 3 开始。test.sh 脚本中 &gt;&amp;n（n 表示文件描述符，为 3, 4, 5, 6）表示：<br>复制 fd n 作为 fd 1（1 即标准输出的文件描述符）的值（这里的复制可以理解为复制 fd n 指向的文件指针，fd n 的值 n 实际上是数组下标，数组元素才是指向文件的指针）<br>也就是说，fd 1 复制了 fd n 的值之后，fd 1 原本指向文件 /dev/stdout，而现在与 fd n 指向相同的文件，n 必须与实际文件关联，这个文件描述符 n 才是有效的<br>在上文的例子中，通过执行脚本 test.sh，fd 3 关联（重定向）到了实际文件 file3，fd 4 关联到了实际文件 file4 等等<br>fd 3, 4, 5, 6 关联了实际文件之后，脚本中的 echo “fdN” &gt;&amp;N 就可以依次把标准输出的内容保存到不同的文件了</p>
+<h3 id="脚本例子2"><a href="#脚本例子2" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>输入重定向</code> 和 <code>复制输入文件描述符</code></p>
+<p>脚本内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd4..."</span></span><br><span class="line">cat &lt;&amp;4</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&lt;file3 4&lt;file4</span></span><br><span class="line"><span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line"><span class="built_in">read</span> from fd4...</span><br><span class="line">fd4</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>和输出重定向差不多，例子2脚本中标准输入分别复制了：输入文件描述符3、输入文件描述符4，使得标准输入分别指向 file3、file4<br>执行脚本时，fd 3、fd 4 分别重定向到了 file3、file4，所以脚本中 cat &lt;&amp;N 就会依次从 file3、file4 读取内容（file3、file 4 是例子1脚本执行后创建的）<br>上面两个例子讲的是“<strong>复制文件描述符</strong>”和“<strong>输入输出重定向</strong>”，bash shell 也支持“<strong>移动文件描述符</strong>”，下面的脚本将实验移动文件描述符。</p>
+<h3 id="脚本例子1-1"><a href="#脚本例子1-1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>移动输出文件描述符</code></p>
+<p>脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&gt;file3</span></span><br><span class="line">1: write to fd3...</span><br><span class="line">2: write to fd3...</span><br><span class="line">3: write to fd3...</span><br><span class="line">move_fn.sh: line 8: 3: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>1）与复制文件描述符不同的是，脚本中 &gt;&amp;3- 表示在 fd 1 复制了 fd 3 的文件指针以后，fd 3 就会关闭，就好像 fd 3 移动到了 fd 1 一样<br>注意脚本执行结果，第1次写入内容到 fd 3 是正常的，第2次写入时也正常，但之后 fd 3 就被关闭，即 fd 3 不再重定向到文件 file3<br>所以第3次写入内容时，就会报错，显示坏掉的文件描述符</p>
+<p><strong>2）还有，一开始 file3 只有一行，最后变成了二行，因为脚本中的 echo 操作的文件从始至终都是 file3，脚本执行时，因为输出文件 fd 3 重定向到 file3</strong><br>脚本开始执行，file3 被打开，直到脚本结束，file3 文件才被关闭，所以脚本中每次执行完 echo “fd3” &gt;&amp;3[-] 都是向 file3 新增一行<br>而不会像终端下直接执行：echo “fd3” &gt; file3，每次都是覆盖文件，因为终端下每次执行 echo 都会单独打开/关闭文件 file3</p>
+<h3 id="脚本例子2-1"><a href="#脚本例子2-1" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>移动输入文件描述符</code></p>
+<p>脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3-; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">move_fd.sh: line 8: 3: Bad file descriptor</span><br><span class="line"></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>脚本中使用 read 命令而不是 cat，因为 read 可以逐行读取文件，而 cat 会一次把文件所有行都读取完<br>类似脚本例子1，这里 &lt;&amp;3- 把输入文件描述符3关闭之后，下次执行 read 命令就会报错</p>
+<p><strong>如果脚本例子2内容如下：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>输出结果是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>可以看到，cat 并不会报错，可能是在 cat 一次读完文件后，cat 先判断文件是否读完，再判断文件描述符3是否可用（因为已读完就无需判断是否可用），所以不会报错</strong></p>
+<h2 id="创建文件描述符来同时读写文件"><a href="#创建文件描述符来同时读写文件" class="headerlink" title="创建文件描述符来同时读写文件"></a>创建文件描述符来同时读写文件</h2><p>语法：<code>n&lt;&gt;filename</code></p>
+<p>n 为文件描述符<br>filename 为实际文件名<br>n 不写时表示 fd 0</p>
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="comment"># 如下命令行表示把输入/输出同时重定向到 inputfile 文件，而文件描述符是3</span></span><br><span class="line"><span class="comment"># 然后让标准输入指向 inputfile 文件，标准输出也指向 inputfile 文件</span></span><br><span class="line"><span class="comment"># 执行 exec 后，下面的命令标准输出都保存到 inputfile 文件，标准输入都读取自 inputfile</span></span><br><span class="line"><span class="comment"># 只有标准错误输出依旧是屏幕</span></span><br><span class="line"><span class="built_in">exec</span> 3&lt;&gt;inputfile &lt;&amp;3 &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"1234"</span></span><br><span class="line">ls xxxx</span><br><span class="line">cat</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">abcde</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">ls: cannot access xxxx: No such file or directory</span><br><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">1234e</span><br><span class="line">dsfsf</span><br><span class="line">e</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>以上输出结果很复杂，涉及到文件读写操作的实现细节，猜测如下：<br>脚本执行后，执行到 exec 命令行，文件 inputfile 被打开，文件读写指针应该是指向文件开头的<br>此时运行 echo 命令行，把 1234 写入到文件开头位置，覆盖掉 abcde 前4个字符变成 1234e，读写指针在字符 e 的位置<br>执行 ls 时因为文件不存在，信息输出到标准错误，所以文件 inputfile 读写指针位置不变<br>执行 cat 从字符 e 开始读取，直到文件结尾，读到的内容是：<br>e<br>dsfsf</p>
+<p>因为文件被 exec 打开，cat 并不会关闭文件，cat 读取出来的内容会再次写入 inputfile 文件，此时读写指针在文件结尾<br>cat 读出的内容添加到文件结尾之后，变成：<br>1234e<br>dsfsf<br>e<br>dsfsf</p>
+<h2 id="关闭文件描述符"><a href="#关闭文件描述符" class="headerlink" title="关闭文件描述符"></a>关闭文件描述符</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;&amp;- 关闭标准输入</span><br><span class="line">&gt;&amp;- 关闭标准输出</span><br><span class="line">n&lt;&amp;- 表示将 n 号输入关闭</span><br><span class="line">n&gt;&amp;- 表示将 n 号输出关闭</span><br></pre></td></tr></table></figure>
+
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat &lt;&amp;-           # 关闭标准输入</span></span><br><span class="line">cat: -: Bad file descriptor</span><br><span class="line">cat: closing standard input: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls &gt;&amp;-            # 关闭标准输出</span></span><br><span class="line">ls: write error: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls xxxx 2&gt;&amp;-      # xxxx 文件不存在，关闭标准错误后，错误信息不会输出</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="最后，说说怎么恢复到标准输入-标准输出"><a href="#最后，说说怎么恢复到标准输入-标准输出" class="headerlink" title="最后，说说怎么恢复到标准输入/标准输出"></a>最后，说说怎么恢复到标准输入/标准输出</h2><p>其实很简单，上文已经讲了复制文件描述符，只需要把标准输入输出，或标准错误先复制保存，之后恢复即可。</p>
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span></span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">Enter to <span class="built_in">continue</span> ...</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh &lt;file3    # 脚本的输入被重定向到 file3 后，read 命令直接读取了 file3 的行，不再显示 Enter ...</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>那么，怎么把 read 的输入恢复到标准输入，再次询问用户按回车继续呢？</strong></p>
+<p>把脚本改成：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span> &lt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>然后用如下方式执行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh test.sh 3&lt;&amp;0 &lt;file3</span><br></pre></td></tr></table></figure>
+
+<p>执行脚本时，它的含义是先创建一个新的文件描述符3，fd 3 复制 fd 0 的值，就把 fd 0 保存到 fd 3 了，然后在脚本中 read 命令的标准输入文件描述符从 fd 3 复制回来即可。</p>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">https://www.gnu.org/software/bash/manual/html_node/Redirections.html</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Bash</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Sh 和 Bash 之间的区别</title>
+    <url>/2018/12/24/diff-between-sh-and-bash.html</url>
+    <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一般情况下，<code>sh</code> 是指向 <code>bash</code> 的链接。查看 bash 的手册页可知，bash 作为 sh 运行时，相当于 <code>bash --posix</code>，即 sh 以符合 POSIX 标准的方式来运行。</p>
+<p>在一次使用脚本的过程中，发现脚本中 <code>alias</code> 命令设置的别名始终无效。后来查资料发现，<code>bash</code> 和 <code>sh</code> 运行脚本的结果是不同的。</p>
+<p>默认情况下，bash 运行非交互式 shell 时，是关闭 <code>alias</code> 别名扩展功能的，而脚本就是非交互式 shell。但是，sh 同样的情况下是开启别名扩展功能的。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>① 使用 sh 运行脚本。</p>
+<p>② 在脚本文件中显式地指出开启别名扩展功能，方法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在脚本的 alias 命令之前添加如下命令</span></span><br><span class="line"><span class="comment"># 最好是在脚本的开头位置添加</span></span><br><span class="line"><span class="built_in">shopt</span> -s expand_aliases</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>关于 <code>bash</code> 与 <code>sh</code> 的差别可能还有更多，写脚本后应该充分测试。</p>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/liuxiangke0210/article/details/66476970" target="_blank" rel="noopener">https://blog.csdn.net/liuxiangke0210/article/details/66476970</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Bash</tag>
+        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>
