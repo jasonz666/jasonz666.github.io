@@ -36,26 +36,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2018/12/21/hello-world.html</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<a id="more"></a>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>使用 GPG 学习非对称加密</title>
     <url>/2019/01/09/learn-asymmetric-encryption-by-gpg.html</url>
     <content><![CDATA[<h2 id="非对称加密需要公钥和私钥："><a href="#非对称加密需要公钥和私钥：" class="headerlink" title="非对称加密需要公钥和私钥："></a>非对称加密需要公钥和私钥：</h2><p>你的公钥的作用：别人用来给你发加密的信息(公钥加密)＆别人验证你的签名(公钥解密)，即加密&amp;验证（别人来做）<br>你的私钥的作用：你用来创建签名(私钥加密)＆解密别人发给你的信息的(私钥解密)，即解密&amp;签名（你来做）</p>
@@ -191,46 +171,6 @@
       <tags>
         <tag>Gpg</tag>
         <tag>SSH</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>设置 Ubuntu 18.04 夜灯的色温</title>
-    <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
-    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
-<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-01-58%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
-
-<p>但是，没有调整夜灯色温的功能。</p>
-<a id="more"></a>
-
-<h2 id="设置夜灯色温"><a href="#设置夜灯色温" class="headerlink" title="设置夜灯色温"></a>设置夜灯色温</h2><ol>
-<li>安装软件</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打开软件 <code>dconf-editor</code>：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dconf-editor</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>鼠标点击找到如下路径：</li>
-</ol>
-<p><code>/org/gnome/settings-daemon/plugins/color/night-light-temperature</code></p>
-<ol start="4">
-<li>设置自定义值：</li>
-</ol>
-<p>关闭 <code>使用默认值</code>，然后输入一个 <code>自定义值</code>：</p>
-<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-11-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
-
-<h2 id="色温值参考"><a href="#色温值参考" class="headerlink" title="色温值参考"></a>色温值参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1000  —  最低值（最暖色调/效果最红）</span><br><span class="line">4000  —  默认值</span><br><span class="line">5500  —  适中值</span><br><span class="line">6500  —  关闭夜灯时的色温值</span><br><span class="line">10000 —  最高值（最冷色调/效果最蓝）</span><br></pre></td></tr></table></figure>
-
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -427,6 +367,66 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2018/12/21/hello-world.html</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<a id="more"></a>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>设置 Ubuntu 18.04 夜灯的色温</title>
+    <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
+<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-01-58%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
+
+<p>但是，没有调整夜灯色温的功能。</p>
+<a id="more"></a>
+
+<h2 id="设置夜灯色温"><a href="#设置夜灯色温" class="headerlink" title="设置夜灯色温"></a>设置夜灯色温</h2><ol>
+<li>安装软件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开软件 <code>dconf-editor</code>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dconf-editor</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>鼠标点击找到如下路径：</li>
+</ol>
+<p><code>/org/gnome/settings-daemon/plugins/color/night-light-temperature</code></p>
+<ol start="4">
+<li>设置自定义值：</li>
+</ol>
+<p>关闭 <code>使用默认值</code>，然后输入一个 <code>自定义值</code>：</p>
+<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-11-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
+
+<h2 id="色温值参考"><a href="#色温值参考" class="headerlink" title="色温值参考"></a>色温值参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1000  —  最低值（最暖色调/效果最红）</span><br><span class="line">4000  —  默认值</span><br><span class="line">5500  —  适中值</span><br><span class="line">6500  —  关闭夜灯时的色温值</span><br><span class="line">10000 —  最高值（最冷色调/效果最蓝）</span><br></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
     <url>/2019/01/28/ubuntu-install-nvidia-driver.html</url>
     <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1）从 NVIDIA 官网下载对应显卡的驱动备用</p>
@@ -479,6 +479,29 @@
 ]]></content>
       <tags>
         <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Sh 和 Bash 之间的区别</title>
+    <url>/2018/12/24/diff-between-sh-and-bash.html</url>
+    <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一般情况下，<code>sh</code> 是指向 <code>bash</code> 的链接。查看 bash 的手册页可知，bash 作为 sh 运行时，相当于 <code>bash --posix</code>，即 sh 以符合 POSIX 标准的方式来运行。</p>
+<p>在一次使用脚本的过程中，发现脚本中 <code>alias</code> 命令设置的别名始终无效。后来查资料发现，<code>bash</code> 和 <code>sh</code> 运行脚本的结果是不同的。</p>
+<p>默认情况下，bash 运行非交互式 shell 时，是关闭 <code>alias</code> 别名扩展功能的，而脚本就是非交互式 shell。但是，sh 同样的情况下是开启别名扩展功能的。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>① 使用 sh 运行脚本。</p>
+<p>② 在脚本文件中显式地指出开启别名扩展功能，方法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在脚本的 alias 命令之前添加如下命令</span></span><br><span class="line"><span class="comment"># 最好是在脚本的开头位置添加</span></span><br><span class="line"><span class="built_in">shopt</span> -s expand_aliases</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>关于 <code>bash</code> 与 <code>sh</code> 的差别可能还有更多，写脚本后应该充分测试。</p>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://blog.csdn.net/liuxiangke0210/article/details/66476970" target="_blank" rel="noopener">https://blog.csdn.net/liuxiangke0210/article/details/66476970</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Shell</tag>
+        <tag>Bash</tag>
       </tags>
   </entry>
   <entry>
@@ -578,29 +601,6 @@
 ]]></content>
       <tags>
         <tag>Bash</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Sh 和 Bash 之间的区别</title>
-    <url>/2018/12/24/diff-between-sh-and-bash.html</url>
-    <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一般情况下，<code>sh</code> 是指向 <code>bash</code> 的链接。查看 bash 的手册页可知，bash 作为 sh 运行时，相当于 <code>bash --posix</code>，即 sh 以符合 POSIX 标准的方式来运行。</p>
-<p>在一次使用脚本的过程中，发现脚本中 <code>alias</code> 命令设置的别名始终无效。后来查资料发现，<code>bash</code> 和 <code>sh</code> 运行脚本的结果是不同的。</p>
-<p>默认情况下，bash 运行非交互式 shell 时，是关闭 <code>alias</code> 别名扩展功能的，而脚本就是非交互式 shell。但是，sh 同样的情况下是开启别名扩展功能的。</p>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>① 使用 sh 运行脚本。</p>
-<p>② 在脚本文件中显式地指出开启别名扩展功能，方法：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在脚本的 alias 命令之前添加如下命令</span></span><br><span class="line"><span class="comment"># 最好是在脚本的开头位置添加</span></span><br><span class="line"><span class="built_in">shopt</span> -s expand_aliases</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>关于 <code>bash</code> 与 <code>sh</code> 的差别可能还有更多，写脚本后应该充分测试。</p>
-<p>参考：</p>
-<blockquote>
-<p><a href="https://blog.csdn.net/liuxiangke0210/article/details/66476970" target="_blank" rel="noopener">https://blog.csdn.net/liuxiangke0210/article/details/66476970</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Bash</tag>
-        <tag>Shell</tag>
       </tags>
   </entry>
   <entry>

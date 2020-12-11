@@ -95,7 +95,7 @@
 
   <url>
     <loc>https://izhaojie.com/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -103,63 +103,63 @@
   
   <url>
     <loc>https://izhaojie.com/tags/Github/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Gpg/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Encryption/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/SSH/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Ubuntu/</loc>
-    <lastmod>2020-10-25</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://izhaojie.com/tags/Bash/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Shell/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://izhaojie.com/tags/Bash/</loc>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/UEFI/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/MBR/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-12-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
