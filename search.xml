@@ -809,4 +809,36 @@
         <tag>Bash</tag>
       </tags>
   </entry>
+  <entry>
+    <title>cs-learn-in-bilibili</title>
+    <url>/2021/04/26/cs-learn-in-bilibili.html</url>
+    <content><![CDATA[<p><strong>计算机科学入门：</strong></p>
+<p>《计算机科学速成课》，<a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">B站</a><a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">中文字幕版</a>，共40集</p>
+<p>《CS50 哈佛计算机科学导论》，非常经典，<a href="https://www.bilibili.com/video/BV1cE411j7in?from=search&seid=10548244881245554190" target="_blank" rel="noopener">B站地址</a></p>
+<p>《算法导论-MIT麻省理工》，<a href="https://www.bilibili.com/video/BV1Kx411f7bL?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《物理学十分钟速成课》，<a href="https://www.bilibili.com/video/BV1Nb411L7fQ?from=search&seid=17238245196463281490" target="_blank" rel="noopener">B站地址</a></p>
+<p><strong>计算机组成原理：</strong></p>
+<p>《计算机组成原理 快速复习》，<a href="https://www.bilibili.com/video/BV1rV411k7Xf?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《计算机组成原理 唐朔飞》，哈工大，<a href="https://www.bilibili.com/video/BV1WW411Q7PF?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>操作系统：</strong></p>
+<p>《操作系统 清华大学》，向勇、陈渝，<a href="https://www.bilibili.com/video/BV1js411b7vg?from=search&seid=10033970866122426678" target="_blank" rel="noopener">B站地址</a></p>
+<p>《操作系统 哈工大》，李治军，内容比清华的更详细，<a href="https://www.bilibili.com/video/BV1d4411v7u7?p=1" target="_blank" rel="noopener">B站地址</a></p>
+<p><strong>计算机网络：</strong></p>
+<p>《计算机网络微课堂》，湖南科技大学，<a href="https://www.bilibili.com/video/BV1c4411d7jb?from=search&seid=12426748443173359886" target="_blank" rel="noopener">B站地址</a></p>
+<p>《计算机网络 谢希仁第七版》，方老师讲解，<a href="https://www.bilibili.com/video/BV1yE411G7Ma?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《Wireshark抓包 从入门到入坟》，<a href="https://www.bilibili.com/video/BV1X5411x7R4?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>数据库：</strong></p>
+<p>《SQL进阶教程》，<a href="https://www.bilibili.com/video/BV1UE41147KC?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《MySQL高级教程》，涉及底层原理，<a href="https://www.bilibili.com/video/BV1CZ4y1M7MQ?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《Redis教程》，<a href="https://www.bilibili.com/video/BV1S54y1R7SB?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>数据结构与算法：</strong></p>
+<p>《数据结构 浙江大学》，讲的经典而系统，<a href="https://www.bilibili.com/video/BV1JW411i731?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《LeetCode算法刷题解析》，左程云，<a href="https://www.bilibili.com/video/BV15D4y1X7Tt?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>C/C++语言：</strong></p>
+<p>《郝斌C语言自学教程》，<a href="https://www.bilibili.com/video/BV1os411h77o?from=search&seid=5426432897798417990" target="_blank" rel="noopener">B站地址</a></p>
+]]></content>
+      <tags>
+        <tag>CS</tag>
+      </tags>
+  </entry>
 </search>
