@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>计科B站学习视频</title>
+    <url>/2021/04/26/cs-learn-in-bilibili.html</url>
+    <content><![CDATA[<p><strong>计算机科学入门：</strong></p>
+<p>《计算机科学速成课》，<a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">B站</a><a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">中文字幕版</a>，共40集</p>
+<p>《CS50 哈佛计算机科学导论》，非常经典，<a href="https://www.bilibili.com/video/BV1cE411j7in?from=search&seid=10548244881245554190" target="_blank" rel="noopener">B站地址</a></p>
+<p>《算法导论-MIT麻省理工》，<a href="https://www.bilibili.com/video/BV1Kx411f7bL?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《物理学十分钟速成课》，<a href="https://www.bilibili.com/video/BV1Nb411L7fQ?from=search&seid=17238245196463281490" target="_blank" rel="noopener">B站地址</a></p>
+<p><strong>计算机组成原理：</strong></p>
+<p>《计算机组成原理 快速复习》，<a href="https://www.bilibili.com/video/BV1rV411k7Xf?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《计算机组成原理 唐朔飞》，哈工大，<a href="https://www.bilibili.com/video/BV1WW411Q7PF?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>操作系统：</strong></p>
+<p>《操作系统 清华大学》，向勇、陈渝，<a href="https://www.bilibili.com/video/BV1js411b7vg?from=search&seid=10033970866122426678" target="_blank" rel="noopener">B站地址</a></p>
+<p>《操作系统 哈工大》，李治军，内容比清华的更详细，<a href="https://www.bilibili.com/video/BV1d4411v7u7?p=1" target="_blank" rel="noopener">B站地址</a></p>
+<p><strong>计算机网络：</strong></p>
+<p>《计算机网络微课堂》，湖南科技大学，<a href="https://www.bilibili.com/video/BV1c4411d7jb?from=search&seid=12426748443173359886" target="_blank" rel="noopener">B站地址</a></p>
+<p>《计算机网络 谢希仁第七版》，方老师讲解，<a href="https://www.bilibili.com/video/BV1yE411G7Ma?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《Wireshark抓包 从入门到入坟》，<a href="https://www.bilibili.com/video/BV1X5411x7R4?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>数据库：</strong></p>
+<p>《SQL进阶教程》，<a href="https://www.bilibili.com/video/BV1UE41147KC?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《MySQL高级教程》，涉及底层原理，<a href="https://www.bilibili.com/video/BV1CZ4y1M7MQ?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《Redis教程》，<a href="https://www.bilibili.com/video/BV1S54y1R7SB?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>数据结构与算法：</strong></p>
+<p>《数据结构 浙江大学》，讲的经典而系统，<a href="https://www.bilibili.com/video/BV1JW411i731?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《LeetCode算法刷题解析》，左程云，<a href="https://www.bilibili.com/video/BV15D4y1X7Tt?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>C/C++语言：</strong></p>
+<p>《郝斌C语言自学教程》，<a href="https://www.bilibili.com/video/BV1os411h77o?from=search&seid=5426432897798417990" target="_blank" rel="noopener">B站地址</a></p>
+]]></content>
+      <tags>
+        <tag>CS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Sh 和 Bash 之间的区别</title>
     <url>/2018/12/24/diff-between-sh-and-bash.html</url>
     <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一般情况下，<code>sh</code> 是指向 <code>bash</code> 的链接。查看 bash 的手册页可知，bash 作为 sh 运行时，相当于 <code>bash --posix</code>，即 sh 以符合 POSIX 标准的方式来运行。</p>
@@ -22,6 +54,26 @@
         <tag>Shell</tag>
         <tag>Bash</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2018/12/21/hello-world.html</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<a id="more"></a>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>Git 使用指定的 SSH 密钥克隆和提交</title>
@@ -57,26 +109,6 @@
       <tags>
         <tag>Github</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2018/12/21/hello-world.html</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<a id="more"></a>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>使用 GPG 学习非对称加密</title>
@@ -171,6 +203,46 @@
       <tags>
         <tag>Gpg</tag>
         <tag>Encryption</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设置 Ubuntu 18.04 夜灯的色温</title>
+    <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
+<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-01-58%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
+
+<p>但是，没有调整夜灯色温的功能。</p>
+<a id="more"></a>
+
+<h2 id="设置夜灯色温"><a href="#设置夜灯色温" class="headerlink" title="设置夜灯色温"></a>设置夜灯色温</h2><ol>
+<li>安装软件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开软件 <code>dconf-editor</code>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dconf-editor</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>鼠标点击找到如下路径：</li>
+</ol>
+<p><code>/org/gnome/settings-daemon/plugins/color/night-light-temperature</code></p>
+<ol start="4">
+<li>设置自定义值：</li>
+</ol>
+<p>关闭 <code>使用默认值</code>，然后输入一个 <code>自定义值</code>：</p>
+<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-11-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
+
+<h2 id="色温值参考"><a href="#色温值参考" class="headerlink" title="色温值参考"></a>色温值参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1000  —  最低值（最暖色调/效果最红）</span><br><span class="line">4000  —  默认值</span><br><span class="line">5500  —  适中值</span><br><span class="line">6500  —  关闭夜灯时的色温值</span><br><span class="line">10000 —  最高值（最冷色调/效果最蓝）</span><br></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -410,67 +482,6 @@
       </tags>
   </entry>
   <entry>
-    <title>设置 Ubuntu 18.04 夜灯的色温</title>
-    <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
-    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
-<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-01-58%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
-
-<p>但是，没有调整夜灯色温的功能。</p>
-<a id="more"></a>
-
-<h2 id="设置夜灯色温"><a href="#设置夜灯色温" class="headerlink" title="设置夜灯色温"></a>设置夜灯色温</h2><ol>
-<li>安装软件</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打开软件 <code>dconf-editor</code>：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dconf-editor</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>鼠标点击找到如下路径：</li>
-</ol>
-<p><code>/org/gnome/settings-daemon/plugins/color/night-light-temperature</code></p>
-<ol start="4">
-<li>设置自定义值：</li>
-</ol>
-<p>关闭 <code>使用默认值</code>，然后输入一个 <code>自定义值</code>：</p>
-<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-11-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
-
-<h2 id="色温值参考"><a href="#色温值参考" class="headerlink" title="色温值参考"></a>色温值参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1000  —  最低值（最暖色调/效果最红）</span><br><span class="line">4000  —  默认值</span><br><span class="line">5500  —  适中值</span><br><span class="line">6500  —  关闭夜灯时的色温值</span><br><span class="line">10000 —  最高值（最冷色调/效果最蓝）</span><br></pre></td></tr></table></figure>
-
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Typora+Github+jsDelivr+PicGo图床测试</title>
-    <url>/2020/12/13/test-github-jsdelivr-pichost.html</url>
-    <content><![CDATA[<p>Typora：MarkDown编辑器</p>
-<p>PicGo：图床图片上传插件</p>
-<p>Github：图床</p>
-<p>jsDelivr：CDN</p>
-<h3 id="图片测试："><a href="#图片测试：" class="headerlink" title="图片测试："></a>图片测试：</h3><p>复制粘贴：</p>
-<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_funny.jpeg" alt="test_pichost_funny" style="zoom:50%;" />
-
-<a id="more"></a>
-
-<p>插入(ctrl+cmd+I)：</p>
-<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_funny2.png" alt="test_pichost_funny2" style="zoom:50%;" />
-
-<p>拖拽：</p>
-<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_cat.png" alt="test_pichost_cat" style="zoom:25%;" />
-
-<p>完毕。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
     <url>/2019/01/28/ubuntu-install-nvidia-driver.html</url>
     <content><![CDATA[<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>1）从 NVIDIA 官网下载对应显卡的驱动备用</p>
@@ -523,6 +534,126 @@
 ]]></content>
       <tags>
         <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora+Github+jsDelivr+PicGo图床测试</title>
+    <url>/2020/12/13/test-github-jsdelivr-pichost.html</url>
+    <content><![CDATA[<p>Typora：MarkDown编辑器</p>
+<p>PicGo：图床图片上传插件</p>
+<p>Github：图床</p>
+<p>jsDelivr：CDN</p>
+<h3 id="图片测试："><a href="#图片测试：" class="headerlink" title="图片测试："></a>图片测试：</h3><p>复制粘贴：</p>
+<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_funny.jpeg" alt="test_pichost_funny" style="zoom:50%;" />
+
+<a id="more"></a>
+
+<p>插入(ctrl+cmd+I)：</p>
+<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_funny2.png" alt="test_pichost_funny2" style="zoom:50%;" />
+
+<p>拖拽：</p>
+<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_cat.png" alt="test_pichost_cat" style="zoom:25%;" />
+
+<p>完毕。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Bash 的输入输出重定向详解</title>
+    <url>/2019/01/02/stdin-stdout-and-redirection.html</url>
+    <content><![CDATA[<p>Linux 中每个进程维护了一个文件描述符表，如 shell 终端，默认有三个文件已打开，他们的文件描述符和文件对应关系为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fd 0: /dev/stdin -&gt; /proc/self/fd/0（前者是指向后者的软链接，下同）</span><br><span class="line">fd 1: /dev/stdout -&gt; /proc/self/fd/1</span><br><span class="line">fd 2: /dev/stderr -&gt; /proc/self/fd/2</span><br></pre></td></tr></table></figure>
+
+<p>所以在该 shell 中创建新的的文件的描述符就从3开始。</p>
+<p><strong>用于输入输出重定向使用的文件描述符大于9，所以安全可用的自定义文件描述符范围就是：3-9</strong></p>
+<p>因为 Bash <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">文档</a> 里有这样一句话：</p>
+<blockquote>
+<p>Redirections using file descriptors greater than 9 should be used with care, as they may conflict with file descriptors the shell uses internally.</p>
+</blockquote>
+<h2 id="下面的几个例子会分别演示"><a href="#下面的几个例子会分别演示" class="headerlink" title="下面的几个例子会分别演示"></a>下面的几个例子会分别演示</h2><p>1）输入输出重定向<br>2）复制输入输出文件描述符<br>3）移动输入输出文件描述符<br>4）关闭文件描述符和同时读写文件<br>5）将已重定向的输入/输出恢复到标准输入/标准输出</p>
+<a id="more"></a>
+
+<h3 id="脚本例子1"><a href="#脚本例子1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>输出重定向</code> 和 <code>复制输出文件描述符</code></p>
+<p>脚本内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd4..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd4"</span> &gt;&amp;4</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd5..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd5"</span> &gt;&amp;5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd6..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd6"</span> &gt;&amp;6</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&gt;file3 4&gt;file4 5&gt;file5 6&gt;file6</span></span><br><span class="line">write to fd3...</span><br><span class="line">write to fd4...</span><br><span class="line">write to fd5...</span><br><span class="line">write to fd6...</span><br><span class="line">[root@jz ~]<span class="comment"># cat file*</span></span><br><span class="line">fd3</span><br><span class="line">fd4</span><br><span class="line">fd5</span><br><span class="line">fd6</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>创建自定义的文件描述符（fd）从 3 开始。test.sh 脚本中 &gt;&amp;n（n 表示文件描述符，为 3, 4, 5, 6）表示：<br>复制 fd n 作为 fd 1（1 即标准输出的文件描述符）的值（这里的复制可以理解为复制 fd n 指向的文件指针，fd n 的值 n 实际上是数组下标，数组元素才是指向文件的指针）<br>也就是说，fd 1 复制了 fd n 的值之后，fd 1 原本指向文件 /dev/stdout，而现在与 fd n 指向相同的文件，n 必须与实际文件关联，这个文件描述符 n 才是有效的<br>在上文的例子中，通过执行脚本 test.sh，fd 3 关联（重定向）到了实际文件 file3，fd 4 关联到了实际文件 file4 等等<br>fd 3, 4, 5, 6 关联了实际文件之后，脚本中的 echo “fdN” &gt;&amp;N 就可以依次把标准输出的内容保存到不同的文件了</p>
+<h3 id="脚本例子2"><a href="#脚本例子2" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>输入重定向</code> 和 <code>复制输入文件描述符</code></p>
+<p>脚本内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd4..."</span></span><br><span class="line">cat &lt;&amp;4</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&lt;file3 4&lt;file4</span></span><br><span class="line"><span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line"><span class="built_in">read</span> from fd4...</span><br><span class="line">fd4</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>和输出重定向差不多，例子2脚本中标准输入分别复制了：输入文件描述符3、输入文件描述符4，使得标准输入分别指向 file3、file4<br>执行脚本时，fd 3、fd 4 分别重定向到了 file3、file4，所以脚本中 cat &lt;&amp;N 就会依次从 file3、file4 读取内容（file3、file 4 是例子1脚本执行后创建的）<br>上面两个例子讲的是“<strong>复制文件描述符</strong>”和“<strong>输入输出重定向</strong>”，bash shell 也支持“<strong>移动文件描述符</strong>”，下面的脚本将实验移动文件描述符。</p>
+<h3 id="脚本例子1-1"><a href="#脚本例子1-1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>移动输出文件描述符</code></p>
+<p>脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&gt;file3</span></span><br><span class="line">1: write to fd3...</span><br><span class="line">2: write to fd3...</span><br><span class="line">3: write to fd3...</span><br><span class="line">move_fn.sh: line 8: 3: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>1）与复制文件描述符不同的是，脚本中 &gt;&amp;3- 表示在 fd 1 复制了 fd 3 的文件指针以后，fd 3 就会关闭，就好像 fd 3 移动到了 fd 1 一样<br>注意脚本执行结果，第1次写入内容到 fd 3 是正常的，第2次写入时也正常，但之后 fd 3 就被关闭，即 fd 3 不再重定向到文件 file3<br>所以第3次写入内容时，就会报错，显示坏掉的文件描述符</p>
+<p><strong>2）还有，一开始 file3 只有一行，最后变成了二行，因为脚本中的 echo 操作的文件从始至终都是 file3，脚本执行时，因为输出文件 fd 3 重定向到 file3</strong><br>脚本开始执行，file3 被打开，直到脚本结束，file3 文件才被关闭，所以脚本中每次执行完 echo “fd3” &gt;&amp;3[-] 都是向 file3 新增一行<br>而不会像终端下直接执行：echo “fd3” &gt; file3，每次都是覆盖文件，因为终端下每次执行 echo 都会单独打开/关闭文件 file3</p>
+<h3 id="脚本例子2-1"><a href="#脚本例子2-1" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>移动输入文件描述符</code></p>
+<p>脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3-; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">move_fd.sh: line 8: 3: Bad file descriptor</span><br><span class="line"></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>脚本中使用 read 命令而不是 cat，因为 read 可以逐行读取文件，而 cat 会一次把文件所有行都读取完<br>类似脚本例子1，这里 &lt;&amp;3- 把输入文件描述符3关闭之后，下次执行 read 命令就会报错</p>
+<p><strong>如果脚本例子2内容如下：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>输出结果是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>可以看到，cat 并不会报错，可能是在 cat 一次读完文件后，cat 先判断文件是否读完，再判断文件描述符3是否可用（因为已读完就无需判断是否可用），所以不会报错</strong></p>
+<h2 id="创建文件描述符来同时读写文件"><a href="#创建文件描述符来同时读写文件" class="headerlink" title="创建文件描述符来同时读写文件"></a>创建文件描述符来同时读写文件</h2><p>语法：<code>n&lt;&gt;filename</code></p>
+<p>n 为文件描述符<br>filename 为实际文件名<br>n 不写时表示 fd 0</p>
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="comment"># 如下命令行表示把输入/输出同时重定向到 inputfile 文件，而文件描述符是3</span></span><br><span class="line"><span class="comment"># 然后让标准输入指向 inputfile 文件，标准输出也指向 inputfile 文件</span></span><br><span class="line"><span class="comment"># 执行 exec 后，下面的命令标准输出都保存到 inputfile 文件，标准输入都读取自 inputfile</span></span><br><span class="line"><span class="comment"># 只有标准错误输出依旧是屏幕</span></span><br><span class="line"><span class="built_in">exec</span> 3&lt;&gt;inputfile &lt;&amp;3 &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"1234"</span></span><br><span class="line">ls xxxx</span><br><span class="line">cat</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">abcde</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">ls: cannot access xxxx: No such file or directory</span><br><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">1234e</span><br><span class="line">dsfsf</span><br><span class="line">e</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>以上输出结果很复杂，涉及到文件读写操作的实现细节，猜测如下：<br>脚本执行后，执行到 exec 命令行，文件 inputfile 被打开，文件读写指针应该是指向文件开头的<br>此时运行 echo 命令行，把 1234 写入到文件开头位置，覆盖掉 abcde 前4个字符变成 1234e，读写指针在字符 e 的位置<br>执行 ls 时因为文件不存在，信息输出到标准错误，所以文件 inputfile 读写指针位置不变<br>执行 cat 从字符 e 开始读取，直到文件结尾，读到的内容是：<br>e<br>dsfsf</p>
+<p>因为文件被 exec 打开，cat 并不会关闭文件，cat 读取出来的内容会再次写入 inputfile 文件，此时读写指针在文件结尾<br>cat 读出的内容添加到文件结尾之后，变成：<br>1234e<br>dsfsf<br>e<br>dsfsf</p>
+<h2 id="关闭文件描述符"><a href="#关闭文件描述符" class="headerlink" title="关闭文件描述符"></a>关闭文件描述符</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;&amp;- 关闭标准输入</span><br><span class="line">&gt;&amp;- 关闭标准输出</span><br><span class="line">n&lt;&amp;- 表示将 n 号输入关闭</span><br><span class="line">n&gt;&amp;- 表示将 n 号输出关闭</span><br></pre></td></tr></table></figure>
+
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat &lt;&amp;-           # 关闭标准输入</span></span><br><span class="line">cat: -: Bad file descriptor</span><br><span class="line">cat: closing standard input: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls &gt;&amp;-            # 关闭标准输出</span></span><br><span class="line">ls: write error: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls xxxx 2&gt;&amp;-      # xxxx 文件不存在，关闭标准错误后，错误信息不会输出</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="最后，说说怎么恢复到标准输入-标准输出"><a href="#最后，说说怎么恢复到标准输入-标准输出" class="headerlink" title="最后，说说怎么恢复到标准输入/标准输出"></a>最后，说说怎么恢复到标准输入/标准输出</h2><p>其实很简单，上文已经讲了复制文件描述符，只需要把标准输入输出，或标准错误先复制保存，之后恢复即可。</p>
+<p>举例脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span></span><br></pre></td></tr></table></figure>
+
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">Enter to <span class="built_in">continue</span> ...</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh &lt;file3    # 脚本的输入被重定向到 file3 后，read 命令直接读取了 file3 的行，不再显示 Enter ...</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>那么，怎么把 read 的输入恢复到标准输入，再次询问用户按回车继续呢？</strong></p>
+<p>把脚本改成：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span> &lt;&amp;3</span><br></pre></td></tr></table></figure>
+
+<p>然后用如下方式执行脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh test.sh 3&lt;&amp;0 &lt;file3</span><br></pre></td></tr></table></figure>
+
+<p>执行脚本时，它的含义是先创建一个新的文件描述符3，fd 3 复制 fd 0 的值，就把 fd 0 保存到 fd 3 了，然后在脚本中 read 命令的标准输入文件描述符从 fd 3 复制回来即可。</p>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">https://www.gnu.org/software/bash/manual/html_node/Redirections.html</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Bash</tag>
       </tags>
   </entry>
   <entry>
@@ -708,137 +839,6 @@
       <tags>
         <tag>UEFI</tag>
         <tag>MBR</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Bash 的输入输出重定向详解</title>
-    <url>/2019/01/02/stdin-stdout-and-redirection.html</url>
-    <content><![CDATA[<p>Linux 中每个进程维护了一个文件描述符表，如 shell 终端，默认有三个文件已打开，他们的文件描述符和文件对应关系为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fd 0: /dev/stdin -&gt; /proc/self/fd/0（前者是指向后者的软链接，下同）</span><br><span class="line">fd 1: /dev/stdout -&gt; /proc/self/fd/1</span><br><span class="line">fd 2: /dev/stderr -&gt; /proc/self/fd/2</span><br></pre></td></tr></table></figure>
-
-<p>所以在该 shell 中创建新的的文件的描述符就从3开始。</p>
-<p><strong>用于输入输出重定向使用的文件描述符大于9，所以安全可用的自定义文件描述符范围就是：3-9</strong></p>
-<p>因为 Bash <a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">文档</a> 里有这样一句话：</p>
-<blockquote>
-<p>Redirections using file descriptors greater than 9 should be used with care, as they may conflict with file descriptors the shell uses internally.</p>
-</blockquote>
-<h2 id="下面的几个例子会分别演示"><a href="#下面的几个例子会分别演示" class="headerlink" title="下面的几个例子会分别演示"></a>下面的几个例子会分别演示</h2><p>1）输入输出重定向<br>2）复制输入输出文件描述符<br>3）移动输入输出文件描述符<br>4）关闭文件描述符和同时读写文件<br>5）将已重定向的输入/输出恢复到标准输入/标准输出</p>
-<a id="more"></a>
-
-<h3 id="脚本例子1"><a href="#脚本例子1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>输出重定向</code> 和 <code>复制输出文件描述符</code></p>
-<p>脚本内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd4..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd4"</span> &gt;&amp;4</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd5..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd5"</span> &gt;&amp;5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"write to fd6..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd6"</span> &gt;&amp;6</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&gt;file3 4&gt;file4 5&gt;file5 6&gt;file6</span></span><br><span class="line">write to fd3...</span><br><span class="line">write to fd4...</span><br><span class="line">write to fd5...</span><br><span class="line">write to fd6...</span><br><span class="line">[root@jz ~]<span class="comment"># cat file*</span></span><br><span class="line">fd3</span><br><span class="line">fd4</span><br><span class="line">fd5</span><br><span class="line">fd6</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>创建自定义的文件描述符（fd）从 3 开始。test.sh 脚本中 &gt;&amp;n（n 表示文件描述符，为 3, 4, 5, 6）表示：<br>复制 fd n 作为 fd 1（1 即标准输出的文件描述符）的值（这里的复制可以理解为复制 fd n 指向的文件指针，fd n 的值 n 实际上是数组下标，数组元素才是指向文件的指针）<br>也就是说，fd 1 复制了 fd n 的值之后，fd 1 原本指向文件 /dev/stdout，而现在与 fd n 指向相同的文件，n 必须与实际文件关联，这个文件描述符 n 才是有效的<br>在上文的例子中，通过执行脚本 test.sh，fd 3 关联（重定向）到了实际文件 file3，fd 4 关联到了实际文件 file4 等等<br>fd 3, 4, 5, 6 关联了实际文件之后，脚本中的 echo “fdN” &gt;&amp;N 就可以依次把标准输出的内容保存到不同的文件了</p>
-<h3 id="脚本例子2"><a href="#脚本例子2" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>输入重定向</code> 和 <code>复制输入文件描述符</code></p>
-<p>脚本内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"read from fd4..."</span></span><br><span class="line">cat &lt;&amp;4</span><br></pre></td></tr></table></figure>
-
-<p>输出：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh test.sh 3&lt;file3 4&lt;file4</span></span><br><span class="line"><span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line"><span class="built_in">read</span> from fd4...</span><br><span class="line">fd4</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>和输出重定向差不多，例子2脚本中标准输入分别复制了：输入文件描述符3、输入文件描述符4，使得标准输入分别指向 file3、file4<br>执行脚本时，fd 3、fd 4 分别重定向到了 file3、file4，所以脚本中 cat &lt;&amp;N 就会依次从 file3、file4 读取内容（file3、file 4 是例子1脚本执行后创建的）<br>上面两个例子讲的是“<strong>复制文件描述符</strong>”和“<strong>输入输出重定向</strong>”，bash shell 也支持“<strong>移动文件描述符</strong>”，下面的脚本将实验移动文件描述符。</p>
-<h3 id="脚本例子1-1"><a href="#脚本例子1-1" class="headerlink" title="脚本例子1"></a>脚本例子1</h3><p>这个例子讲的是 <code>移动输出文件描述符</code></p>
-<p>脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: write to fd3..."</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"fd3"</span> &gt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&gt;file3</span></span><br><span class="line">1: write to fd3...</span><br><span class="line">2: write to fd3...</span><br><span class="line">3: write to fd3...</span><br><span class="line">move_fn.sh: line 8: 3: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>1）与复制文件描述符不同的是，脚本中 &gt;&amp;3- 表示在 fd 1 复制了 fd 3 的文件指针以后，fd 3 就会关闭，就好像 fd 3 移动到了 fd 1 一样<br>注意脚本执行结果，第1次写入内容到 fd 3 是正常的，第2次写入时也正常，但之后 fd 3 就被关闭，即 fd 3 不再重定向到文件 file3<br>所以第3次写入内容时，就会报错，显示坏掉的文件描述符</p>
-<p><strong>2）还有，一开始 file3 只有一行，最后变成了二行，因为脚本中的 echo 操作的文件从始至终都是 file3，脚本执行时，因为输出文件 fd 3 重定向到 file3</strong><br>脚本开始执行，file3 被打开，直到脚本结束，file3 文件才被关闭，所以脚本中每次执行完 echo “fd3” &gt;&amp;3[-] 都是向 file3 新增一行<br>而不会像终端下直接执行：echo “fd3” &gt; file3，每次都是覆盖文件，因为终端下每次执行 echo 都会单独打开/关闭文件 file3</p>
-<h3 id="脚本例子2-1"><a href="#脚本例子2-1" class="headerlink" title="脚本例子2"></a>脚本例子2</h3><p>这个例子讲的是 <code>移动输入文件描述符</code></p>
-<p>脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3-; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line"><span class="built_in">read</span> ln &lt;&amp;3; <span class="built_in">echo</span> <span class="variable">$ln</span>; ln=</span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">move_fd.sh: line 8: 3: Bad file descriptor</span><br><span class="line"></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>脚本中使用 read 命令而不是 cat，因为 read 可以逐行读取文件，而 cat 会一次把文件所有行都读取完<br>类似脚本例子1，这里 &lt;&amp;3- 把输入文件描述符3关闭之后，下次执行 read 命令就会报错</p>
-<p><strong>如果脚本例子2内容如下：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># move_fd.sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3-</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"3: read from fd3..."</span></span><br><span class="line">cat &lt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>输出结果是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># sh move_fd.sh 3&lt;file3</span></span><br><span class="line">1: <span class="built_in">read</span> from fd3...</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">2: <span class="built_in">read</span> from fd3...</span><br><span class="line">3: <span class="built_in">read</span> from fd3...</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>可以看到，cat 并不会报错，可能是在 cat 一次读完文件后，cat 先判断文件是否读完，再判断文件描述符3是否可用（因为已读完就无需判断是否可用），所以不会报错</strong></p>
-<h2 id="创建文件描述符来同时读写文件"><a href="#创建文件描述符来同时读写文件" class="headerlink" title="创建文件描述符来同时读写文件"></a>创建文件描述符来同时读写文件</h2><p>语法：<code>n&lt;&gt;filename</code></p>
-<p>n 为文件描述符<br>filename 为实际文件名<br>n 不写时表示 fd 0</p>
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="comment"># 如下命令行表示把输入/输出同时重定向到 inputfile 文件，而文件描述符是3</span></span><br><span class="line"><span class="comment"># 然后让标准输入指向 inputfile 文件，标准输出也指向 inputfile 文件</span></span><br><span class="line"><span class="comment"># 执行 exec 后，下面的命令标准输出都保存到 inputfile 文件，标准输入都读取自 inputfile</span></span><br><span class="line"><span class="comment"># 只有标准错误输出依旧是屏幕</span></span><br><span class="line"><span class="built_in">exec</span> 3&lt;&gt;inputfile &lt;&amp;3 &gt;&amp;3</span><br><span class="line"><span class="built_in">echo</span> -n <span class="string">"1234"</span></span><br><span class="line">ls xxxx</span><br><span class="line">cat</span><br></pre></td></tr></table></figure>
-
-<p>结果：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">abcde</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">ls: cannot access xxxx: No such file or directory</span><br><span class="line">[root@jz ~]<span class="comment"># cat inputfile</span></span><br><span class="line">1234e</span><br><span class="line">dsfsf</span><br><span class="line">e</span><br><span class="line">dsfsf</span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<p>以上输出结果很复杂，涉及到文件读写操作的实现细节，猜测如下：<br>脚本执行后，执行到 exec 命令行，文件 inputfile 被打开，文件读写指针应该是指向文件开头的<br>此时运行 echo 命令行，把 1234 写入到文件开头位置，覆盖掉 abcde 前4个字符变成 1234e，读写指针在字符 e 的位置<br>执行 ls 时因为文件不存在，信息输出到标准错误，所以文件 inputfile 读写指针位置不变<br>执行 cat 从字符 e 开始读取，直到文件结尾，读到的内容是：<br>e<br>dsfsf</p>
-<p>因为文件被 exec 打开，cat 并不会关闭文件，cat 读取出来的内容会再次写入 inputfile 文件，此时读写指针在文件结尾<br>cat 读出的内容添加到文件结尾之后，变成：<br>1234e<br>dsfsf<br>e<br>dsfsf</p>
-<h2 id="关闭文件描述符"><a href="#关闭文件描述符" class="headerlink" title="关闭文件描述符"></a>关闭文件描述符</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;&amp;- 关闭标准输入</span><br><span class="line">&gt;&amp;- 关闭标准输出</span><br><span class="line">n&lt;&amp;- 表示将 n 号输入关闭</span><br><span class="line">n&gt;&amp;- 表示将 n 号输出关闭</span><br></pre></td></tr></table></figure>
-
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat &lt;&amp;-           # 关闭标准输入</span></span><br><span class="line">cat: -: Bad file descriptor</span><br><span class="line">cat: closing standard input: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls &gt;&amp;-            # 关闭标准输出</span></span><br><span class="line">ls: write error: Bad file descriptor</span><br><span class="line">[root@jz ~]<span class="comment"># ls xxxx 2&gt;&amp;-      # xxxx 文件不存在，关闭标准错误后，错误信息不会输出</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="最后，说说怎么恢复到标准输入-标准输出"><a href="#最后，说说怎么恢复到标准输入-标准输出" class="headerlink" title="最后，说说怎么恢复到标准输入/标准输出"></a>最后，说说怎么恢复到标准输入/标准输出</h2><p>其实很简单，上文已经讲了复制文件描述符，只需要把标准输入输出，或标准错误先复制保存，之后恢复即可。</p>
-<p>举例脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span></span><br></pre></td></tr></table></figure>
-
-<p>执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@jz ~]<span class="comment"># cat file3</span></span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">fd3</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh</span></span><br><span class="line">Enter to <span class="built_in">continue</span> ...</span><br><span class="line">[root@jz ~]<span class="comment"># sh test.sh &lt;file3    # 脚本的输入被重定向到 file3 后，read 命令直接读取了 file3 的行，不再显示 Enter ...</span></span><br><span class="line">[root@jz ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>那么，怎么把 read 的输入恢复到标准输入，再次询问用户按回车继续呢？</strong></p>
-<p>把脚本改成：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># test.sh</span></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">"Enter to continue ..."</span> &lt;&amp;3</span><br></pre></td></tr></table></figure>
-
-<p>然后用如下方式执行脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh test.sh 3&lt;&amp;0 &lt;file3</span><br></pre></td></tr></table></figure>
-
-<p>执行脚本时，它的含义是先创建一个新的文件描述符3，fd 3 复制 fd 0 的值，就把 fd 0 保存到 fd 3 了，然后在脚本中 read 命令的标准输入文件描述符从 fd 3 复制回来即可。</p>
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html" target="_blank" rel="noopener">https://www.gnu.org/software/bash/manual/html_node/Redirections.html</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Bash</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>cs-learn-in-bilibili</title>
-    <url>/2021/04/26/cs-learn-in-bilibili.html</url>
-    <content><![CDATA[<p><strong>计算机科学入门：</strong></p>
-<p>《计算机科学速成课》，<a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">B站</a><a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">中文字幕版</a>，共40集</p>
-<p>《CS50 哈佛计算机科学导论》，非常经典，<a href="https://www.bilibili.com/video/BV1cE411j7in?from=search&seid=10548244881245554190" target="_blank" rel="noopener">B站地址</a></p>
-<p>《算法导论-MIT麻省理工》，<a href="https://www.bilibili.com/video/BV1Kx411f7bL?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《物理学十分钟速成课》，<a href="https://www.bilibili.com/video/BV1Nb411L7fQ?from=search&seid=17238245196463281490" target="_blank" rel="noopener">B站地址</a></p>
-<p><strong>计算机组成原理：</strong></p>
-<p>《计算机组成原理 快速复习》，<a href="https://www.bilibili.com/video/BV1rV411k7Xf?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《计算机组成原理 唐朔飞》，哈工大，<a href="https://www.bilibili.com/video/BV1WW411Q7PF?p=1" target="_blank" rel="noopener">B站</a></p>
-<p><strong>操作系统：</strong></p>
-<p>《操作系统 清华大学》，向勇、陈渝，<a href="https://www.bilibili.com/video/BV1js411b7vg?from=search&seid=10033970866122426678" target="_blank" rel="noopener">B站地址</a></p>
-<p>《操作系统 哈工大》，李治军，内容比清华的更详细，<a href="https://www.bilibili.com/video/BV1d4411v7u7?p=1" target="_blank" rel="noopener">B站地址</a></p>
-<p><strong>计算机网络：</strong></p>
-<p>《计算机网络微课堂》，湖南科技大学，<a href="https://www.bilibili.com/video/BV1c4411d7jb?from=search&seid=12426748443173359886" target="_blank" rel="noopener">B站地址</a></p>
-<p>《计算机网络 谢希仁第七版》，方老师讲解，<a href="https://www.bilibili.com/video/BV1yE411G7Ma?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《Wireshark抓包 从入门到入坟》，<a href="https://www.bilibili.com/video/BV1X5411x7R4?p=1" target="_blank" rel="noopener">B站</a></p>
-<p><strong>数据库：</strong></p>
-<p>《SQL进阶教程》，<a href="https://www.bilibili.com/video/BV1UE41147KC?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《MySQL高级教程》，涉及底层原理，<a href="https://www.bilibili.com/video/BV1CZ4y1M7MQ?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《Redis教程》，<a href="https://www.bilibili.com/video/BV1S54y1R7SB?p=1" target="_blank" rel="noopener">B站</a></p>
-<p><strong>数据结构与算法：</strong></p>
-<p>《数据结构 浙江大学》，讲的经典而系统，<a href="https://www.bilibili.com/video/BV1JW411i731?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《LeetCode算法刷题解析》，左程云，<a href="https://www.bilibili.com/video/BV15D4y1X7Tt?p=1" target="_blank" rel="noopener">B站</a></p>
-<p><strong>C/C++语言：</strong></p>
-<p>《郝斌C语言自学教程》，<a href="https://www.bilibili.com/video/BV1os411h77o?from=search&seid=5426432897798417990" target="_blank" rel="noopener">B站地址</a></p>
-]]></content>
-      <tags>
-        <tag>CS</tag>
       </tags>
   </entry>
 </search>
