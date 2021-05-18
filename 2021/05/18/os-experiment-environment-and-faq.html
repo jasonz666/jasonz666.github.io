@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/cropped-avatar1-180x180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/cropped-avatar1-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/cropped-avatar1-32x32.png">
+  <link rel="mask-icon" href="/uploads/cropped-avatar1-512x512.png" color="#222">
+  <meta name="google-site-verification" content="IuowGe3Qycy8NKNULpUq4LXpl8LE-raaK898Xns6njU">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"izhaojie.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本系列文章是《操作系统实战45讲》课程学习过程中的心得体会与问题汇总。 系列文章放入「操作系统实战」分类里。如果对你有帮助，欢迎关注我。 如果你也想一起写一个属于自己的操作系统，直接翻到文末查看。 话不多说，现在进入正题。本文分为两个部分：一、实验环境搭建。二、前4节课遇到的问题与解答。 实验环境搭建1、一台电脑。电脑上装有Windows或MacOS系统。我用的是MacOS系统。 2、虚拟机。我选">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统实战：实验环境搭建、热门问题解答">
+<meta property="og:url" content="https://izhaojie.com/2021/05/18/os-experiment-environment-and-faq.html">
+<meta property="og:site_name" content="小杰玩编程">
+<meta property="og:description" content="本系列文章是《操作系统实战45讲》课程学习过程中的心得体会与问题汇总。 系列文章放入「操作系统实战」分类里。如果对你有帮助，欢迎关注我。 如果你也想一起写一个属于自己的操作系统，直接翻到文末查看。 话不多说，现在进入正题。本文分为两个部分：一、实验环境搭建。二、前4节课遇到的问题与解答。 实验环境搭建1、一台电脑。电脑上装有Windows或MacOS系统。我用的是MacOS系统。 2、虚拟机。我选">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/vmware-new-os.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B9%8C%E7%8F%AD%E5%9B%BE%E4%B8%AD%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E9%80%89%E6%8B%A9HelloOS%E5%90%AF%E5%8A%A8.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/HelloOS%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E8%AE%BE%E7%BD%AEgrub%E9%85%8D%E7%BD%AE.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/HelloOS.bin%E6%9C%AA%E6%89%BE%E5%88%B0.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/boot%E7%8B%AC%E7%AB%8B%E5%88%86%E5%8C%BA.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%9F%A5%E7%9C%8Bgpt%E5%88%86%E5%8C%BA.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4-OS%E5%AE%9E%E6%88%98%E5%88%86%E4%BA%AB.jpeg">
+<meta property="article:published_time" content="2021-05-18T09:20:40.000Z">
+<meta property="article:modified_time" content="2021-05-18T09:28:09.075Z">
+<meta property="article:author" content="Jason">
+<meta property="article:tag" content="操作系统实战">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/vmware-new-os.png">
+
+<link rel="canonical" href="https://izhaojie.com/2021/05/18/os-experiment-environment-and-faq.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>操作系统实战：实验环境搭建、热门问题解答 | 小杰玩编程</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小杰玩编程</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2021/05/18/os-experiment-environment-and-faq.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/cropped-avatar1-180x180.png">
+      <meta itemprop="name" content="Jason">
+      <meta itemprop="description" content="小杰玩编程，有趣又有料">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小杰玩编程">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统实战：实验环境搭建、热门问题解答
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-18 17:20:40" itemprop="dateCreated datePublished" datetime="2021-05-18T17:20:40+08:00">2021-05-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">操作系统实战</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本系列文章是《操作系统实战45讲》课程学习过程中的心得体会与问题汇总。</p>
+<p>系列文章放入「<strong>操作系统实战</strong>」分类里。如果对你有帮助，欢迎关注我。</p>
+<p><strong>如果你也想一起写一个属于自己的操作系统，直接翻到文末查看</strong>。</p>
+<p>话不多说，现在进入正题。本文分为两个部分：一、实验环境搭建。二、前4节课遇到的问题与解答。</p>
+<h2 id="实验环境搭建"><a href="#实验环境搭建" class="headerlink" title="实验环境搭建"></a>实验环境搭建</h2><p>1、一台电脑。电脑上装有Windows或MacOS系统。我用的是MacOS系统。</p>
+<p>2、虚拟机。我选择的是VMware Fusion 12（若是Windows，装个最新版VMware即可）。</p>
+<p>3、Ubuntu/CentOS系统。我选择的是Ubuntu，作为虚拟机系统，用来实现自己的操作系统。</p>
+<h4 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h4><ol>
+<li><p>安装好虚拟机软件VMware，基本都是点下一步，下一步，直到安装完成。</p>
+</li>
+<li><p>从 <a href="http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso" target="_blank" rel="noopener">这里</a>[1] 下载Ubuntu 20.04系统安装文件，是一个iso文件。</p>
+</li>
+<li><p>在VMware里创建一个新的虚拟机，用来安装Ubuntu 20.04系统：</p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/vmware-new-os.png" alt="新建虚拟机"></p>
+<a id="more"></a>
+
+<p>选择新建，后面的步骤比较简单，跟着提示做就可以了。</p>
+<p><strong>记得Ubuntu需要分配至少1G的内存，不然可能无法正常启动Ubuntu。</strong></p>
+<ol start="4">
+<li>安装完Ubuntu 20.04后，登录系统，在Ubuntu系统里安装工具（以后我们自己写的系统就叫HelloOS）：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 按下 Control+Option+T 组合键打开一个终端（Windows下是 Control+Alt+T）</span></span><br><span class="line"><span class="comment"># 在终端里输入如下命令行，并按 回车，开始执行</span></span><br><span class="line"><span class="comment"># gcc是编译工具集，包含了C语言编译器等。nasm是Ubuntu下的汇编器。</span></span><br><span class="line">sudo apt install -y gcc nasm</span><br></pre></td></tr></table></figure>
+
+<p>截图如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B9%8C%E7%8F%AD%E5%9B%BE%E4%B8%AD%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7.png" alt="安装编译工具"></p>
+<ol start="5">
+<li>克隆HelloOS的源代码并编译（下面的命令继续在Ubuntu终端里执行）：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y git  <span class="comment"># 安装git工具</span></span><br><span class="line">git <span class="built_in">clone</span> https://gitee.com/lmos/cosmos  <span class="comment"># 克隆源代码</span></span><br><span class="line"><span class="built_in">cd</span> cosmos/lesson02/HelloOS/  <span class="comment"># 进入源码目录</span></span><br><span class="line">make  <span class="comment"># 编译HelloOS内核文件HelloOS.bin</span></span><br><span class="line">sudo cp HelloOS.bin /boot/HelloOS.bin  <span class="comment"># 拷贝内核文件到grub的引导分区里</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>添加grub启动项，用来启动我们的HelloOS：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑grub的配置文件</span></span><br><span class="line">sudo vim /boot/grub/grub.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在键盘上依次按下：</span></span><br><span class="line"><span class="built_in">shift</span> + g + o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把下面内容粘贴到文末</span></span><br><span class="line"><span class="comment">#### BEGIN HelloOS.bin ####</span></span><br><span class="line">menuentry <span class="string">'HelloOS'</span> &#123;</span><br><span class="line">     insmod part_msdos <span class="comment">#GRUB加载分区模块识别分区</span></span><br><span class="line">     insmod ext2 <span class="comment">#GRUB加载ext文件系统模块识别ext文件系统</span></span><br><span class="line">     <span class="built_in">set</span> root=<span class="string">'hd0,msdos1'</span> <span class="comment">#注意boot目录挂载的分区，这是我机器上的情况</span></span><br><span class="line">     multiboot2 /boot/HelloOS.bin <span class="comment">#GRUB以multiboot2协议加载HelloOS.bin</span></span><br><span class="line">     boot <span class="comment">#GRUB启动HelloOS.bin</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#### End /boot/HelloOS.bin ####</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在键盘上依次按下，然后回车，添加的内容就保存好了：</span></span><br><span class="line">esc + <span class="built_in">shift</span> + ; + wq!</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在终端重启系统，输入：</span></span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>重启Ubuntu系统后，在系统启动项菜单里选择 HelloOS（上下箭头选择HelloOS，然后按回车启动它）：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E9%80%89%E6%8B%A9HelloOS%E5%90%AF%E5%8A%A8.png" alt="启动HelloOS"></p>
+<ol start="8">
+<li>启动成功后，如下图所示（HelloOS还没重启代码，要回到Ubuntu，直接重启虚拟机，选上图的第一项来启动）：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/HelloOS%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F.png" alt="启动成功"></p>
+<h2 id="问题与解答"><a href="#问题与解答" class="headerlink" title="问题与解答"></a>问题与解答</h2><h4 id="1、为什么没有出现引导菜单，让我选择HelloOS来启动？"><a href="#1、为什么没有出现引导菜单，让我选择HelloOS来启动？" class="headerlink" title="1、为什么没有出现引导菜单，让我选择HelloOS来启动？"></a>1、为什么没有出现引导菜单，让我选择HelloOS来启动？</h4><p>首先，什么是引导菜单？请看上文步骤7中的截图。</p>
+<p>答：这与grub的设置有关，菜单项可能隐藏了，按如下操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入Ubuntu系统后，进入终端（还记得吗，可以按 Ctrl+Opt+T/Ctrl+Alt+T启动终端）</span></span><br><span class="line"><span class="comment"># 输入命令编辑grub配置文件</span></span><br><span class="line">sudo vim /etc/default/grub</span><br></pre></td></tr></table></figure>
+
+<p>把红框的3行，修改成如下图所示（没有的行就加上）：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E8%AE%BE%E7%BD%AEgrub%E9%85%8D%E7%BD%AE.png" alt="设置grub"></p>
+<p>然后更新grub：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行命令</span></span><br><span class="line">sudo update-grub2</span><br></pre></td></tr></table></figure>
+
+<p>更新后，需要重新添加HelloOS的引导项到grub.cfg文件。见上文步骤6、步骤7。</p>
+<h4 id="2、重启选择HelloOS启动后显示-error-file-boot-HelloOS-bin’-not-found"><a href="#2、重启选择HelloOS启动后显示-error-file-boot-HelloOS-bin’-not-found" class="headerlink" title="2、重启选择HelloOS启动后显示 error: file `/boot/HelloOS.bin’ not found."></a>2、重启选择HelloOS启动后显示 error: file `/boot/HelloOS.bin’ not found.</h4><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/HelloOS.bin%E6%9C%AA%E6%89%BE%E5%88%B0.png" alt="HelloOS.bin未找到"></p>
+<p>答：这与boot分区是否独立有关。重新进入Ubuntu系统，打开终端（步骤见上文），执行命令：df /boot /</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/boot%E7%8B%AC%E7%AB%8B%E5%88%86%E5%8C%BA.png" alt="boot独立分区"></p>
+<p>如上，文件系统（Filesystem）一列，两行内容不一样，/boot在/dev/sda1，那就把/boot/grub/grub.cfg文件里的 <code>multiboot2 /boot/HelloOS.bin</code> 改成 <code>multiboot2 /HelloOS.bin</code>，保存文件。然后重启系统，选择HelloOS启动。</p>
+<h4 id="3、重启选择HelloOS启动后显示-error-disk-hd0-msdos2’-not-found-之类的错误"><a href="#3、重启选择HelloOS启动后显示-error-disk-hd0-msdos2’-not-found-之类的错误" class="headerlink" title="3、重启选择HelloOS启动后显示 error: disk `hd0,msdos2’ not found. 之类的错误"></a>3、重启选择HelloOS启动后显示 error: disk `hd0,msdos2’ not found. 之类的错误</h4><p>答：可能是在你的Ubuntu系统上，msdos2这个分区不存在。或者你用了gpt分区，如何查看？执行如下命令：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%9F%A5%E7%9C%8Bgpt%E5%88%86%E5%8C%BA.png" alt="查看是否为gpt分区方案"></p>
+<p>如果是gpt分区，那就修改grub.cfg文件，把 <code>insmod part_msdos</code> 改为 <code>insmod part_gpt</code>，保存文件。然后重启选HelloOS启动。</p>
+<h4 id="4、我用的是CentOS7，为什么没有成功？"><a href="#4、我用的是CentOS7，为什么没有成功？" class="headerlink" title="4、我用的是CentOS7，为什么没有成功？"></a>4、我用的是CentOS7，为什么没有成功？</h4><p>答：基本步骤与Ubuntu一样，几乎无差别。但有的人开机遇到了黑屏，没有显示<code>Hello OS!</code>。还有的人，虚拟机显示了CPU禁止。我是这么做的：修改 <code>grub.cfg</code> 文件，把HelloOS启动项里的 <code>multiboot2</code> 改为 <code>multiboot</code>，保存文件。重启系统，再进入HelloOS看看。</p>
+<hr>
+<p>本文源自 <strong>极客时间《操作系统实战45讲》</strong> 学习过程中的心得与问题汇总，欢迎扫码加入。</p>
+<p>此课程的一系列文章，我都会放到「操作系统实战」分类。<strong>如果对你有帮助，可以关注我，一起学习进步</strong>。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4-OS%E5%AE%9E%E6%88%98%E5%88%86%E4%BA%AB.jpeg" alt="操作系统实战45讲"></p>
+<p>参考：</p>
+<p>[1] <a href="http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Jason
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://izhaojie.com/2021/05/18/os-experiment-environment-and-faq.html" title="操作系统实战：实验环境搭建、热门问题解答">https://izhaojie.com/2021/05/18/os-experiment-environment-and-faq.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/" rel="tag"># 操作系统实战</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/26/cs-learn-in-bilibili.html" rel="prev" title="计科B站学习视频">
+      <i class="fa fa-chevron-left"></i> 计科B站学习视频
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实验环境搭建"><span class="nav-number">1.</span> <span class="nav-text">实验环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#搭建过程"><span class="nav-number">1.0.1.</span> <span class="nav-text">搭建过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题与解答"><span class="nav-number">2.</span> <span class="nav-text">问题与解答</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、为什么没有出现引导菜单，让我选择HelloOS来启动？"><span class="nav-number">2.0.1.</span> <span class="nav-text">1、为什么没有出现引导菜单，让我选择HelloOS来启动？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、重启选择HelloOS启动后显示-error-file-boot-HelloOS-bin’-not-found"><span class="nav-number">2.0.2.</span> <span class="nav-text">2、重启选择HelloOS启动后显示 error: file &#96;&#x2F;boot&#x2F;HelloOS.bin’ not found.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、重启选择HelloOS启动后显示-error-disk-hd0-msdos2’-not-found-之类的错误"><span class="nav-number">2.0.3.</span> <span class="nav-text">3、重启选择HelloOS启动后显示 error: disk &#96;hd0,msdos2’ not found. 之类的错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、我用的是CentOS7，为什么没有成功？"><span class="nav-number">2.0.4.</span> <span class="nav-text">4、我用的是CentOS7，为什么没有成功？</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason"
+      src="/uploads/cropped-avatar1-180x180.png">
+  <p class="site-author-name" itemprop="name">Jason</p>
+  <div class="site-description" itemprop="description">小杰玩编程，有趣又有料</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">59k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">54 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1273541044&web_id=1273541044"></script>
+  </div>
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
