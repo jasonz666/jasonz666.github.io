@@ -923,4 +923,40 @@
         <tag>操作系统实战</tag>
       </tags>
   </entry>
+  <entry>
+    <title>汇编：8086CPU寻址模式、Debug程序用法</title>
+    <url>/2021/05/21/assembly-preparing.html</url>
+    <content><![CDATA[<p>为了配合《操作系统实战45讲》，还是得重学一下汇编。所以就有了这个系列。</p>
+<p>本系列文章算是《汇编语言第4版》的笔记，也有自己的一些心得～</p>
+<p>然后这个系列的文章标题是这样的：<code>汇编：吧啦吧啦吧啦</code></p>
+<p>老师的教学思想镇楼：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/01-%E6%95%99%E5%AD%A6%E6%80%9D%E6%83%B3.png" alt=""></p>
+<p>我并不完全赞同这个思想，因为会有客观条件限制。</p>
+<h2 id="看看计算机的逻辑结构"><a href="#看看计算机的逻辑结构" class="headerlink" title="看看计算机的逻辑结构"></a>看看计算机的逻辑结构</h2><h3 id="计算机中各类存储器的逻辑连接"><a href="#计算机中各类存储器的逻辑连接" class="headerlink" title="计算机中各类存储器的逻辑连接"></a>计算机中各类存储器的逻辑连接</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%90%84%E7%B1%BB%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E8%BF%9E%E6%8E%A5.png" alt=""></p>
+<h3 id="把各类存储器看作一个逻辑存储器"><a href="#把各类存储器看作一个逻辑存储器" class="headerlink" title="把各类存储器看作一个逻辑存储器"></a>把各类存储器看作一个逻辑存储器</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B8%80%E4%B8%AA%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E5%99%A8.png" alt=""></p>
+<h3 id="8086合成20位地址（8086实模式寻址方式）"><a href="#8086合成20位地址（8086实模式寻址方式）" class="headerlink" title="8086合成20位地址（8086实模式寻址方式）"></a>8086合成20位地址（8086实模式寻址方式）</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/8086CPU%E5%90%88%E6%88%9020%E4%BD%8D%E5%9C%B0%E5%9D%80.png" alt=""></p>
+<a id="more"></a>
+
+<h2 id="搭建实验环境"><a href="#搭建实验环境" class="headerlink" title="搭建实验环境"></a>搭建实验环境</h2><p>《汇编语言》这本书用的是8086CPU的实模式来讲汇编的，然后用DOS系统做实验。</p>
+<p>可是，DOS系统也太古老了。那我们就在虚拟机VMware中装一个Win2k，然后进命令行，再用Debug程序做实验。</p>
+<p>虚拟机安装Win2k的教程太多了，这里不在赘述。下面是安装过程的一些截图：</p>
+<h3 id="Win2k安装过程"><a href="#Win2k安装过程" class="headerlink" title="Win2k安装过程"></a>Win2k安装过程</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/Win2k%E5%AE%89%E8%A3%85%E6%88%AA%E5%9B%BE.png" alt=""></p>
+<h3 id="来看看Win2k系统，00后的朋友们不一定见过"><a href="#来看看Win2k系统，00后的朋友们不一定见过" class="headerlink" title="来看看Win2k系统，00后的朋友们不一定见过"></a>来看看Win2k系统，00后的朋友们不一定见过</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/WIn2k%E7%B3%BB%E7%BB%9F%E6%88%AA%E5%9B%BE.png" alt=""></p>
+<h3 id="重点来了，进入虚拟8086模式的DOS"><a href="#重点来了，进入虚拟8086模式的DOS" class="headerlink" title="重点来了，进入虚拟8086模式的DOS"></a>重点来了，进入虚拟8086模式的DOS</h3><p>在Win2k中进入的DOS，是虚拟8086模式的DOS。要用实模式的DOS，在虚拟机直接装个DOS系统比较好。</p>
+<p>Win2k进入DOS的方法：开始菜单 ⟶ 运行 ⟶ 输入 command ⟶ 按Alt+Enter进入全屏DOS</p>
+<p><code>exit</code> 输入此命令退出DOS，回到Win2k</p>
+<p><code>debug</code> 进入Debug程序，做汇编实验就靠它了</p>
+<p><code>quit</code> 退出Debug程序，回到DOS</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/Win2k%E8%BF%9B%E5%85%A5DOS%E5%86%99%E6%B1%87%E7%BC%96.png" alt=""></p>
+<h3 id="Debug程序的常用操作按键"><a href="#Debug程序的常用操作按键" class="headerlink" title="Debug程序的常用操作按键"></a>Debug程序的常用操作按键</h3><p>Debug常用功能一览。包括查看、修改寄存器或内存的命令。机器码翻译成汇编，输入汇编指令，执行汇编指令等。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/DOS%E7%9A%84Debug%E7%A8%8B%E5%BA%8F%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD.png" alt=""></p>
+<p>好了，环境搭好，后面就可以学习汇编了。</p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
 </search>
