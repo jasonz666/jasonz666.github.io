@@ -963,7 +963,7 @@
     <title>汇编：解决Win2k无法安装vm-tools、以及安装MASM汇编器连接器</title>
     <url>/2021/05/23/win2k-vm-tools-problem-and-install-masm.html</url>
     <content><![CDATA[<p>本文配合极客时间《操作系统实战45讲》，因而学习《汇编第四版》使用Win2k系统。</p>
-<p>参考前一篇 <a href="https://blog.csdn.net/damiaomiao666/article/details/117126253" target="_blank" rel="noopener">汇编：8086CPU寻址模式、Debug程序用法</a>。</p>
+<p>参考前一篇 <a href="https://izhaojie.com/2021/05/21/assembly-preparing.html">汇编：8086CPU寻址模式、Debug程序用法</a>。</p>
 <h2 id="Win2k无法安装vm-tools"><a href="#Win2k无法安装vm-tools" class="headerlink" title="Win2k无法安装vm-tools"></a>Win2k无法安装vm-tools</h2><ol>
 <li>下载补丁：</li>
 </ol>
