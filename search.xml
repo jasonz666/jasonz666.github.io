@@ -959,4 +959,54 @@
         <tag>汇编实战</tag>
       </tags>
   </entry>
+  <entry>
+    <title>汇编：解决Win2k无法安装vm-tools、以及安装MASM汇编器连接器</title>
+    <url>/2021/05/23/win2k-vm-tools-problem-and-install-masm.html</url>
+    <content><![CDATA[<p>本文配合极客时间《操作系统实战45讲》，因而学习《汇编第四版》使用Win2k系统。</p>
+<p>参考前一篇 <a href="https://blog.csdn.net/damiaomiao666/article/details/117126253" target="_blank" rel="noopener">汇编：8086CPU寻址模式、Debug程序用法</a>。</p>
+<h2 id="Win2k无法安装vm-tools"><a href="#Win2k无法安装vm-tools" class="headerlink" title="Win2k无法安装vm-tools"></a>Win2k无法安装vm-tools</h2><ol>
+<li>下载补丁：</li>
+</ol>
+<p><a href="https://pan.baidu.com/s/1ztioEwh1CPF-ojsaXNvLIA" target="_blank" rel="noopener">补丁链接</a> 提取码：5640</p>
+<ol start="2">
+<li>无法安装vm-tools的错误提示：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-win2k-vm-tools%E5%AE%89%E8%A3%85%E9%94%99%E8%AF%AF.png" alt="win2k无法安装vm-tools"></p>
+<a id="more"></a>
+
+<ol start="3">
+<li>把下载的补丁iso文件，放入虚拟机光驱：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E5%8A%A0%E8%BD%BD%E8%A1%A5%E4%B8%81%E6%96%87%E4%BB%B6.png" alt="加载补丁文件"></p>
+<p>安装补丁：在Win2k系统里，点我的电脑，双击光驱，打开补丁安装程序：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/3-%E5%AE%89%E8%A3%85%E8%A1%A5%E4%B8%81.png" alt="安装补丁"></p>
+<p>一直点下一步，直到点完成，会重启系统。</p>
+<ol start="4">
+<li>重启Win2k后，就可以装vm-tools了：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/4-%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85vm-tools.png" alt="重新安装vm-tools"></p>
+<ol start="5">
+<li>最后要打开虚拟机的<code>启用拷贝粘贴功能</code>，用来拷贝MASM编译器文件到Win2k系统：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/5-%E8%AE%BE%E7%BD%AE%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4.png" alt="设置拷贝粘贴"></p>
+<h2 id="安装汇编器MASM5-0"><a href="#安装汇编器MASM5-0" class="headerlink" title="安装汇编器MASM5.0"></a>安装汇编器MASM5.0</h2><ol>
+<li>汇编器与连接器下载地址：</li>
+</ol>
+<p><a href="https://pan.baidu.com/s/1oNQgtnHvuS_XRbE1zlXNuA" target="_blank" rel="noopener">汇编器链接</a> 提取码：gfr2</p>
+<ol start="2">
+<li>解压 <code>masm5.0_包含linker.rar</code>，把解压的文件夹复制一下，然后在Win2k的C盘下粘贴。</li>
+<li>取出文件夹内的 <code>MASM</code> 目录放到 <code>C:\</code> 盘下，搞定！</li>
+<li>Win2k开始菜单，运行，输入command，打开dos，然后输入 <code>cd c:\masm</code> 切换到汇编器目录。</li>
+<li>在dos里输入 <code>masm</code> 或 <code>link</code> 就能使用汇编器与连接器了：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/6-%E6%B1%87%E7%BC%96%E5%99%A8%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%99%A8.png" alt="汇编器与连接器"></p>
+<p>[完毕]</p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
 </search>
