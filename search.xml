@@ -933,10 +933,10 @@
 <p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/01-%E6%95%99%E5%AD%A6%E6%80%9D%E6%83%B3.png" alt=""></p>
 <p>我并不完全赞同这个思想，因为会有客观条件限制。</p>
 <h2 id="看看计算机的逻辑结构"><a href="#看看计算机的逻辑结构" class="headerlink" title="看看计算机的逻辑结构"></a>看看计算机的逻辑结构</h2><h3 id="计算机中各类存储器的逻辑连接"><a href="#计算机中各类存储器的逻辑连接" class="headerlink" title="计算机中各类存储器的逻辑连接"></a>计算机中各类存储器的逻辑连接</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%90%84%E7%B1%BB%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E8%BF%9E%E6%8E%A5.png" alt=""></p>
-<h3 id="把各类存储器看作一个逻辑存储器"><a href="#把各类存储器看作一个逻辑存储器" class="headerlink" title="把各类存储器看作一个逻辑存储器"></a>把各类存储器看作一个逻辑存储器</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B8%80%E4%B8%AA%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E5%99%A8.png" alt=""></p>
-<h3 id="8086合成20位地址（8086实模式寻址方式）"><a href="#8086合成20位地址（8086实模式寻址方式）" class="headerlink" title="8086合成20位地址（8086实模式寻址方式）"></a>8086合成20位地址（8086实模式寻址方式）</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/8086CPU%E5%90%88%E6%88%9020%E4%BD%8D%E5%9C%B0%E5%9D%80.png" alt=""></p>
 <a id="more"></a>
 
+<h3 id="把各类存储器看作一个逻辑存储器"><a href="#把各类存储器看作一个逻辑存储器" class="headerlink" title="把各类存储器看作一个逻辑存储器"></a>把各类存储器看作一个逻辑存储器</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B8%80%E4%B8%AA%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E5%99%A8.png" alt=""></p>
+<h3 id="8086合成20位地址（8086实模式寻址方式）"><a href="#8086合成20位地址（8086实模式寻址方式）" class="headerlink" title="8086合成20位地址（8086实模式寻址方式）"></a>8086合成20位地址（8086实模式寻址方式）</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/8086CPU%E5%90%88%E6%88%9020%E4%BD%8D%E5%9C%B0%E5%9D%80.png" alt=""></p>
 <h2 id="搭建实验环境"><a href="#搭建实验环境" class="headerlink" title="搭建实验环境"></a>搭建实验环境</h2><p>《汇编语言》这本书用的是8086CPU的实模式来讲汇编的，然后用DOS系统做实验。</p>
 <p>可是，DOS系统也太古老了。那我们就在虚拟机VMware中装一个Win2k，然后进命令行，再用Debug程序做实验。</p>
 <p>虚拟机安装Win2k的教程太多了，这里不在赘述。下面是安装过程的一些截图：</p>
