@@ -1009,4 +1009,30 @@
         <tag>汇编实战</tag>
       </tags>
   </entry>
+  <entry>
+    <title>汇编：实验7</title>
+    <url>/2021/05/26/assembly-experiment7.html</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>实验7题目：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E9%A2%98%E7%9B%AE.png" alt="题目"></p>
+<p>具体数据在源码部分，见下文。</p>
+<a id="more"></a>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E8%A6%81%E6%B1%82.png" alt="要求"></p>
+<p>汇编源码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 将每年信息按如下格式填充到table段：</span><br><span class="line">; 年份         收入       雇员      人均收入</span><br><span class="line">; 4B   空格    4B   空格  2B  空格  2B      空格 （共16字节）</span><br><span class="line">; &#39;1975&#39;      16         3        ??</span><br><span class="line">; 计算21年的人均收入</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">data segment</span><br><span class="line">    ; 21个 4字节 年份</span><br><span class="line">    db &#39;1975&#39;,&#39;1976&#39;,&#39;1977&#39;,&#39;1978&#39;,&#39;1979&#39;,&#39;1980&#39;,&#39;1981&#39;,&#39;1982&#39;,&#39;1983&#39;,&#39;1984&#39;</span><br><span class="line">    db &#39;1985&#39;,&#39;1986&#39;,&#39;1987&#39;,&#39;1988&#39;,&#39;1989&#39;,&#39;1990&#39;,&#39;1991&#39;,&#39;1992&#39;,&#39;1993&#39;,&#39;1994&#39;,&#39;1995&#39;</span><br><span class="line"></span><br><span class="line">    ; 21个 4字节 双字 年收入</span><br><span class="line">    dd 16,22,382,1356,2390,8000,16000,24486,50065,97479,140417,197514</span><br><span class="line">    dd 345980,590827,803530,1183000,1843000,2759000,3753000,4649000,5937000</span><br><span class="line"></span><br><span class="line">    ; 21个 2字节 字 雇员数</span><br><span class="line">    dw 3,7,9,13,28,38,130,220,476,778,1001,1442,2258,2793,4037,5635,8226</span><br><span class="line">    dw 11542,14430,15257,17800</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">table segment</span><br><span class="line">    ; 每行长16字节</span><br><span class="line">    db 21 dup (&#39;year summ ne ?? &#39;)</span><br><span class="line">table ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax ; 数据段地址</span><br><span class="line"></span><br><span class="line">    mov ax,table</span><br><span class="line">    mov ss,ax ; table段地址</span><br><span class="line">    mov bp,0</span><br><span class="line"></span><br><span class="line">    mov cx,21 ; 循环21次</span><br><span class="line"></span><br><span class="line">s:</span><br><span class="line">    mov bx,0  ; 数据段偏移</span><br><span class="line">    mov si,21 ; 根据当前循环计算位置</span><br><span class="line">    sub si,cx ; 计算21个数据中所处位置</span><br><span class="line">    add si,si ; 字的偏移要x2</span><br><span class="line"></span><br><span class="line">    mov di,si ; 计算双字偏移量</span><br><span class="line">    add di,di ; 双字要x4</span><br><span class="line"></span><br><span class="line">    mov ax,[bx+di]   ; 年份前2字符</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov ax,[bx+di+2] ; 年份后2字符</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line"></span><br><span class="line">    add bx,84</span><br><span class="line">    mov ax,[bx+di]      ; 收入低字</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov dx,[bx+di+2]    ; 收入高16位，ax里存放32位除法的商</span><br><span class="line">    mov [bp],dx</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line"></span><br><span class="line">    add bx,84</span><br><span class="line">    div word ptr [bx+si] ; 年收入除以雇员，ax里有商，是人均收入</span><br><span class="line">    mov dx,[bx+si]   ; 雇员</span><br><span class="line">    mov [bp],dx</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line">    mov [bp],ax      ; 人均收入</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译调试与执行结果"><a href="#编译调试与执行结果" class="headerlink" title="编译调试与执行结果"></a>编译调试与执行结果</h2><p>编译：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E7%BC%96%E8%AF%91.png" alt=""></p>
+<p>调试：直接执行到 <code>int 21h</code> 指令之前。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E8%B0%83%E8%AF%95.png" alt=""></p>
+<p><strong>执行结果截图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
 </search>
