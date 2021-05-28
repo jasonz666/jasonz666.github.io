@@ -1034,4 +1034,37 @@
         <tag>汇编实战</tag>
       </tags>
   </entry>
+  <entry>
+    <title>汇编：实验9：在屏幕中间显示彩色字符串</title>
+    <url>/2021/05/28/assembly-experiment9.html</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>在屏幕中间分别显示绿色、绿底红色、白底蓝色的字符串 <code>welcome to masm!</code>。</p>
+<p>这里的屏幕指的是，显卡文本模式下的屏幕，屏幕尺寸 80x25，可以显示彩色、高亮、闪烁的ASCII字符。</p>
+<p>文本模式下一个字符由2个字节组成，即 ASCII+属性 = 2字节。属性字节的格式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E5%B1%9E%E6%80%A7%E5%AD%97%E8%8A%82.png" alt="属性字节格式"></p>
+<a id="more"></a>
+
+<p>内存地址空间中，b8000h～bffffh 共32KB，是80x25彩色字符模式的显示缓冲区。</p>
+<p>显示缓冲区分位8页，每页4KB，每页80x25=2000个字符，2000x2字节=4KB，共8页x4KB=32KB。</p>
+<h2 id="汇编程序"><a href="#汇编程序" class="headerlink" title="汇编程序"></a>汇编程序</h2><p>绿字属性字节：00000010b</p>
+<p>绿底红色：00100100b</p>
+<p>白底蓝色：01110001b</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 屏幕中间显示三行彩色字</span><br><span class="line">; sy9.asm</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db &#39;welcome to masm!&#39; ; 16字节</span><br><span class="line">    db 00000010b          ; 绿字</span><br><span class="line">    db 00100100b          ; 绿底红字</span><br><span class="line">    db 01110001b          ; 白底蓝字</span><br><span class="line">    db 11,12,13,64 ; 三行的位置 (25-3)&#x2F;2&#x3D;11 每行开始位置 (80-16)&#x2F;2*2&#x3D;64</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,16</span><br><span class="line">    mov cx,3</span><br><span class="line">row:</span><br><span class="line">    mov dx,cx</span><br><span class="line">    mov si,3</span><br><span class="line">    sub si,cx</span><br><span class="line">    mov ch,0</span><br><span class="line">    mov cl,19[si]</span><br><span class="line">    mov bp,0</span><br><span class="line">col:</span><br><span class="line">    add bp,160</span><br><span class="line">    loop col</span><br><span class="line"></span><br><span class="line">    mov ah,0</span><br><span class="line">    mov al,ds:[22]</span><br><span class="line">    add bp,ax       ; 每行字符起始位置</span><br><span class="line">    mov si,3</span><br><span class="line">    sub si,dx</span><br><span class="line">    mov ah,16[si]</span><br><span class="line">    mov bx,0</span><br><span class="line">    mov cx,16</span><br><span class="line">fill:</span><br><span class="line">    mov al,[bx]</span><br><span class="line">    push ds</span><br><span class="line">    mov si,0b800h</span><br><span class="line">    mov ds,si</span><br><span class="line">    mov ds:[bp],ax</span><br><span class="line">    pop ds</span><br><span class="line">    inc bx</span><br><span class="line">    add bp,2</span><br><span class="line">    loop fill</span><br><span class="line"></span><br><span class="line">    mov cx,dx</span><br><span class="line">    loop row</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h2><ol>
+<li>编译连接</li>
+</ol>
+<p>masm sy9.asm;<br>link sy9.obj;</p>
+<ol start="2">
+<li>执行</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E7%BB%93%E6%9E%9C.png" alt="显示结果"></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
 </search>
