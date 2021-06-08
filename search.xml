@@ -1,6 +1,377 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>汇编：实验10三题</title>
+    <url>/2021/06/06/assembly-experiment10.html</url>
+    <content><![CDATA[<h2 id="1、显示字符串"><a href="#1、显示字符串" class="headerlink" title="1、显示字符串"></a>1、显示字符串</h2><p>题目：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E9%A2%98%E7%9B%AE1.png" alt=""></p>
+<p>汇编源码：</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 实验10.1</span><br><span class="line">; 屏幕指定位置显示指定颜色的字符串</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">data segment</span><br><span class="line">    db &#39;Welcome to masm!&#39;,0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov dh,8        ; 行号 0-24</span><br><span class="line">    mov dl,3        ; 列号 0-79</span><br><span class="line">    mov cl,2        ; 颜色 绿色</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,0        ; ds:si指向字符串开头</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,10h      ; 函数相关栈</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    call show_str</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">; 参数为 行号dh 列号dl 颜色cl</span><br><span class="line">show_str:</span><br><span class="line">    ; 寄存器保存</span><br><span class="line">    push bp</span><br><span class="line">    mov bp,sp</span><br><span class="line">    push di</span><br><span class="line">    push si</span><br><span class="line">    push ax</span><br><span class="line">    push es</span><br><span class="line"></span><br><span class="line">    ; 显存起始地址段地址</span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line"></span><br><span class="line">    ; 显存中字符的开始地址</span><br><span class="line">    mov al,160      ; 每行字节数</span><br><span class="line">    mul byte ptr [bp+5]</span><br><span class="line">    mov dl,[bp+4]</span><br><span class="line">    mov dh,0</span><br><span class="line">    add ax,dx</span><br><span class="line">    add ax,dx</span><br><span class="line">    mov di,ax</span><br><span class="line"></span><br><span class="line">fill:</span><br><span class="line">    mov cl,[si]     ; 字符</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz ok</span><br><span class="line">    mov ch,[bp+6]   ; 颜色</span><br><span class="line">    mov es:[di],cx</span><br><span class="line">    add di,2</span><br><span class="line">    inc si</span><br><span class="line">    jmp fill</span><br><span class="line">ok:</span><br><span class="line">    ; 寄存器恢复</span><br><span class="line">    pop es</span><br><span class="line">    pop ax</span><br><span class="line">    pop si</span><br><span class="line">    pop di</span><br><span class="line">    pop bp</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>编译执行结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E9%A2%98%E7%9B%AE1%E7%BB%93%E6%9E%9C.png" alt=""></p>
+<h2 id="2、解决除法溢出问题"><a href="#2、解决除法溢出问题" class="headerlink" title="2、解决除法溢出问题"></a>2、解决除法溢出问题</h2><p>题目：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/3-%E9%A2%98%E7%9B%AE2.png" alt=""></p>
+<p>汇编源码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 实验10.2</span><br><span class="line">; 解决除法的商的溢出问题</span><br><span class="line">; 公式：X&#x2F;N &#x3D; int(H&#x2F;N)*65536 + [rem(H&#x2F;N)*65536+L]&#x2F;N</span><br><span class="line">; 公式是二项式，第一项得出整个除法的商的高16位，65536不用真的乘</span><br><span class="line">; 第二项得出整个除法的商的低16位，而余数是整个除法的余数</span><br><span class="line">; 题目中除数0a，整个除法余数是0，不好验证，这里使用除数0b</span><br><span class="line">assume cs:code</span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,10h</span><br><span class="line"></span><br><span class="line">    mov ax,4240h        ; 被除数低16</span><br><span class="line">    mov dx,000fh        ; 被除数高16</span><br><span class="line">    mov cx,0bh          ; 除数</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    push ax</span><br><span class="line">    call divdw</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">divdw:</span><br><span class="line">    push bp</span><br><span class="line">    mov bp,sp</span><br><span class="line">    push bx</span><br><span class="line"></span><br><span class="line">    ; int(H&#x2F;N)</span><br><span class="line">    mov dx,0</span><br><span class="line">    mov ax,[bp+6]</span><br><span class="line">    div word ptr [bp+8]</span><br><span class="line">    mov bx,ax           ; 商的高16位，dx里是余数，不用动</span><br><span class="line"></span><br><span class="line">    ; [rem(H&#x2F;N)*65536+L]&#x2F;N</span><br><span class="line">    ; rem(H&#x2F;N)*65536 表示余数放在高16位，刚好是dx</span><br><span class="line">    ; +L 则为被除数低16位，放到ax里，作为新除法被除数的低16位</span><br><span class="line">    mov ax,[bp+4]</span><br><span class="line">    div word ptr [bp+8]</span><br><span class="line">    mov cx,dx       ; cx为余数</span><br><span class="line">    mov dx,bx       ; dx为商的高16位，ax为商的低16位</span><br><span class="line"></span><br><span class="line">    pop bx</span><br><span class="line">    pop bp</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br><span class="line">; 以上，在win2k的dos下用debug执行exe会无效指令，退出dos。可以用dosbox执行。</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/4-%E9%A2%98%E7%9B%AE2%E7%BB%93%E6%9E%9C.png" alt=""></p>
+<h2 id="3、数值显示"><a href="#3、数值显示" class="headerlink" title="3、数值显示"></a>3、数值显示</h2><p>题目：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/5-%E9%A2%98%E7%9B%AE3.png" alt=""></p>
+<p>汇编源码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 将数据以十进制形式显示</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db 10 dup (0)</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">swap segment</span><br><span class="line">    dw 10 dup (0)</span><br><span class="line">swap ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,12666</span><br><span class="line">    mov bx,data</span><br><span class="line">    mov ds,bx</span><br><span class="line">    mov si,0</span><br><span class="line">    mov bx,stack</span><br><span class="line">    mov ss,bx</span><br><span class="line">    mov sp,10h</span><br><span class="line">    call dtoc</span><br><span class="line"></span><br><span class="line">    mov bx,swap</span><br><span class="line">    push ss</span><br><span class="line">    mov ss,bx</span><br><span class="line">    push sp</span><br><span class="line">    mov sp,20</span><br><span class="line">    call turn</span><br><span class="line">    pop sp</span><br><span class="line">    pop ss</span><br><span class="line"></span><br><span class="line">    mov dh,8</span><br><span class="line">    mov dl,3</span><br><span class="line">    mov cl,2</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    call show_str</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">dtoc:</span><br><span class="line">    push cx</span><br><span class="line">    push si</span><br><span class="line">    push bx</span><br><span class="line">s:</span><br><span class="line">    mov dx,0        ; 被除数dx:ax</span><br><span class="line">    mov bx,10</span><br><span class="line">    div bx</span><br><span class="line">    mov cx,ax       ; 商ax</span><br><span class="line">    add dx,30h      ; 余数+30h</span><br><span class="line">    mov [si],dl</span><br><span class="line">    jcxz oks</span><br><span class="line">    mov ax,cx</span><br><span class="line">    inc cx</span><br><span class="line">    inc si</span><br><span class="line">    jmp s</span><br><span class="line">oks:</span><br><span class="line">    pop bx</span><br><span class="line">    pop si</span><br><span class="line">    pop cx</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">; 参数为 行号dh 列号dl 颜色cl</span><br><span class="line">show_str:</span><br><span class="line">    ; 寄存器保存</span><br><span class="line">    push bp</span><br><span class="line">    mov bp,sp</span><br><span class="line">    push di</span><br><span class="line">    push si</span><br><span class="line">    push ax</span><br><span class="line">    push es</span><br><span class="line"></span><br><span class="line">    ; 显存起始地址段地址</span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line"></span><br><span class="line">    ; 显存中字符的开始地址</span><br><span class="line">    mov al,160      ; 每行字节数</span><br><span class="line">    mul byte ptr [bp+5]</span><br><span class="line">    mov dl,[bp+4]</span><br><span class="line">    mov dh,0</span><br><span class="line">    add ax,dx</span><br><span class="line">    add ax,dx</span><br><span class="line">    mov di,ax</span><br><span class="line"></span><br><span class="line">fill:</span><br><span class="line">    mov cl,[si]     ; 字符</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz okf</span><br><span class="line">    mov ch,[bp+6]   ; 颜色</span><br><span class="line">    mov es:[di],cx</span><br><span class="line">    add di,2</span><br><span class="line">    inc si</span><br><span class="line">    jmp fill</span><br><span class="line"></span><br><span class="line">okf:</span><br><span class="line">    ; 寄存器恢复</span><br><span class="line">    pop es</span><br><span class="line">    pop ax</span><br><span class="line">    pop si</span><br><span class="line">    pop di</span><br><span class="line">    pop bp</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">; 字符串顺序翻转</span><br><span class="line">turn:</span><br><span class="line">    push ax</span><br><span class="line">    push cx</span><br><span class="line">    push si</span><br><span class="line"></span><br><span class="line">turn_s:</span><br><span class="line">    mov cl,[si]</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz oks2</span><br><span class="line">    push cx</span><br><span class="line">    inc si</span><br><span class="line">    mov cx,2</span><br><span class="line">    jmp turn_s</span><br><span class="line"></span><br><span class="line">oks2:</span><br><span class="line">    mov cx,si</span><br><span class="line">    mov si,0</span><br><span class="line">ok_s:</span><br><span class="line">    pop ax</span><br><span class="line">    mov [si],al</span><br><span class="line">    inc si</span><br><span class="line">    loop ok_s</span><br><span class="line"></span><br><span class="line">    pop si</span><br><span class="line">    pop cx</span><br><span class="line">    pop ax</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br><span class="line">; 以上，在win2k的dos下用debug执行exe会无效指令，退出dos。可以用dosbox执行</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/6-%E9%A2%98%E7%9B%AE3-%E7%BB%93%E6%9E%9C.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：实验11：字符串中小写转大写</title>
+    <url>/2021/06/08/assembly-experiment11.html</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>写个汇编程序，将以0结尾的字符串中的小写字母转换为大写字母。</p>
+<p>定义函数 letterc，用于转换，参数 ds:si 指向字符串的首地址。</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>汇编源码：</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 把字符串中的小写字母转换为大写</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db &quot;Beginner&#39;s All-purpose Symbolic Instruction Code.&quot;,0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">begin:</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,10h</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,0</span><br><span class="line">    call letterc</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">letterc:</span><br><span class="line">    push si</span><br><span class="line">s:</span><br><span class="line">    mov cl,[si]</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz ok</span><br><span class="line">    cmp cx,&#39;a&#39;</span><br><span class="line">    jna s0</span><br><span class="line">    cmp cx,&#39;z&#39;</span><br><span class="line">    jnb s0</span><br><span class="line">    and byte ptr [si],11011111b</span><br><span class="line"></span><br><span class="line">s0:</span><br><span class="line">    inc si</span><br><span class="line">    jmp short s</span><br><span class="line"></span><br><span class="line">ok:</span><br><span class="line">    pop si</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end begin</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p>截图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E8%BD%AC%E5%A4%A7%E5%86%99%E6%88%AA%E5%9B%BE.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：实验12：自定义零号中断处理程序</title>
+    <url>/2021/06/08/assembly-experiment12.html</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>自定义0号中断处理程序，使得除法溢出发生时，调用自定义的0号中断处理程序。</p>
+<p>然后在屏幕中间显示红色字：”divide error!”</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 自定义0号中断处理程序</span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,cs</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,offset do0       ; ds:si指向中断程序代码的开始地址</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,200h              ; es:di指向中断程序存放处开始地址</span><br><span class="line">    mov cx,offset do0end - offset do0   ; 计算中断程序长度</span><br><span class="line">    cld                             ; 设置串传送方向为正</span><br><span class="line">    rep movsb                 ; 串传送，把中断程序代码复制到0:200h处</span><br><span class="line"></span><br><span class="line">    ; 设置中断向量</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov word ptr es:[0*4],200h</span><br><span class="line">    mov word ptr es:[0*4+2],0</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">do0:</span><br><span class="line">    jmp short do0start     ; jmp指令长2字节</span><br><span class="line">    db &quot;divide error!&quot;      ; 显示内容放在中断程序自身内部</span><br><span class="line"></span><br><span class="line">do0start:</span><br><span class="line">    mov ax,cs                ; 中断程序装载到0:200h后，被调用时，cs&#x3D;0,ip&#x3D;200</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,202h            ; ds:si指向中断程序中的字符串的开头</span><br><span class="line"></span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,12*160+36*2     ; es:di指向显存空间中间，即屏幕中间位置</span><br><span class="line"></span><br><span class="line">    mov ah,00000100b       ; 设为红色字</span><br><span class="line">    mov cx,13                      ; 字符串长度13</span><br><span class="line">s:</span><br><span class="line">    mov al,[si]</span><br><span class="line">    mov es:[di],ax</span><br><span class="line">    inc si</span><br><span class="line">    add di,2</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h           ; 中断程序中包含退出，执行中断程序后返回到系统</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">do0end:</span><br><span class="line">    nop                    ; 填充一个空字节，为了让do0end参与计算中断程序长度</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h2><p>截图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E7%BB%93%E6%9E%9C1.png" alt=""></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E7%BB%93%E6%9E%9C2.png" alt=""></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/3-%E7%BB%93%E6%9E%9C-%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：实验7</title>
+    <url>/2021/05/26/assembly-experiment7.html</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>实验7题目：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E9%A2%98%E7%9B%AE.png" alt="题目"></p>
+<p>具体数据在源码部分，见下文。</p>
+<a id="more"></a>
+
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E8%A6%81%E6%B1%82.png" alt="要求"></p>
+<p>汇编源码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 将每年信息按如下格式填充到table段：</span><br><span class="line">; 年份         收入       雇员      人均收入</span><br><span class="line">; 4B   空格    4B   空格  2B  空格  2B      空格 （共16字节）</span><br><span class="line">; &#39;1975&#39;      16         3        ??</span><br><span class="line">; 计算21年的人均收入</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">data segment</span><br><span class="line">    ; 21个 4字节 年份</span><br><span class="line">    db &#39;1975&#39;,&#39;1976&#39;,&#39;1977&#39;,&#39;1978&#39;,&#39;1979&#39;,&#39;1980&#39;,&#39;1981&#39;,&#39;1982&#39;,&#39;1983&#39;,&#39;1984&#39;</span><br><span class="line">    db &#39;1985&#39;,&#39;1986&#39;,&#39;1987&#39;,&#39;1988&#39;,&#39;1989&#39;,&#39;1990&#39;,&#39;1991&#39;,&#39;1992&#39;,&#39;1993&#39;,&#39;1994&#39;,&#39;1995&#39;</span><br><span class="line"></span><br><span class="line">    ; 21个 4字节 双字 年收入</span><br><span class="line">    dd 16,22,382,1356,2390,8000,16000,24486,50065,97479,140417,197514</span><br><span class="line">    dd 345980,590827,803530,1183000,1843000,2759000,3753000,4649000,5937000</span><br><span class="line"></span><br><span class="line">    ; 21个 2字节 字 雇员数</span><br><span class="line">    dw 3,7,9,13,28,38,130,220,476,778,1001,1442,2258,2793,4037,5635,8226</span><br><span class="line">    dw 11542,14430,15257,17800</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">table segment</span><br><span class="line">    ; 每行长16字节</span><br><span class="line">    db 21 dup (&#39;year summ ne ?? &#39;)</span><br><span class="line">table ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax ; 数据段地址</span><br><span class="line"></span><br><span class="line">    mov ax,table</span><br><span class="line">    mov ss,ax ; table段地址</span><br><span class="line">    mov bp,0</span><br><span class="line"></span><br><span class="line">    mov cx,21 ; 循环21次</span><br><span class="line"></span><br><span class="line">s:</span><br><span class="line">    mov bx,0  ; 数据段偏移</span><br><span class="line">    mov si,21 ; 根据当前循环计算位置</span><br><span class="line">    sub si,cx ; 计算21个数据中所处位置</span><br><span class="line">    add si,si ; 字的偏移要x2</span><br><span class="line"></span><br><span class="line">    mov di,si ; 计算双字偏移量</span><br><span class="line">    add di,di ; 双字要x4</span><br><span class="line"></span><br><span class="line">    mov ax,[bx+di]   ; 年份前2字符</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov ax,[bx+di+2] ; 年份后2字符</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line"></span><br><span class="line">    add bx,84</span><br><span class="line">    mov ax,[bx+di]      ; 收入低字</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov dx,[bx+di+2]    ; 收入高16位，ax里存放32位除法的商</span><br><span class="line">    mov [bp],dx</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line"></span><br><span class="line">    add bx,84</span><br><span class="line">    div word ptr [bx+si] ; 年收入除以雇员，ax里有商，是人均收入</span><br><span class="line">    mov dx,[bx+si]   ; 雇员</span><br><span class="line">    mov [bp],dx</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line">    mov [bp],ax      ; 人均收入</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="编译调试与执行结果"><a href="#编译调试与执行结果" class="headerlink" title="编译调试与执行结果"></a>编译调试与执行结果</h2><p>编译：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E7%BC%96%E8%AF%91.png" alt=""></p>
+<p>调试：直接执行到 <code>int 21h</code> 指令之前。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E8%B0%83%E8%AF%95.png" alt=""></p>
+<p><strong>执行结果截图：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：实验9：在屏幕中间显示彩色字符串</title>
+    <url>/2021/05/28/assembly-experiment9.html</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>在屏幕中间分别显示绿色、绿底红色、白底蓝色的字符串 <code>welcome to masm!</code>。</p>
+<p>这里的屏幕指的是，显卡文本模式下的屏幕，屏幕尺寸 80x25，可以显示彩色、高亮、闪烁的ASCII字符。</p>
+<p>文本模式下一个字符由2个字节组成，即 ASCII+属性 = 2字节。属性字节的格式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E5%B1%9E%E6%80%A7%E5%AD%97%E8%8A%82.png" alt="属性字节格式"></p>
+<a id="more"></a>
+
+<p>内存地址空间中，b8000h～bffffh 共32KB，是80x25彩色字符模式的显示缓冲区。</p>
+<p>显示缓冲区分位8页，每页4KB，每页80x25=2000个字符，2000x2字节=4KB，共8页x4KB=32KB。</p>
+<h2 id="汇编程序"><a href="#汇编程序" class="headerlink" title="汇编程序"></a>汇编程序</h2><p>绿字属性字节：00000010b</p>
+<p>绿底红色：00100100b</p>
+<p>白底蓝色：01110001b</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 屏幕中间显示三行彩色字</span><br><span class="line">; sy9.asm</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db &#39;welcome to masm!&#39; ; 16字节</span><br><span class="line">    db 00000010b          ; 绿字</span><br><span class="line">    db 00100100b          ; 绿底红字</span><br><span class="line">    db 01110001b          ; 白底蓝字</span><br><span class="line">    db 11,12,13,64 ; 三行的位置 (25-3)&#x2F;2&#x3D;11 每行开始位置 (80-16)&#x2F;2*2&#x3D;64</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,16</span><br><span class="line">    mov cx,3</span><br><span class="line">row:</span><br><span class="line">    mov dx,cx</span><br><span class="line">    mov si,3</span><br><span class="line">    sub si,cx</span><br><span class="line">    mov ch,0</span><br><span class="line">    mov cl,19[si]</span><br><span class="line">    mov bp,0</span><br><span class="line">col:</span><br><span class="line">    add bp,160</span><br><span class="line">    loop col</span><br><span class="line"></span><br><span class="line">    mov ah,0</span><br><span class="line">    mov al,ds:[22]</span><br><span class="line">    add bp,ax       ; 每行字符起始位置</span><br><span class="line">    mov si,3</span><br><span class="line">    sub si,dx</span><br><span class="line">    mov ah,16[si]</span><br><span class="line">    mov bx,0</span><br><span class="line">    mov cx,16</span><br><span class="line">fill:</span><br><span class="line">    mov al,[bx]</span><br><span class="line">    push ds</span><br><span class="line">    mov si,0b800h</span><br><span class="line">    mov ds,si</span><br><span class="line">    mov ds:[bp],ax</span><br><span class="line">    pop ds</span><br><span class="line">    inc bx</span><br><span class="line">    add bp,2</span><br><span class="line">    loop fill</span><br><span class="line"></span><br><span class="line">    mov cx,dx</span><br><span class="line">    loop row</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h2><ol>
+<li>编译连接</li>
+</ol>
+<p>masm sy9.asm;<br>link sy9.obj;</p>
+<ol start="2">
+<li>执行</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E7%BB%93%E6%9E%9C.png" alt="显示结果"></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：8086转移指令汇总</title>
+    <url>/2021/06/08/assembly-jump-instruction-collect.html</url>
+    <content><![CDATA[<p><strong>可以修改IP，或者同时修改CS与IP的指令统称为转移指令</strong>。</p>
+<p>因为CS:IP是指令寄存器，比较特殊，且CS无法用其他寄存器直接赋值，如：mov cs,ax。</p>
+<p>所以需要jmp，call，ret，loop等指令来修改IP或同时修改CS与IP。</p>
+<p>CS:IP的组合用来实现8086CPU的20位寻址（虽然8086的寄存器是16位的，但8086内部有20位地址加法器）。</p>
+<p>另外，8086CPU是<code>小端模式</code>。内存高地址存放数据高位，内存低地址存放数据低位。</p>
+<h2 id="转移指令种类"><a href="#转移指令种类" class="headerlink" title="转移指令种类"></a>转移指令种类</h2><p>8086转移指令种类：</p>
+<ul>
+<li><p>无条件转移指令（如 jmp）</p>
+</li>
+<li><p>条件转移指令（如 jcxz）</p>
+</li>
+<li><p>循环指令（如 loop）</p>
+</li>
+<li><p>过程（如 call、ret、retf）</p>
+</li>
+<li><p>中断</p>
+</li>
+</ul>
+<h2 id="伪指令offset"><a href="#伪指令offset" class="headerlink" title="伪指令offset"></a>伪指令offset</h2><p>offset 是伪指令，由汇编器识别并处理，用于取得标号的偏移地址。如：</p>
+<a id="more"></a>
+
+<p>start: mov ax,offset start     ; 相当于mov ax,0</p>
+<p>s: mov ax,offset s               ; 相当于mov ax,3（因为 mov ax,0 指令占3字节）</p>
+<h2 id="jmp无条件转移"><a href="#jmp无条件转移" class="headerlink" title="jmp无条件转移"></a>jmp无条件转移</h2><h3 id="根据位移来转移的jmp指令"><a href="#根据位移来转移的jmp指令" class="headerlink" title="根据位移来转移的jmp指令"></a>根据位移来转移的jmp指令</h3><p><strong>jmp short 标号，段内短转移</strong></p>
+<p>功能：</p>
+<p>jmp short 标号 功能为：IP=IP+8位位移</p>
+<ol>
+<li>8位位移=标号处的地址 - jmp指令后的第一个字节的地址；</li>
+<li>short 指明此处的位移为8位位移；</li>
+<li>8位位移的范围是 <code>-128～127</code>，用补码表示 [注1]；</li>
+<li>8位位移由编译程序在编译时算出。</li>
+</ol>
+<p>注1：</p>
+<p>正数的原码与反码、补码相同。负数的反码为绝对值相同的正数按位取反，补码为反码+1。</p>
+<p><strong>jmp near ptr 标号，段内近转移</strong></p>
+<p>功能：</p>
+<p>jmp near ptr 标号 功能为：IP=IP+16位位移</p>
+<ol>
+<li>16位位移=标号处的地址 - jmp指令后的第一个字节的地址；</li>
+<li>near ptr 指明此处的位移为16位位移；</li>
+<li>16位位移的范围是 <code>-32768~32767</code> ，用补码表示；</li>
+<li>16位位移由编译程序再编译时算出。</li>
+</ol>
+<h3 id="段间转移、远转移jmp"><a href="#段间转移、远转移jmp" class="headerlink" title="段间转移、远转移jmp"></a>段间转移、远转移jmp</h3><p><strong>jmp far ptr 标号</strong></p>
+<p>功能：</p>
+<p>CS=标号所在段的段地址；IP=标号所在段的偏移地址。</p>
+<p>如：</p>
+<p>start: mov ax,0  ; 假设标号处段地址=0123h、偏移地址=10h</p>
+<p>mov bx,0</p>
+<p>jmp far ptr start  ; 执行完后，CS=0123h，IP=10h</p>
+<h3 id="转移地址在寄存器中的jmp"><a href="#转移地址在寄存器中的jmp" class="headerlink" title="转移地址在寄存器中的jmp"></a>转移地址在寄存器中的jmp</h3><p><strong>jmp 16位寄存器</strong></p>
+<p>如：jmp ax，功能：IP=AX。</p>
+<h3 id="转移地址在内存中的jmp"><a href="#转移地址在内存中的jmp" class="headerlink" title="转移地址在内存中的jmp"></a>转移地址在内存中的jmp</h3><p><strong>jmp word ptr 内存单元地址</strong></p>
+<p>功能：</p>
+<p>段内转移，使得 IP=内存单元地址处的一个字（占2字节）</p>
+<p>如：</p>
+<p>mov ax,0123h</p>
+<p>mov ds:[0],ax</p>
+<p>jmp word ptr [0]  ; 执行后，IP=0123h</p>
+<p><strong>jmp dword ptr 内存单元地址</strong></p>
+<p>功能：</p>
+<p>段间转移，使得 <code>CS=内存单元地址+2 处的一个字</code>（2字节）、<code>IP=内存单元地址 处的一个字</code>（2字节）</p>
+<p>也就是说，内存高位的一个字给CS寄存器，内存低位的一个字给IP寄存器。</p>
+<p>如：</p>
+<p>mov ax,0123h</p>
+<p>mov [bx],ax</p>
+<p>mov word ptr [bx+2],0</p>
+<p>jmp dword ptr [bx] ; 执行后，CS=0，IP=0123h</p>
+<h2 id="jcxz条件转移指令"><a href="#jcxz条件转移指令" class="headerlink" title="jcxz条件转移指令"></a>jcxz条件转移指令</h2><p>jcxz可以理解为：<strong>J</strong>ump if <strong>CX</strong> equal <strong>Z</strong>ero。</p>
+<p><strong>语法：jcxz 标号（如果 cx=0，转移到标号处执行）</strong></p>
+<p>功能：</p>
+<p>jcxz 指令为有条件转移指令，所有有条件转移指令都是<strong>短转移</strong>，指令机器码中包含位移而不是目的地址。</p>
+<ol>
+<li>当 cx=0 时，IP=IP+8位位移；</li>
+<li>8位位移=标号处的地址 - jcxz指令后的第一个字节的地址；</li>
+<li>8位位移的范围是 <code>-128~127</code>，用补码表示；</li>
+<li>8位位移由编译程序在编译时算出。</li>
+<li>当 cx ≠ 0 时，什么也不做，程序继续向下执行。</li>
+</ol>
+<p>jcxz 标号 的功能相当于：</p>
+<p><code>if (cx == 0) jmp short 标号</code></p>
+<h2 id="loop转移指令"><a href="#loop转移指令" class="headerlink" title="loop转移指令"></a>loop转移指令</h2><p><strong>语法：loop 标号（cx–，如果cx ≠ 0，转移到标号处执行）</strong></p>
+<p>功能：</p>
+<p>loop 指令位循环指令，所有循环指令都是<strong>短转移</strong>，指令机器码中包含位移而不是目的地址。</p>
+<p>操作：</p>
+<p>cx=cx-1<br>如果 cx ≠ 0，IP=IP+8位位移</p>
+<ol>
+<li>8位位移=标号处的地址 - loop指令后的第一个字节的地址；</li>
+<li>8位位移的范围是 <code>-128～127</code>，用补码表示；</li>
+<li>8位位移由编译程序在编译时算出。</li>
+<li>当 cx = 0 时，什么也不做，程序继续向下执行。</li>
+</ol>
+<p>loop 标号 的功能相当于：</p>
+<p><code>cx--;</code><br><code>if (cx != 0) jmp short 标号</code></p>
+<h2 id="ret和retf转移指令"><a href="#ret和retf转移指令" class="headerlink" title="ret和retf转移指令"></a>ret和retf转移指令</h2><h3 id="ret与retf指令"><a href="#ret与retf指令" class="headerlink" title="ret与retf指令"></a>ret与retf指令</h3><p>ret 指令用栈中的一个字的数据（ss:sp指向的栈），修改IP寄存器，实现近转移（段内转移）。</p>
+<p>retf 指令用栈中的二个字的数据（ss:sp指向的栈），修改CS和IP，实现远转移（段间转移）。</p>
+<p>功能：</p>
+<p>ret 指令，进行如下两步操作：</p>
+<ol>
+<li>IP=SS*16 + SP      出栈，令IP=栈顶的2个字节</li>
+<li>SP=SP+2              栈指针指向栈中下一个字节</li>
+</ol>
+<p>retf 指令，进行如下4步操作：</p>
+<ol>
+<li>IP=SS*16 + SP      栈顶2字节给IP</li>
+<li>SP=SP+2</li>
+<li>CS=SS*16 + SP     栈中接下来2字节CS</li>
+<li>SP= SP+2</li>
+</ol>
+<p>如果用汇编语法来解释 ret 相当于：</p>
+<p>pop IP</p>
+<p>如果用汇编语法来解释 retf 相当于：</p>
+<p>pop IP</p>
+<p>pop CS</p>
+<h3 id="ret-n-指令"><a href="#ret-n-指令" class="headerlink" title="ret n 指令"></a>ret n 指令</h3><p>ret n 的含义相当于：</p>
+<p>pop ip<br>add sp,n</p>
+<h2 id="call转移指令"><a href="#call转移指令" class="headerlink" title="call转移指令"></a>call转移指令</h2><h3 id="call-标号（将当前IP压栈，转到标号处执行指令）"><a href="#call-标号（将当前IP压栈，转到标号处执行指令）" class="headerlink" title="call 标号（将当前IP压栈，转到标号处执行指令）"></a>call 标号（将当前IP压栈，转到标号处执行指令）</h3><p>操作：</p>
+<ol>
+<li>SP=SP-2                   修改栈顶指针</li>
+<li>SS*16+SP=IP            当前IP的值压栈</li>
+<li>IP=IP+16位位移       IP加上根据标号计算出的16位位移（即段内近转移，call指令没有段内短转移）</li>
+</ol>
+<p>说明：</p>
+<ol>
+<li>16位位移=标号处的地址 - call指令后的第一个字节的地址；</li>
+<li>16位位移的范围是 <code>-32768~32767</code>，用补码表示；</li>
+<li>16位位移由编译程序在编译时算出。</li>
+</ol>
+<p>call 标号 相当于：</p>
+<p><code>push IP</code></p>
+<p><code>jmp near ptr 标号</code></p>
+<h3 id="call-far-ptr-标号（将当前CS和IP依次压栈，转到标号处执行指令）"><a href="#call-far-ptr-标号（将当前CS和IP依次压栈，转到标号处执行指令）" class="headerlink" title="call far ptr 标号（将当前CS和IP依次压栈，转到标号处执行指令）"></a>call far ptr 标号（将当前CS和IP依次压栈，转到标号处执行指令）</h3><p>call far ptr 标号 实现段间转移，操作：</p>
+<ol>
+<li>sp=sp-2<br>ss*16+sp=CS<br>sp=sp-2<br>ss*16+sp=IP</li>
+<li>CS=标号所在段地址<br>IP=标号所在段的偏移地址</li>
+</ol>
+<p>call far ptr 标号，相当于：</p>
+<p><code>push CS</code></p>
+<p><code>push IP</code></p>
+<p><code>jmp far ptr 标号</code></p>
+<h3 id="call-16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）"><a href="#call-16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）" class="headerlink" title="call 16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）"></a>call 16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）</h3><p>功能：</p>
+<p>sp=sp-2<br>ss*16+sp=IP<br>IP=16位寄存器</p>
+<p>call 16位寄存器 相当于执行：</p>
+<p><code>push IP</code></p>
+<p><code>jmp 16位reg</code></p>
+<h3 id="call-word-ptr-内存单元地址"><a href="#call-word-ptr-内存单元地址" class="headerlink" title="call word ptr 内存单元地址"></a>call word ptr 内存单元地址</h3><p>此指令相当于执行：</p>
+<p><code>push IP</code></p>
+<p><code>jmp word ptr 内存单元地址</code></p>
+<p>如：</p>
+<p>mov sp,10h</p>
+<p>mov ax,0123h</p>
+<p>mov ds:[0],ax</p>
+<p>call word ptr ds:[0]</p>
+<p>最后，IP=0123h，栈指针SP=0eh</p>
+<h3 id="call-dword-ptr-内存单元地址"><a href="#call-dword-ptr-内存单元地址" class="headerlink" title="call dword ptr 内存单元地址"></a>call dword ptr 内存单元地址</h3><p>此指令相当于执行：</p>
+<p><code>push CS</code></p>
+<p><code>push IP</code></p>
+<p><code>jmp dword ptr 内存单元地址</code></p>
+<p>如：</p>
+<p>mov sp,10h</p>
+<p>mov ax,0123h</p>
+<p>mov ds:[0],ax</p>
+<p>mov word ptr ds:[2],0</p>
+<p>call dword ptr ds:[0]</p>
+<p>最后，CS=0，IP=0123h，栈指针SP=0ch</p>
+<h2 id="cmp与根据比较结果转移的指令"><a href="#cmp与根据比较结果转移的指令" class="headerlink" title="cmp与根据比较结果转移的指令"></a>cmp与根据比较结果转移的指令</h2><h3 id="先说说8086标志寄存器结构"><a href="#先说说8086标志寄存器结构" class="headerlink" title="先说说8086标志寄存器结构"></a>先说说8086标志寄存器结构</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/10-flag%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A81.png" alt=""></p>
+<p><strong>标志寄存器在Debug程序中的表示：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/13-debug%E4%B8%ADflag%E7%9A%84%E8%A1%A8%E7%A4%BA.png" alt=""></p>
+<p><strong>算术逻辑运算相关指令：</strong></p>
+<p>add, sub, mul, div, inc, dec, or, and 等</p>
+<p><strong>传送相关指令：</strong></p>
+<p>mov, push, pop 等</p>
+<p><strong>修改标志寄存器的指令：</strong></p>
+<p>pushf，把标志寄存器的值入栈</p>
+<p>popf，从栈中弹出数据放入标志寄存器</p>
+<h3 id="标志位含义"><a href="#标志位含义" class="headerlink" title="标志位含义"></a>标志位含义</h3><p>ZF：执行算数逻辑运算指令后，保存结果的寄存器中，结果是0，zf=1，反之zf=0</p>
+<p>PF：执行算数逻辑运算指令后，保存结果的寄存器中，有偶数个1（0个1也是偶数）时，pf=1，奇数个1时，pf=0</p>
+<p>SF：执行算数逻辑运算指令后，保存结果的寄存器中，符号位是1，sf=1，符号位是0，sf=0</p>
+<p>CF：执行<strong>无符号数</strong>运算后，加法有进位或减法有借位时，cf=1，反之，cf=0</p>
+<p>OF：执行<strong>有符号数</strong>运算后，如果有溢出（运算结果超出结果寄存器的有符号数表示范围称为溢出），of=1，否则of=0</p>
+<h3 id="cmp指令"><a href="#cmp指令" class="headerlink" title="cmp指令"></a>cmp指令</h3><p>cmp 是比较指令，相当于减法指令，但不会保存结果。cmp 执行后会对标志寄存器产生影响。</p>
+<p>格式：cmp 操作对象1, 操作对象2</p>
+<p><strong>无符号数的cmp（涉及到标志位 ZF、CF）：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/10-cmp%E6%8C%87%E4%BB%A4.png" alt=""></p>
+<p><strong>有符号数的cmp（涉及到标志位 SF、OF、ZF）：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/14-%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E6%98%AF%E5%90%A6%E7%9B%B8%E7%AD%89.png" alt=""></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/11-%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0cmp%E6%8C%87%E4%BB%A4.png" alt=""></p>
+<h3 id="根据比较结果转移的指令"><a href="#根据比较结果转移的指令" class="headerlink" title="根据比较结果转移的指令"></a>根据比较结果转移的指令</h3><p>这些指令与cmp配合使用，这些指令就是检测cmp执行后影响到的标志位：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/12-%E6%A0%B9%E6%8D%AE%E6%AF%94%E8%BE%83%E7%BB%93%E6%9E%9C%E7%9A%84%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4.png" alt=""></p>
+<p>根据有符号数的比较结果进行转移的条件转移指令与无符号数的原理相同，只是检查的标志位有所不同。</p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：8086CPU寻址模式、Debug程序用法</title>
+    <url>/2021/05/21/assembly-preparing.html</url>
+    <content><![CDATA[<p>为了配合《操作系统实战45讲》，还是得重学一下汇编。所以就有了这个系列。</p>
+<p>本系列文章算是《汇编语言第4版》的笔记，也有自己的一些心得～</p>
+<p>然后这个系列的文章标题是这样的：<code>汇编：吧啦吧啦吧啦</code></p>
+<p>老师的教学思想镇楼：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/01-%E6%95%99%E5%AD%A6%E6%80%9D%E6%83%B3.png" alt=""></p>
+<p>我并不完全赞同这个思想，因为会有客观条件限制。</p>
+<h2 id="看看计算机的逻辑结构"><a href="#看看计算机的逻辑结构" class="headerlink" title="看看计算机的逻辑结构"></a>看看计算机的逻辑结构</h2><h3 id="计算机中各类存储器的逻辑连接"><a href="#计算机中各类存储器的逻辑连接" class="headerlink" title="计算机中各类存储器的逻辑连接"></a>计算机中各类存储器的逻辑连接</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%90%84%E7%B1%BB%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E8%BF%9E%E6%8E%A5.png" alt=""></p>
+<a id="more"></a>
+
+<h3 id="把各类存储器看作一个逻辑存储器"><a href="#把各类存储器看作一个逻辑存储器" class="headerlink" title="把各类存储器看作一个逻辑存储器"></a>把各类存储器看作一个逻辑存储器</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B8%80%E4%B8%AA%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E5%99%A8.png" alt=""></p>
+<h3 id="8086合成20位地址（8086实模式寻址方式）"><a href="#8086合成20位地址（8086实模式寻址方式）" class="headerlink" title="8086合成20位地址（8086实模式寻址方式）"></a>8086合成20位地址（8086实模式寻址方式）</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/8086CPU%E5%90%88%E6%88%9020%E4%BD%8D%E5%9C%B0%E5%9D%80.png" alt=""></p>
+<h2 id="搭建实验环境"><a href="#搭建实验环境" class="headerlink" title="搭建实验环境"></a>搭建实验环境</h2><p>《汇编语言》这本书用的是8086CPU的实模式来讲汇编的，然后用DOS系统做实验。</p>
+<p>可是，DOS系统也太古老了。那我们就在虚拟机VMware中装一个Win2k，然后进命令行，再用Debug程序做实验。</p>
+<p>虚拟机安装Win2k的教程太多了，这里不在赘述。下面是安装过程的一些截图：</p>
+<h3 id="Win2k安装过程"><a href="#Win2k安装过程" class="headerlink" title="Win2k安装过程"></a>Win2k安装过程</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/Win2k%E5%AE%89%E8%A3%85%E6%88%AA%E5%9B%BE.png" alt=""></p>
+<h3 id="来看看Win2k系统，00后的朋友们不一定见过"><a href="#来看看Win2k系统，00后的朋友们不一定见过" class="headerlink" title="来看看Win2k系统，00后的朋友们不一定见过"></a>来看看Win2k系统，00后的朋友们不一定见过</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/WIn2k%E7%B3%BB%E7%BB%9F%E6%88%AA%E5%9B%BE.png" alt=""></p>
+<h3 id="重点来了，进入虚拟8086模式的DOS"><a href="#重点来了，进入虚拟8086模式的DOS" class="headerlink" title="重点来了，进入虚拟8086模式的DOS"></a>重点来了，进入虚拟8086模式的DOS</h3><p>在Win2k中进入的DOS，是虚拟8086模式的DOS。要用实模式的DOS，在虚拟机直接装个DOS系统比较好。</p>
+<p>Win2k进入DOS的方法：开始菜单 ⟶ 运行 ⟶ 输入 command ⟶ 按Alt+Enter进入全屏DOS</p>
+<p><code>exit</code> 输入此命令退出DOS，回到Win2k</p>
+<p><code>debug</code> 进入Debug程序，做汇编实验就靠它了</p>
+<p><code>quit</code> 退出Debug程序，回到DOS</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/Win2k%E8%BF%9B%E5%85%A5DOS%E5%86%99%E6%B1%87%E7%BC%96.png" alt=""></p>
+<h3 id="Debug程序的常用操作按键"><a href="#Debug程序的常用操作按键" class="headerlink" title="Debug程序的常用操作按键"></a>Debug程序的常用操作按键</h3><p>Debug常用功能一览。包括查看、修改寄存器或内存的命令。机器码翻译成汇编，输入汇编指令，执行汇编指令等。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/DOS%E7%9A%84Debug%E7%A8%8B%E5%BA%8F%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD.png" alt=""></p>
+<p>好了，环境搭好，后面就可以学习汇编了。</p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>计科B站学习视频</title>
     <url>/2021/04/26/cs-learn-in-bilibili.html</url>
     <content><![CDATA[<p><strong>计算机科学入门：</strong></p>
@@ -248,6 +619,86 @@
       <tags>
         <tag>Gpg</tag>
         <tag>SSH</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>操作系统实战：实验环境搭建、热门问题解答</title>
+    <url>/2021/05/18/os-experiment-environment-and-faq.html</url>
+    <content><![CDATA[<p>本系列文章是《操作系统实战45讲》课程学习过程中的心得体会与问题汇总。</p>
+<p>系列文章放入「<strong>操作系统实战</strong>」分类里。如果对你有帮助，欢迎关注我。</p>
+<p><strong>如果你也想一起写一个属于自己的操作系统，直接翻到文末查看</strong>。</p>
+<p>话不多说，现在进入正题。本文分为两个部分：一、实验环境搭建。二、前4节课遇到的问题与解答。</p>
+<h2 id="实验环境搭建"><a href="#实验环境搭建" class="headerlink" title="实验环境搭建"></a>实验环境搭建</h2><p>1、一台电脑。电脑上装有Windows或MacOS系统。我用的是MacOS系统。</p>
+<p>2、虚拟机。我选择的是VMware Fusion 12（若是Windows，装个最新版VMware即可）。</p>
+<p>3、Ubuntu/CentOS系统。我选择的是Ubuntu，作为虚拟机系统，用来实现自己的操作系统。</p>
+<h3 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h3><ol>
+<li><p>安装好虚拟机软件VMware，基本都是点下一步，下一步，直到安装完成。</p>
+</li>
+<li><p>从 <a href="http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso" target="_blank" rel="noopener">这里</a>[1] 下载Ubuntu 20.04系统安装文件，是一个iso文件。</p>
+</li>
+<li><p>在VMware里创建一个新的虚拟机，用来安装Ubuntu 20.04系统：</p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/vmware-new-os.png" alt="新建虚拟机"></p>
+<p>选择新建，后面的步骤比较简单，跟着提示做就可以了。</p>
+<a id="more"></a>
+
+<p><strong>记得Ubuntu需要分配至少1G的内存，不然可能无法正常启动Ubuntu。</strong></p>
+<ol start="4">
+<li>安装完Ubuntu 20.04后，登录系统，在Ubuntu系统里安装工具（以后我们自己写的系统就叫HelloOS）：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 按下 Control+Option+T 组合键打开一个终端（Windows下是 Control+Alt+T）</span></span><br><span class="line"><span class="comment"># 在终端里输入如下命令行，并按 回车，开始执行</span></span><br><span class="line"><span class="comment"># gcc是编译工具集，包含了C语言编译器等。nasm是Ubuntu下的汇编器。</span></span><br><span class="line">sudo apt install -y gcc nasm</span><br></pre></td></tr></table></figure>
+
+<p>截图如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B9%8C%E7%8F%AD%E5%9B%BE%E4%B8%AD%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7.png" alt="安装编译工具"></p>
+<ol start="5">
+<li>克隆HelloOS的源代码并编译（下面的命令继续在Ubuntu终端里执行）：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install -y git  <span class="comment"># 安装git工具</span></span><br><span class="line">git <span class="built_in">clone</span> https://gitee.com/lmos/cosmos  <span class="comment"># 克隆源代码</span></span><br><span class="line"><span class="built_in">cd</span> cosmos/lesson02/HelloOS/  <span class="comment"># 进入源码目录</span></span><br><span class="line">make  <span class="comment"># 编译HelloOS内核文件HelloOS.bin</span></span><br><span class="line">sudo cp HelloOS.bin /boot/HelloOS.bin  <span class="comment"># 拷贝内核文件到grub的引导分区里</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>添加grub启动项，用来启动我们的HelloOS：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编辑grub的配置文件</span></span><br><span class="line">sudo vim /boot/grub/grub.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在键盘上依次按下：</span></span><br><span class="line"><span class="built_in">shift</span> + g + o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把下面内容粘贴到文末</span></span><br><span class="line"><span class="comment">#### BEGIN HelloOS.bin ####</span></span><br><span class="line">menuentry <span class="string">'HelloOS'</span> &#123;</span><br><span class="line">     insmod part_msdos <span class="comment">#GRUB加载分区模块识别分区</span></span><br><span class="line">     insmod ext2 <span class="comment">#GRUB加载ext文件系统模块识别ext文件系统</span></span><br><span class="line">     <span class="built_in">set</span> root=<span class="string">'hd0,msdos1'</span> <span class="comment">#注意boot目录挂载的分区，这是我机器上的情况</span></span><br><span class="line">     multiboot2 /boot/HelloOS.bin <span class="comment">#GRUB以multiboot2协议加载HelloOS.bin</span></span><br><span class="line">     boot <span class="comment">#GRUB启动HelloOS.bin</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#### End /boot/HelloOS.bin ####</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在键盘上依次按下，然后回车，添加的内容就保存好了：</span></span><br><span class="line">esc + <span class="built_in">shift</span> + ; + wq!</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在终端重启系统，输入：</span></span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>重启Ubuntu系统后，在系统启动项菜单里选择 HelloOS（上下箭头选择HelloOS，然后按回车启动它）：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E9%80%89%E6%8B%A9HelloOS%E5%90%AF%E5%8A%A8.png" alt="启动HelloOS"></p>
+<ol start="8">
+<li>启动成功后，如下图所示（HelloOS还没重启代码，要回到Ubuntu，直接重启虚拟机，选上图的第一项来启动）：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/HelloOS%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F.png" alt="启动成功"></p>
+<h2 id="问题与解答"><a href="#问题与解答" class="headerlink" title="问题与解答"></a>问题与解答</h2><h3 id="1、为什么没有出现引导菜单，让我选择HelloOS来启动？"><a href="#1、为什么没有出现引导菜单，让我选择HelloOS来启动？" class="headerlink" title="1、为什么没有出现引导菜单，让我选择HelloOS来启动？"></a>1、为什么没有出现引导菜单，让我选择HelloOS来启动？</h3><p>首先，什么是引导菜单？请看上文步骤7中的截图。</p>
+<p>答：这与grub的设置有关，菜单项可能隐藏了，按如下操作：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入Ubuntu系统后，进入终端（还记得吗，可以按 Ctrl+Opt+T/Ctrl+Alt+T启动终端）</span></span><br><span class="line"><span class="comment"># 输入命令编辑grub配置文件</span></span><br><span class="line">sudo vim /etc/default/grub</span><br></pre></td></tr></table></figure>
+
+<p>把红框的3行，修改成如下图所示（没有的行就加上）：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E8%AE%BE%E7%BD%AEgrub%E9%85%8D%E7%BD%AE.png" alt="设置grub"></p>
+<p>然后更新grub：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 执行命令</span></span><br><span class="line">sudo update-grub2</span><br></pre></td></tr></table></figure>
+
+<p>更新后，需要重新添加HelloOS的引导项到grub.cfg文件。见上文步骤6、步骤7。</p>
+<h3 id="2、重启选择HelloOS启动后显示-error-file-boot-HelloOS-bin’-not-found"><a href="#2、重启选择HelloOS启动后显示-error-file-boot-HelloOS-bin’-not-found" class="headerlink" title="2、重启选择HelloOS启动后显示 error: file `/boot/HelloOS.bin’ not found."></a>2、重启选择HelloOS启动后显示 error: file `/boot/HelloOS.bin’ not found.</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/HelloOS.bin%E6%9C%AA%E6%89%BE%E5%88%B0.png" alt="HelloOS.bin未找到"></p>
+<p>答：这与boot分区是否独立有关。重新进入Ubuntu系统，打开终端（步骤见上文），执行命令：df /boot /</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/boot%E7%8B%AC%E7%AB%8B%E5%88%86%E5%8C%BA.png" alt="boot独立分区"></p>
+<p>如上，文件系统（Filesystem）一列，两行内容不一样，/boot在/dev/sda1，那就把/boot/grub/grub.cfg文件里的 <code>multiboot2 /boot/HelloOS.bin</code> 改成 <code>multiboot2 /HelloOS.bin</code>，保存文件。然后重启系统，选择HelloOS启动。</p>
+<h3 id="3、重启选择HelloOS启动后显示-error-disk-hd0-msdos2’-not-found-之类的错误"><a href="#3、重启选择HelloOS启动后显示-error-disk-hd0-msdos2’-not-found-之类的错误" class="headerlink" title="3、重启选择HelloOS启动后显示 error: disk `hd0,msdos2’ not found. 之类的错误"></a>3、重启选择HelloOS启动后显示 error: disk `hd0,msdos2’ not found. 之类的错误</h3><p>答：可能是在你的Ubuntu系统上，msdos2这个分区不存在。或者你用了gpt分区，如何查看？执行如下命令：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%9F%A5%E7%9C%8Bgpt%E5%88%86%E5%8C%BA.png" alt="查看是否为gpt分区方案"></p>
+<p>如果是gpt分区，那就修改grub.cfg文件，把 <code>insmod part_msdos</code> 改为 <code>insmod part_gpt</code>，保存文件。然后重启选HelloOS启动。</p>
+<h3 id="4、我用的是CentOS7，为什么没有成功？"><a href="#4、我用的是CentOS7，为什么没有成功？" class="headerlink" title="4、我用的是CentOS7，为什么没有成功？"></a>4、我用的是CentOS7，为什么没有成功？</h3><p>答：基本步骤与Ubuntu一样，几乎无差别。但有的人开机遇到了黑屏，没有显示<code>Hello OS!</code>。还有的人，虚拟机显示了CPU禁止。我是这么做的：修改 <code>grub.cfg</code> 文件，把HelloOS启动项里的 <code>multiboot2</code> 改为 <code>multiboot</code>，保存文件。重启系统，再进入HelloOS看看。</p>
+<hr>
+<p>本文源自 <strong>极客时间《操作系统实战45讲》</strong> 学习过程中的心得与问题汇总，欢迎扫码加入。</p>
+<p>此课程的一系列文章，我都会放到「操作系统实战」分类。<strong>如果对你有帮助，可以关注我，一起学习进步</strong>。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4-OS%E5%AE%9E%E6%88%98%E5%88%86%E4%BA%AB.jpeg" alt="操作系统实战45讲"></p>
+<p>参考：</p>
+<p>[1] <a href="http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso</a></p>
+]]></content>
+      <categories>
+        <category>操作系统实战</category>
+      </categories>
+      <tags>
+        <tag>操作系统实战</tag>
       </tags>
   </entry>
   <entry>
@@ -843,122 +1294,6 @@
       </tags>
   </entry>
   <entry>
-    <title>操作系统实战：实验环境搭建、热门问题解答</title>
-    <url>/2021/05/18/os-experiment-environment-and-faq.html</url>
-    <content><![CDATA[<p>本系列文章是《操作系统实战45讲》课程学习过程中的心得体会与问题汇总。</p>
-<p>系列文章放入「<strong>操作系统实战</strong>」分类里。如果对你有帮助，欢迎关注我。</p>
-<p><strong>如果你也想一起写一个属于自己的操作系统，直接翻到文末查看</strong>。</p>
-<p>话不多说，现在进入正题。本文分为两个部分：一、实验环境搭建。二、前4节课遇到的问题与解答。</p>
-<h2 id="实验环境搭建"><a href="#实验环境搭建" class="headerlink" title="实验环境搭建"></a>实验环境搭建</h2><p>1、一台电脑。电脑上装有Windows或MacOS系统。我用的是MacOS系统。</p>
-<p>2、虚拟机。我选择的是VMware Fusion 12（若是Windows，装个最新版VMware即可）。</p>
-<p>3、Ubuntu/CentOS系统。我选择的是Ubuntu，作为虚拟机系统，用来实现自己的操作系统。</p>
-<h3 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h3><ol>
-<li><p>安装好虚拟机软件VMware，基本都是点下一步，下一步，直到安装完成。</p>
-</li>
-<li><p>从 <a href="http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso" target="_blank" rel="noopener">这里</a>[1] 下载Ubuntu 20.04系统安装文件，是一个iso文件。</p>
-</li>
-<li><p>在VMware里创建一个新的虚拟机，用来安装Ubuntu 20.04系统：</p>
-</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/vmware-new-os.png" alt="新建虚拟机"></p>
-<p>选择新建，后面的步骤比较简单，跟着提示做就可以了。</p>
-<a id="more"></a>
-
-<p><strong>记得Ubuntu需要分配至少1G的内存，不然可能无法正常启动Ubuntu。</strong></p>
-<ol start="4">
-<li>安装完Ubuntu 20.04后，登录系统，在Ubuntu系统里安装工具（以后我们自己写的系统就叫HelloOS）：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 按下 Control+Option+T 组合键打开一个终端（Windows下是 Control+Alt+T）</span></span><br><span class="line"><span class="comment"># 在终端里输入如下命令行，并按 回车，开始执行</span></span><br><span class="line"><span class="comment"># gcc是编译工具集，包含了C语言编译器等。nasm是Ubuntu下的汇编器。</span></span><br><span class="line">sudo apt install -y gcc nasm</span><br></pre></td></tr></table></figure>
-
-<p>截图如下：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B9%8C%E7%8F%AD%E5%9B%BE%E4%B8%AD%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7.png" alt="安装编译工具"></p>
-<ol start="5">
-<li>克隆HelloOS的源代码并编译（下面的命令继续在Ubuntu终端里执行）：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install -y git  <span class="comment"># 安装git工具</span></span><br><span class="line">git <span class="built_in">clone</span> https://gitee.com/lmos/cosmos  <span class="comment"># 克隆源代码</span></span><br><span class="line"><span class="built_in">cd</span> cosmos/lesson02/HelloOS/  <span class="comment"># 进入源码目录</span></span><br><span class="line">make  <span class="comment"># 编译HelloOS内核文件HelloOS.bin</span></span><br><span class="line">sudo cp HelloOS.bin /boot/HelloOS.bin  <span class="comment"># 拷贝内核文件到grub的引导分区里</span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>添加grub启动项，用来启动我们的HelloOS：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编辑grub的配置文件</span></span><br><span class="line">sudo vim /boot/grub/grub.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在键盘上依次按下：</span></span><br><span class="line"><span class="built_in">shift</span> + g + o</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把下面内容粘贴到文末</span></span><br><span class="line"><span class="comment">#### BEGIN HelloOS.bin ####</span></span><br><span class="line">menuentry <span class="string">'HelloOS'</span> &#123;</span><br><span class="line">     insmod part_msdos <span class="comment">#GRUB加载分区模块识别分区</span></span><br><span class="line">     insmod ext2 <span class="comment">#GRUB加载ext文件系统模块识别ext文件系统</span></span><br><span class="line">     <span class="built_in">set</span> root=<span class="string">'hd0,msdos1'</span> <span class="comment">#注意boot目录挂载的分区，这是我机器上的情况</span></span><br><span class="line">     multiboot2 /boot/HelloOS.bin <span class="comment">#GRUB以multiboot2协议加载HelloOS.bin</span></span><br><span class="line">     boot <span class="comment">#GRUB启动HelloOS.bin</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#### End /boot/HelloOS.bin ####</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在键盘上依次按下，然后回车，添加的内容就保存好了：</span></span><br><span class="line">esc + <span class="built_in">shift</span> + ; + wq!</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在终端重启系统，输入：</span></span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>重启Ubuntu系统后，在系统启动项菜单里选择 HelloOS（上下箭头选择HelloOS，然后按回车启动它）：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E9%80%89%E6%8B%A9HelloOS%E5%90%AF%E5%8A%A8.png" alt="启动HelloOS"></p>
-<ol start="8">
-<li>启动成功后，如下图所示（HelloOS还没重启代码，要回到Ubuntu，直接重启虚拟机，选上图的第一项来启动）：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/HelloOS%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F.png" alt="启动成功"></p>
-<h2 id="问题与解答"><a href="#问题与解答" class="headerlink" title="问题与解答"></a>问题与解答</h2><h3 id="1、为什么没有出现引导菜单，让我选择HelloOS来启动？"><a href="#1、为什么没有出现引导菜单，让我选择HelloOS来启动？" class="headerlink" title="1、为什么没有出现引导菜单，让我选择HelloOS来启动？"></a>1、为什么没有出现引导菜单，让我选择HelloOS来启动？</h3><p>首先，什么是引导菜单？请看上文步骤7中的截图。</p>
-<p>答：这与grub的设置有关，菜单项可能隐藏了，按如下操作：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入Ubuntu系统后，进入终端（还记得吗，可以按 Ctrl+Opt+T/Ctrl+Alt+T启动终端）</span></span><br><span class="line"><span class="comment"># 输入命令编辑grub配置文件</span></span><br><span class="line">sudo vim /etc/default/grub</span><br></pre></td></tr></table></figure>
-
-<p>把红框的3行，修改成如下图所示（没有的行就加上）：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E8%AE%BE%E7%BD%AEgrub%E9%85%8D%E7%BD%AE.png" alt="设置grub"></p>
-<p>然后更新grub：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 执行命令</span></span><br><span class="line">sudo update-grub2</span><br></pre></td></tr></table></figure>
-
-<p>更新后，需要重新添加HelloOS的引导项到grub.cfg文件。见上文步骤6、步骤7。</p>
-<h3 id="2、重启选择HelloOS启动后显示-error-file-boot-HelloOS-bin’-not-found"><a href="#2、重启选择HelloOS启动后显示-error-file-boot-HelloOS-bin’-not-found" class="headerlink" title="2、重启选择HelloOS启动后显示 error: file `/boot/HelloOS.bin’ not found."></a>2、重启选择HelloOS启动后显示 error: file `/boot/HelloOS.bin’ not found.</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/HelloOS.bin%E6%9C%AA%E6%89%BE%E5%88%B0.png" alt="HelloOS.bin未找到"></p>
-<p>答：这与boot分区是否独立有关。重新进入Ubuntu系统，打开终端（步骤见上文），执行命令：df /boot /</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/boot%E7%8B%AC%E7%AB%8B%E5%88%86%E5%8C%BA.png" alt="boot独立分区"></p>
-<p>如上，文件系统（Filesystem）一列，两行内容不一样，/boot在/dev/sda1，那就把/boot/grub/grub.cfg文件里的 <code>multiboot2 /boot/HelloOS.bin</code> 改成 <code>multiboot2 /HelloOS.bin</code>，保存文件。然后重启系统，选择HelloOS启动。</p>
-<h3 id="3、重启选择HelloOS启动后显示-error-disk-hd0-msdos2’-not-found-之类的错误"><a href="#3、重启选择HelloOS启动后显示-error-disk-hd0-msdos2’-not-found-之类的错误" class="headerlink" title="3、重启选择HelloOS启动后显示 error: disk `hd0,msdos2’ not found. 之类的错误"></a>3、重启选择HelloOS启动后显示 error: disk `hd0,msdos2’ not found. 之类的错误</h3><p>答：可能是在你的Ubuntu系统上，msdos2这个分区不存在。或者你用了gpt分区，如何查看？执行如下命令：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%9F%A5%E7%9C%8Bgpt%E5%88%86%E5%8C%BA.png" alt="查看是否为gpt分区方案"></p>
-<p>如果是gpt分区，那就修改grub.cfg文件，把 <code>insmod part_msdos</code> 改为 <code>insmod part_gpt</code>，保存文件。然后重启选HelloOS启动。</p>
-<h3 id="4、我用的是CentOS7，为什么没有成功？"><a href="#4、我用的是CentOS7，为什么没有成功？" class="headerlink" title="4、我用的是CentOS7，为什么没有成功？"></a>4、我用的是CentOS7，为什么没有成功？</h3><p>答：基本步骤与Ubuntu一样，几乎无差别。但有的人开机遇到了黑屏，没有显示<code>Hello OS!</code>。还有的人，虚拟机显示了CPU禁止。我是这么做的：修改 <code>grub.cfg</code> 文件，把HelloOS启动项里的 <code>multiboot2</code> 改为 <code>multiboot</code>，保存文件。重启系统，再进入HelloOS看看。</p>
-<hr>
-<p>本文源自 <strong>极客时间《操作系统实战45讲》</strong> 学习过程中的心得与问题汇总，欢迎扫码加入。</p>
-<p>此课程的一系列文章，我都会放到「操作系统实战」分类。<strong>如果对你有帮助，可以关注我，一起学习进步</strong>。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4-OS%E5%AE%9E%E6%88%98%E5%88%86%E4%BA%AB.jpeg" alt="操作系统实战45讲"></p>
-<p>参考：</p>
-<p>[1] <a href="http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/ubuntu-releases/20.04/ubuntu-20.04.2.0-desktop-amd64.iso</a></p>
-]]></content>
-      <categories>
-        <category>操作系统实战</category>
-      </categories>
-      <tags>
-        <tag>操作系统实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>汇编：8086CPU寻址模式、Debug程序用法</title>
-    <url>/2021/05/21/assembly-preparing.html</url>
-    <content><![CDATA[<p>为了配合《操作系统实战45讲》，还是得重学一下汇编。所以就有了这个系列。</p>
-<p>本系列文章算是《汇编语言第4版》的笔记，也有自己的一些心得～</p>
-<p>然后这个系列的文章标题是这样的：<code>汇编：吧啦吧啦吧啦</code></p>
-<p>老师的教学思想镇楼：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/01-%E6%95%99%E5%AD%A6%E6%80%9D%E6%83%B3.png" alt=""></p>
-<p>我并不完全赞同这个思想，因为会有客观条件限制。</p>
-<h2 id="看看计算机的逻辑结构"><a href="#看看计算机的逻辑结构" class="headerlink" title="看看计算机的逻辑结构"></a>看看计算机的逻辑结构</h2><h3 id="计算机中各类存储器的逻辑连接"><a href="#计算机中各类存储器的逻辑连接" class="headerlink" title="计算机中各类存储器的逻辑连接"></a>计算机中各类存储器的逻辑连接</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%90%84%E7%B1%BB%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E8%BF%9E%E6%8E%A5.png" alt=""></p>
-<a id="more"></a>
-
-<h3 id="把各类存储器看作一个逻辑存储器"><a href="#把各类存储器看作一个逻辑存储器" class="headerlink" title="把各类存储器看作一个逻辑存储器"></a>把各类存储器看作一个逻辑存储器</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E4%B8%80%E4%B8%AA%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E5%99%A8.png" alt=""></p>
-<h3 id="8086合成20位地址（8086实模式寻址方式）"><a href="#8086合成20位地址（8086实模式寻址方式）" class="headerlink" title="8086合成20位地址（8086实模式寻址方式）"></a>8086合成20位地址（8086实模式寻址方式）</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/8086CPU%E5%90%88%E6%88%9020%E4%BD%8D%E5%9C%B0%E5%9D%80.png" alt=""></p>
-<h2 id="搭建实验环境"><a href="#搭建实验环境" class="headerlink" title="搭建实验环境"></a>搭建实验环境</h2><p>《汇编语言》这本书用的是8086CPU的实模式来讲汇编的，然后用DOS系统做实验。</p>
-<p>可是，DOS系统也太古老了。那我们就在虚拟机VMware中装一个Win2k，然后进命令行，再用Debug程序做实验。</p>
-<p>虚拟机安装Win2k的教程太多了，这里不在赘述。下面是安装过程的一些截图：</p>
-<h3 id="Win2k安装过程"><a href="#Win2k安装过程" class="headerlink" title="Win2k安装过程"></a>Win2k安装过程</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/Win2k%E5%AE%89%E8%A3%85%E6%88%AA%E5%9B%BE.png" alt=""></p>
-<h3 id="来看看Win2k系统，00后的朋友们不一定见过"><a href="#来看看Win2k系统，00后的朋友们不一定见过" class="headerlink" title="来看看Win2k系统，00后的朋友们不一定见过"></a>来看看Win2k系统，00后的朋友们不一定见过</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/WIn2k%E7%B3%BB%E7%BB%9F%E6%88%AA%E5%9B%BE.png" alt=""></p>
-<h3 id="重点来了，进入虚拟8086模式的DOS"><a href="#重点来了，进入虚拟8086模式的DOS" class="headerlink" title="重点来了，进入虚拟8086模式的DOS"></a>重点来了，进入虚拟8086模式的DOS</h3><p>在Win2k中进入的DOS，是虚拟8086模式的DOS。要用实模式的DOS，在虚拟机直接装个DOS系统比较好。</p>
-<p>Win2k进入DOS的方法：开始菜单 ⟶ 运行 ⟶ 输入 command ⟶ 按Alt+Enter进入全屏DOS</p>
-<p><code>exit</code> 输入此命令退出DOS，回到Win2k</p>
-<p><code>debug</code> 进入Debug程序，做汇编实验就靠它了</p>
-<p><code>quit</code> 退出Debug程序，回到DOS</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/Win2k%E8%BF%9B%E5%85%A5DOS%E5%86%99%E6%B1%87%E7%BC%96.png" alt=""></p>
-<h3 id="Debug程序的常用操作按键"><a href="#Debug程序的常用操作按键" class="headerlink" title="Debug程序的常用操作按键"></a>Debug程序的常用操作按键</h3><p>Debug常用功能一览。包括查看、修改寄存器或内存的命令。机器码翻译成汇编，输入汇编指令，执行汇编指令等。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/DOS%E7%9A%84Debug%E7%A8%8B%E5%BA%8F%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD.png" alt=""></p>
-<p>好了，环境搭好，后面就可以学习汇编了。</p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>汇编：解决Win2k无法安装vm-tools、以及安装MASM汇编器连接器</title>
     <url>/2021/05/23/win2k-vm-tools-problem-and-install-masm.html</url>
     <content><![CDATA[<p>本文配合极客时间《操作系统实战45讲》，因而学习《汇编第四版》使用Win2k系统。</p>
@@ -1000,320 +1335,6 @@
 </ol>
 <p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/6-%E6%B1%87%E7%BC%96%E5%99%A8%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%99%A8.png" alt="汇编器与连接器"></p>
 <p>[完毕]</p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>汇编：实验7</title>
-    <url>/2021/05/26/assembly-experiment7.html</url>
-    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>实验7题目：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E9%A2%98%E7%9B%AE.png" alt="题目"></p>
-<p>具体数据在源码部分，见下文。</p>
-<a id="more"></a>
-
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E8%A6%81%E6%B1%82.png" alt="要求"></p>
-<p>汇编源码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 将每年信息按如下格式填充到table段：</span><br><span class="line">; 年份         收入       雇员      人均收入</span><br><span class="line">; 4B   空格    4B   空格  2B  空格  2B      空格 （共16字节）</span><br><span class="line">; &#39;1975&#39;      16         3        ??</span><br><span class="line">; 计算21年的人均收入</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">data segment</span><br><span class="line">    ; 21个 4字节 年份</span><br><span class="line">    db &#39;1975&#39;,&#39;1976&#39;,&#39;1977&#39;,&#39;1978&#39;,&#39;1979&#39;,&#39;1980&#39;,&#39;1981&#39;,&#39;1982&#39;,&#39;1983&#39;,&#39;1984&#39;</span><br><span class="line">    db &#39;1985&#39;,&#39;1986&#39;,&#39;1987&#39;,&#39;1988&#39;,&#39;1989&#39;,&#39;1990&#39;,&#39;1991&#39;,&#39;1992&#39;,&#39;1993&#39;,&#39;1994&#39;,&#39;1995&#39;</span><br><span class="line"></span><br><span class="line">    ; 21个 4字节 双字 年收入</span><br><span class="line">    dd 16,22,382,1356,2390,8000,16000,24486,50065,97479,140417,197514</span><br><span class="line">    dd 345980,590827,803530,1183000,1843000,2759000,3753000,4649000,5937000</span><br><span class="line"></span><br><span class="line">    ; 21个 2字节 字 雇员数</span><br><span class="line">    dw 3,7,9,13,28,38,130,220,476,778,1001,1442,2258,2793,4037,5635,8226</span><br><span class="line">    dw 11542,14430,15257,17800</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">table segment</span><br><span class="line">    ; 每行长16字节</span><br><span class="line">    db 21 dup (&#39;year summ ne ?? &#39;)</span><br><span class="line">table ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax ; 数据段地址</span><br><span class="line"></span><br><span class="line">    mov ax,table</span><br><span class="line">    mov ss,ax ; table段地址</span><br><span class="line">    mov bp,0</span><br><span class="line"></span><br><span class="line">    mov cx,21 ; 循环21次</span><br><span class="line"></span><br><span class="line">s:</span><br><span class="line">    mov bx,0  ; 数据段偏移</span><br><span class="line">    mov si,21 ; 根据当前循环计算位置</span><br><span class="line">    sub si,cx ; 计算21个数据中所处位置</span><br><span class="line">    add si,si ; 字的偏移要x2</span><br><span class="line"></span><br><span class="line">    mov di,si ; 计算双字偏移量</span><br><span class="line">    add di,di ; 双字要x4</span><br><span class="line"></span><br><span class="line">    mov ax,[bx+di]   ; 年份前2字符</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov ax,[bx+di+2] ; 年份后2字符</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line"></span><br><span class="line">    add bx,84</span><br><span class="line">    mov ax,[bx+di]      ; 收入低字</span><br><span class="line">    mov [bp],ax</span><br><span class="line">    add bp,2</span><br><span class="line">    mov dx,[bx+di+2]    ; 收入高16位，ax里存放32位除法的商</span><br><span class="line">    mov [bp],dx</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line"></span><br><span class="line">    add bx,84</span><br><span class="line">    div word ptr [bx+si] ; 年收入除以雇员，ax里有商，是人均收入</span><br><span class="line">    mov dx,[bx+si]   ; 雇员</span><br><span class="line">    mov [bp],dx</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line">    mov [bp],ax      ; 人均收入</span><br><span class="line">    add bp,2</span><br><span class="line">    mov byte ptr [bp],&#39; &#39;</span><br><span class="line">    inc bp</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-
-<h2 id="编译调试与执行结果"><a href="#编译调试与执行结果" class="headerlink" title="编译调试与执行结果"></a>编译调试与执行结果</h2><p>编译：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E7%BC%96%E8%AF%91.png" alt=""></p>
-<p>调试：直接执行到 <code>int 21h</code> 指令之前。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E8%B0%83%E8%AF%95.png" alt=""></p>
-<p><strong>执行结果截图：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E5%AE%9E%E9%AA%8C7-%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>汇编：实验9：在屏幕中间显示彩色字符串</title>
-    <url>/2021/05/28/assembly-experiment9.html</url>
-    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>在屏幕中间分别显示绿色、绿底红色、白底蓝色的字符串 <code>welcome to masm!</code>。</p>
-<p>这里的屏幕指的是，显卡文本模式下的屏幕，屏幕尺寸 80x25，可以显示彩色、高亮、闪烁的ASCII字符。</p>
-<p>文本模式下一个字符由2个字节组成，即 ASCII+属性 = 2字节。属性字节的格式：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E5%B1%9E%E6%80%A7%E5%AD%97%E8%8A%82.png" alt="属性字节格式"></p>
-<a id="more"></a>
-
-<p>内存地址空间中，b8000h～bffffh 共32KB，是80x25彩色字符模式的显示缓冲区。</p>
-<p>显示缓冲区分位8页，每页4KB，每页80x25=2000个字符，2000x2字节=4KB，共8页x4KB=32KB。</p>
-<h2 id="汇编程序"><a href="#汇编程序" class="headerlink" title="汇编程序"></a>汇编程序</h2><p>绿字属性字节：00000010b</p>
-<p>绿底红色：00100100b</p>
-<p>白底蓝色：01110001b</p>
-<p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 屏幕中间显示三行彩色字</span><br><span class="line">; sy9.asm</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db &#39;welcome to masm!&#39; ; 16字节</span><br><span class="line">    db 00000010b          ; 绿字</span><br><span class="line">    db 00100100b          ; 绿底红字</span><br><span class="line">    db 01110001b          ; 白底蓝字</span><br><span class="line">    db 11,12,13,64 ; 三行的位置 (25-3)&#x2F;2&#x3D;11 每行开始位置 (80-16)&#x2F;2*2&#x3D;64</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,16</span><br><span class="line">    mov cx,3</span><br><span class="line">row:</span><br><span class="line">    mov dx,cx</span><br><span class="line">    mov si,3</span><br><span class="line">    sub si,cx</span><br><span class="line">    mov ch,0</span><br><span class="line">    mov cl,19[si]</span><br><span class="line">    mov bp,0</span><br><span class="line">col:</span><br><span class="line">    add bp,160</span><br><span class="line">    loop col</span><br><span class="line"></span><br><span class="line">    mov ah,0</span><br><span class="line">    mov al,ds:[22]</span><br><span class="line">    add bp,ax       ; 每行字符起始位置</span><br><span class="line">    mov si,3</span><br><span class="line">    sub si,dx</span><br><span class="line">    mov ah,16[si]</span><br><span class="line">    mov bx,0</span><br><span class="line">    mov cx,16</span><br><span class="line">fill:</span><br><span class="line">    mov al,[bx]</span><br><span class="line">    push ds</span><br><span class="line">    mov si,0b800h</span><br><span class="line">    mov ds,si</span><br><span class="line">    mov ds:[bp],ax</span><br><span class="line">    pop ds</span><br><span class="line">    inc bx</span><br><span class="line">    add bp,2</span><br><span class="line">    loop fill</span><br><span class="line"></span><br><span class="line">    mov cx,dx</span><br><span class="line">    loop row</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-
-<h2 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h2><ol>
-<li>编译连接</li>
-</ol>
-<p>masm sy9.asm;<br>link sy9.obj;</p>
-<ol start="2">
-<li>执行</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E7%BB%93%E6%9E%9C.png" alt="显示结果"></p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>汇编：实验10三题</title>
-    <url>/2021/06/06/assembly-experiment10.html</url>
-    <content><![CDATA[<h2 id="1、显示字符串"><a href="#1、显示字符串" class="headerlink" title="1、显示字符串"></a>1、显示字符串</h2><p>题目：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E9%A2%98%E7%9B%AE1.png" alt=""></p>
-<p>汇编源码：</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 实验10.1</span><br><span class="line">; 屏幕指定位置显示指定颜色的字符串</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">data segment</span><br><span class="line">    db &#39;Welcome to masm!&#39;,0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov dh,8        ; 行号 0-24</span><br><span class="line">    mov dl,3        ; 列号 0-79</span><br><span class="line">    mov cl,2        ; 颜色 绿色</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,0        ; ds:si指向字符串开头</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,10h      ; 函数相关栈</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    call show_str</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">; 参数为 行号dh 列号dl 颜色cl</span><br><span class="line">show_str:</span><br><span class="line">    ; 寄存器保存</span><br><span class="line">    push bp</span><br><span class="line">    mov bp,sp</span><br><span class="line">    push di</span><br><span class="line">    push si</span><br><span class="line">    push ax</span><br><span class="line">    push es</span><br><span class="line"></span><br><span class="line">    ; 显存起始地址段地址</span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line"></span><br><span class="line">    ; 显存中字符的开始地址</span><br><span class="line">    mov al,160      ; 每行字节数</span><br><span class="line">    mul byte ptr [bp+5]</span><br><span class="line">    mov dl,[bp+4]</span><br><span class="line">    mov dh,0</span><br><span class="line">    add ax,dx</span><br><span class="line">    add ax,dx</span><br><span class="line">    mov di,ax</span><br><span class="line"></span><br><span class="line">fill:</span><br><span class="line">    mov cl,[si]     ; 字符</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz ok</span><br><span class="line">    mov ch,[bp+6]   ; 颜色</span><br><span class="line">    mov es:[di],cx</span><br><span class="line">    add di,2</span><br><span class="line">    inc si</span><br><span class="line">    jmp fill</span><br><span class="line">ok:</span><br><span class="line">    ; 寄存器恢复</span><br><span class="line">    pop es</span><br><span class="line">    pop ax</span><br><span class="line">    pop si</span><br><span class="line">    pop di</span><br><span class="line">    pop bp</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-
-<p>编译执行结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E9%A2%98%E7%9B%AE1%E7%BB%93%E6%9E%9C.png" alt=""></p>
-<h2 id="2、解决除法溢出问题"><a href="#2、解决除法溢出问题" class="headerlink" title="2、解决除法溢出问题"></a>2、解决除法溢出问题</h2><p>题目：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/3-%E9%A2%98%E7%9B%AE2.png" alt=""></p>
-<p>汇编源码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 实验10.2</span><br><span class="line">; 解决除法的商的溢出问题</span><br><span class="line">; 公式：X&#x2F;N &#x3D; int(H&#x2F;N)*65536 + [rem(H&#x2F;N)*65536+L]&#x2F;N</span><br><span class="line">; 公式是二项式，第一项得出整个除法的商的高16位，65536不用真的乘</span><br><span class="line">; 第二项得出整个除法的商的低16位，而余数是整个除法的余数</span><br><span class="line">; 题目中除数0a，整个除法余数是0，不好验证，这里使用除数0b</span><br><span class="line">assume cs:code</span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,10h</span><br><span class="line"></span><br><span class="line">    mov ax,4240h        ; 被除数低16</span><br><span class="line">    mov dx,000fh        ; 被除数高16</span><br><span class="line">    mov cx,0bh          ; 除数</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    push ax</span><br><span class="line">    call divdw</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">divdw:</span><br><span class="line">    push bp</span><br><span class="line">    mov bp,sp</span><br><span class="line">    push bx</span><br><span class="line"></span><br><span class="line">    ; int(H&#x2F;N)</span><br><span class="line">    mov dx,0</span><br><span class="line">    mov ax,[bp+6]</span><br><span class="line">    div word ptr [bp+8]</span><br><span class="line">    mov bx,ax           ; 商的高16位，dx里是余数，不用动</span><br><span class="line"></span><br><span class="line">    ; [rem(H&#x2F;N)*65536+L]&#x2F;N</span><br><span class="line">    ; rem(H&#x2F;N)*65536 表示余数放在高16位，刚好是dx</span><br><span class="line">    ; +L 则为被除数低16位，放到ax里，作为新除法被除数的低16位</span><br><span class="line">    mov ax,[bp+4]</span><br><span class="line">    div word ptr [bp+8]</span><br><span class="line">    mov cx,dx       ; cx为余数</span><br><span class="line">    mov dx,bx       ; dx为商的高16位，ax为商的低16位</span><br><span class="line"></span><br><span class="line">    pop bx</span><br><span class="line">    pop bp</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br><span class="line">; 以上，在win2k的dos下用debug执行exe会无效指令，退出dos。可以用dosbox执行。</span><br></pre></td></tr></table></figure>
-
-<p>执行结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/4-%E9%A2%98%E7%9B%AE2%E7%BB%93%E6%9E%9C.png" alt=""></p>
-<h2 id="3、数值显示"><a href="#3、数值显示" class="headerlink" title="3、数值显示"></a>3、数值显示</h2><p>题目：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/5-%E9%A2%98%E7%9B%AE3.png" alt=""></p>
-<p>汇编源码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 将数据以十进制形式显示</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db 10 dup (0)</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">swap segment</span><br><span class="line">    dw 10 dup (0)</span><br><span class="line">swap ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,12666</span><br><span class="line">    mov bx,data</span><br><span class="line">    mov ds,bx</span><br><span class="line">    mov si,0</span><br><span class="line">    mov bx,stack</span><br><span class="line">    mov ss,bx</span><br><span class="line">    mov sp,10h</span><br><span class="line">    call dtoc</span><br><span class="line"></span><br><span class="line">    mov bx,swap</span><br><span class="line">    push ss</span><br><span class="line">    mov ss,bx</span><br><span class="line">    push sp</span><br><span class="line">    mov sp,20</span><br><span class="line">    call turn</span><br><span class="line">    pop sp</span><br><span class="line">    pop ss</span><br><span class="line"></span><br><span class="line">    mov dh,8</span><br><span class="line">    mov dl,3</span><br><span class="line">    mov cl,2</span><br><span class="line">    push cx</span><br><span class="line">    push dx</span><br><span class="line">    call show_str</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">dtoc:</span><br><span class="line">    push cx</span><br><span class="line">    push si</span><br><span class="line">    push bx</span><br><span class="line">s:</span><br><span class="line">    mov dx,0        ; 被除数dx:ax</span><br><span class="line">    mov bx,10</span><br><span class="line">    div bx</span><br><span class="line">    mov cx,ax       ; 商ax</span><br><span class="line">    add dx,30h      ; 余数+30h</span><br><span class="line">    mov [si],dl</span><br><span class="line">    jcxz oks</span><br><span class="line">    mov ax,cx</span><br><span class="line">    inc cx</span><br><span class="line">    inc si</span><br><span class="line">    jmp s</span><br><span class="line">oks:</span><br><span class="line">    pop bx</span><br><span class="line">    pop si</span><br><span class="line">    pop cx</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">; 参数为 行号dh 列号dl 颜色cl</span><br><span class="line">show_str:</span><br><span class="line">    ; 寄存器保存</span><br><span class="line">    push bp</span><br><span class="line">    mov bp,sp</span><br><span class="line">    push di</span><br><span class="line">    push si</span><br><span class="line">    push ax</span><br><span class="line">    push es</span><br><span class="line"></span><br><span class="line">    ; 显存起始地址段地址</span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line"></span><br><span class="line">    ; 显存中字符的开始地址</span><br><span class="line">    mov al,160      ; 每行字节数</span><br><span class="line">    mul byte ptr [bp+5]</span><br><span class="line">    mov dl,[bp+4]</span><br><span class="line">    mov dh,0</span><br><span class="line">    add ax,dx</span><br><span class="line">    add ax,dx</span><br><span class="line">    mov di,ax</span><br><span class="line"></span><br><span class="line">fill:</span><br><span class="line">    mov cl,[si]     ; 字符</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz okf</span><br><span class="line">    mov ch,[bp+6]   ; 颜色</span><br><span class="line">    mov es:[di],cx</span><br><span class="line">    add di,2</span><br><span class="line">    inc si</span><br><span class="line">    jmp fill</span><br><span class="line"></span><br><span class="line">okf:</span><br><span class="line">    ; 寄存器恢复</span><br><span class="line">    pop es</span><br><span class="line">    pop ax</span><br><span class="line">    pop si</span><br><span class="line">    pop di</span><br><span class="line">    pop bp</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">; 字符串顺序翻转</span><br><span class="line">turn:</span><br><span class="line">    push ax</span><br><span class="line">    push cx</span><br><span class="line">    push si</span><br><span class="line"></span><br><span class="line">turn_s:</span><br><span class="line">    mov cl,[si]</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz oks2</span><br><span class="line">    push cx</span><br><span class="line">    inc si</span><br><span class="line">    mov cx,2</span><br><span class="line">    jmp turn_s</span><br><span class="line"></span><br><span class="line">oks2:</span><br><span class="line">    mov cx,si</span><br><span class="line">    mov si,0</span><br><span class="line">ok_s:</span><br><span class="line">    pop ax</span><br><span class="line">    mov [si],al</span><br><span class="line">    inc si</span><br><span class="line">    loop ok_s</span><br><span class="line"></span><br><span class="line">    pop si</span><br><span class="line">    pop cx</span><br><span class="line">    pop ax</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br><span class="line">; 以上，在win2k的dos下用debug执行exe会无效指令，退出dos。可以用dosbox执行</span><br></pre></td></tr></table></figure>
-
-<p>执行结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/6-%E9%A2%98%E7%9B%AE3-%E7%BB%93%E6%9E%9C.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>汇编：实验11：字符串中小写转大写</title>
-    <url>/2021/06/08/assembly-experiment11.html</url>
-    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>写个汇编程序，将以0结尾的字符串中的小写字母转换为大写字母。</p>
-<p>定义函数 letterc，用于转换，参数 ds:si 指向字符串的首地址。</p>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>汇编源码：</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 把字符串中的小写字母转换为大写</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db &quot;Beginner&#39;s All-purpose Symbolic Instruction Code.&quot;,0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">begin:</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,10h</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,0</span><br><span class="line">    call letterc</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">letterc:</span><br><span class="line">    push si</span><br><span class="line">s:</span><br><span class="line">    mov cl,[si]</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz ok</span><br><span class="line">    cmp cx,&#39;a&#39;</span><br><span class="line">    jna s0</span><br><span class="line">    cmp cx,&#39;z&#39;</span><br><span class="line">    jnb s0</span><br><span class="line">    and byte ptr [si],11011111b</span><br><span class="line"></span><br><span class="line">s0:</span><br><span class="line">    inc si</span><br><span class="line">    jmp short s</span><br><span class="line"></span><br><span class="line">ok:</span><br><span class="line">    pop si</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end begin</span><br></pre></td></tr></table></figure>
-
-<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p>截图：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E8%BD%AC%E5%A4%A7%E5%86%99%E6%88%AA%E5%9B%BE.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>汇编：8086转移指令汇总</title>
-    <url>/2021/06/08/assembly-jump-instruction-collect.html</url>
-    <content><![CDATA[<p><strong>可以修改IP，或者同时修改CS与IP的指令统称为转移指令</strong>。</p>
-<p>因为CS:IP是指令寄存器，比较特殊，且CS无法用其他寄存器直接赋值，如：mov cs,ax。</p>
-<p>所以需要jmp，call，ret，loop等指令来修改IP或同时修改CS与IP。</p>
-<p>CS:IP的组合用来实现8086CPU的20位寻址（虽然8086的寄存器是16位的，但8086内部有20位地址加法器）。</p>
-<p>另外，8086CPU是<code>小端模式</code>。内存高地址存放数据高位，内存低地址存放数据低位。</p>
-<h2 id="转移指令种类"><a href="#转移指令种类" class="headerlink" title="转移指令种类"></a>转移指令种类</h2><p>8086转移指令种类：</p>
-<ul>
-<li><p>无条件转移指令（如 jmp）</p>
-</li>
-<li><p>条件转移指令（如 jcxz）</p>
-</li>
-<li><p>循环指令（如 loop）</p>
-</li>
-<li><p>过程（如 call、ret、retf）</p>
-</li>
-<li><p>中断</p>
-</li>
-</ul>
-<h2 id="伪指令offset"><a href="#伪指令offset" class="headerlink" title="伪指令offset"></a>伪指令offset</h2><p>offset 是伪指令，由汇编器识别并处理，用于取得标号的偏移地址。如：</p>
-<a id="more"></a>
-
-<p>start: mov ax,offset start     ; 相当于mov ax,0</p>
-<p>s: mov ax,offset s               ; 相当于mov ax,3（因为 mov ax,0 指令占3字节）</p>
-<h2 id="jmp无条件转移"><a href="#jmp无条件转移" class="headerlink" title="jmp无条件转移"></a>jmp无条件转移</h2><h3 id="根据位移来转移的jmp指令"><a href="#根据位移来转移的jmp指令" class="headerlink" title="根据位移来转移的jmp指令"></a>根据位移来转移的jmp指令</h3><p><strong>jmp short 标号，段内短转移</strong></p>
-<p>功能：</p>
-<p>jmp short 标号 功能为：IP=IP+8位位移</p>
-<ol>
-<li>8位位移=标号处的地址 - jmp指令后的第一个字节的地址；</li>
-<li>short 指明此处的位移为8位位移；</li>
-<li>8位位移的范围是 <code>-128～127</code>，用补码表示 [注1]；</li>
-<li>8位位移由编译程序在编译时算出。</li>
-</ol>
-<p>注1：</p>
-<p>正数的原码与反码、补码相同。负数的反码为绝对值相同的正数按位取反，补码为反码+1。</p>
-<p><strong>jmp near ptr 标号，段内近转移</strong></p>
-<p>功能：</p>
-<p>jmp near ptr 标号 功能为：IP=IP+16位位移</p>
-<ol>
-<li>16位位移=标号处的地址 - jmp指令后的第一个字节的地址；</li>
-<li>near ptr 指明此处的位移为16位位移；</li>
-<li>16位位移的范围是 <code>-32768~32767</code> ，用补码表示；</li>
-<li>16位位移由编译程序再编译时算出。</li>
-</ol>
-<h3 id="段间转移、远转移jmp"><a href="#段间转移、远转移jmp" class="headerlink" title="段间转移、远转移jmp"></a>段间转移、远转移jmp</h3><p><strong>jmp far ptr 标号</strong></p>
-<p>功能：</p>
-<p>CS=标号所在段的段地址；IP=标号所在段的偏移地址。</p>
-<p>如：</p>
-<p>start: mov ax,0  ; 假设标号处段地址=0123h、偏移地址=10h</p>
-<p>mov bx,0</p>
-<p>jmp far ptr start  ; 执行完后，CS=0123h，IP=10h</p>
-<h3 id="转移地址在寄存器中的jmp"><a href="#转移地址在寄存器中的jmp" class="headerlink" title="转移地址在寄存器中的jmp"></a>转移地址在寄存器中的jmp</h3><p><strong>jmp 16位寄存器</strong></p>
-<p>如：jmp ax，功能：IP=AX。</p>
-<h3 id="转移地址在内存中的jmp"><a href="#转移地址在内存中的jmp" class="headerlink" title="转移地址在内存中的jmp"></a>转移地址在内存中的jmp</h3><p><strong>jmp word ptr 内存单元地址</strong></p>
-<p>功能：</p>
-<p>段内转移，使得 IP=内存单元地址处的一个字（占2字节）</p>
-<p>如：</p>
-<p>mov ax,0123h</p>
-<p>mov ds:[0],ax</p>
-<p>jmp word ptr [0]  ; 执行后，IP=0123h</p>
-<p><strong>jmp dword ptr 内存单元地址</strong></p>
-<p>功能：</p>
-<p>段间转移，使得 <code>CS=内存单元地址+2 处的一个字</code>（2字节）、<code>IP=内存单元地址 处的一个字</code>（2字节）</p>
-<p>也就是说，内存高位的一个字给CS寄存器，内存低位的一个字给IP寄存器。</p>
-<p>如：</p>
-<p>mov ax,0123h</p>
-<p>mov [bx],ax</p>
-<p>mov word ptr [bx+2],0</p>
-<p>jmp dword ptr [bx] ; 执行后，CS=0，IP=0123h</p>
-<h2 id="jcxz条件转移指令"><a href="#jcxz条件转移指令" class="headerlink" title="jcxz条件转移指令"></a>jcxz条件转移指令</h2><p>jcxz可以理解为：<strong>J</strong>ump if <strong>CX</strong> equal <strong>Z</strong>ero。</p>
-<p><strong>语法：jcxz 标号（如果 cx=0，转移到标号处执行）</strong></p>
-<p>功能：</p>
-<p>jcxz 指令为有条件转移指令，所有有条件转移指令都是<strong>短转移</strong>，指令机器码中包含位移而不是目的地址。</p>
-<ol>
-<li>当 cx=0 时，IP=IP+8位位移；</li>
-<li>8位位移=标号处的地址 - jcxz指令后的第一个字节的地址；</li>
-<li>8位位移的范围是 <code>-128~127</code>，用补码表示；</li>
-<li>8位位移由编译程序在编译时算出。</li>
-<li>当 cx ≠ 0 时，什么也不做，程序继续向下执行。</li>
-</ol>
-<p>jcxz 标号 的功能相当于：</p>
-<p><code>if (cx == 0) jmp short 标号</code></p>
-<h2 id="loop转移指令"><a href="#loop转移指令" class="headerlink" title="loop转移指令"></a>loop转移指令</h2><p><strong>语法：loop 标号（cx–，如果cx ≠ 0，转移到标号处执行）</strong></p>
-<p>功能：</p>
-<p>loop 指令位循环指令，所有循环指令都是<strong>短转移</strong>，指令机器码中包含位移而不是目的地址。</p>
-<p>操作：</p>
-<p>cx=cx-1<br>如果 cx ≠ 0，IP=IP+8位位移</p>
-<ol>
-<li>8位位移=标号处的地址 - loop指令后的第一个字节的地址；</li>
-<li>8位位移的范围是 <code>-128～127</code>，用补码表示；</li>
-<li>8位位移由编译程序在编译时算出。</li>
-<li>当 cx = 0 时，什么也不做，程序继续向下执行。</li>
-</ol>
-<p>loop 标号 的功能相当于：</p>
-<p><code>cx--;</code><br><code>if (cx != 0) jmp short 标号</code></p>
-<h2 id="ret和retf转移指令"><a href="#ret和retf转移指令" class="headerlink" title="ret和retf转移指令"></a>ret和retf转移指令</h2><h3 id="ret与retf指令"><a href="#ret与retf指令" class="headerlink" title="ret与retf指令"></a>ret与retf指令</h3><p>ret 指令用栈中的一个字的数据（ss:sp指向的栈），修改IP寄存器，实现近转移（段内转移）。</p>
-<p>retf 指令用栈中的二个字的数据（ss:sp指向的栈），修改CS和IP，实现远转移（段间转移）。</p>
-<p>功能：</p>
-<p>ret 指令，进行如下两步操作：</p>
-<ol>
-<li>IP=SS*16 + SP      出栈，令IP=栈顶的2个字节</li>
-<li>SP=SP+2              栈指针指向栈中下一个字节</li>
-</ol>
-<p>retf 指令，进行如下4步操作：</p>
-<ol>
-<li>IP=SS*16 + SP      栈顶2字节给IP</li>
-<li>SP=SP+2</li>
-<li>CS=SS*16 + SP     栈中接下来2字节CS</li>
-<li>SP= SP+2</li>
-</ol>
-<p>如果用汇编语法来解释 ret 相当于：</p>
-<p>pop IP</p>
-<p>如果用汇编语法来解释 retf 相当于：</p>
-<p>pop IP</p>
-<p>pop CS</p>
-<h3 id="ret-n-指令"><a href="#ret-n-指令" class="headerlink" title="ret n 指令"></a>ret n 指令</h3><p>ret n 的含义相当于：</p>
-<p>pop ip<br>add sp,n</p>
-<h2 id="call转移指令"><a href="#call转移指令" class="headerlink" title="call转移指令"></a>call转移指令</h2><h3 id="call-标号（将当前IP压栈，转到标号处执行指令）"><a href="#call-标号（将当前IP压栈，转到标号处执行指令）" class="headerlink" title="call 标号（将当前IP压栈，转到标号处执行指令）"></a>call 标号（将当前IP压栈，转到标号处执行指令）</h3><p>操作：</p>
-<ol>
-<li>SP=SP-2                   修改栈顶指针</li>
-<li>SS*16+SP=IP            当前IP的值压栈</li>
-<li>IP=IP+16位位移       IP加上根据标号计算出的16位位移（即段内近转移，call指令没有段内短转移）</li>
-</ol>
-<p>说明：</p>
-<ol>
-<li>16位位移=标号处的地址 - call指令后的第一个字节的地址；</li>
-<li>16位位移的范围是 <code>-32768~32767</code>，用补码表示；</li>
-<li>16位位移由编译程序在编译时算出。</li>
-</ol>
-<p>call 标号 相当于：</p>
-<p><code>push IP</code></p>
-<p><code>jmp near ptr 标号</code></p>
-<h3 id="call-far-ptr-标号（将当前CS和IP依次压栈，转到标号处执行指令）"><a href="#call-far-ptr-标号（将当前CS和IP依次压栈，转到标号处执行指令）" class="headerlink" title="call far ptr 标号（将当前CS和IP依次压栈，转到标号处执行指令）"></a>call far ptr 标号（将当前CS和IP依次压栈，转到标号处执行指令）</h3><p>call far ptr 标号 实现段间转移，操作：</p>
-<ol>
-<li>sp=sp-2<br>ss*16+sp=CS<br>sp=sp-2<br>ss*16+sp=IP</li>
-<li>CS=标号所在段地址<br>IP=标号所在段的偏移地址</li>
-</ol>
-<p>call far ptr 标号，相当于：</p>
-<p><code>push CS</code></p>
-<p><code>push IP</code></p>
-<p><code>jmp far ptr 标号</code></p>
-<h3 id="call-16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）"><a href="#call-16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）" class="headerlink" title="call 16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）"></a>call 16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）</h3><p>功能：</p>
-<p>sp=sp-2<br>ss*16+sp=IP<br>IP=16位寄存器</p>
-<p>call 16位寄存器 相当于执行：</p>
-<p><code>push IP</code></p>
-<p><code>jmp 16位reg</code></p>
-<h3 id="call-word-ptr-内存单元地址"><a href="#call-word-ptr-内存单元地址" class="headerlink" title="call word ptr 内存单元地址"></a>call word ptr 内存单元地址</h3><p>此指令相当于执行：</p>
-<p><code>push IP</code></p>
-<p><code>jmp word ptr 内存单元地址</code></p>
-<p>如：</p>
-<p>mov sp,10h</p>
-<p>mov ax,0123h</p>
-<p>mov ds:[0],ax</p>
-<p>call word ptr ds:[0]</p>
-<p>最后，IP=0123h，栈指针SP=0eh</p>
-<h3 id="call-dword-ptr-内存单元地址"><a href="#call-dword-ptr-内存单元地址" class="headerlink" title="call dword ptr 内存单元地址"></a>call dword ptr 内存单元地址</h3><p>此指令相当于执行：</p>
-<p><code>push CS</code></p>
-<p><code>push IP</code></p>
-<p><code>jmp dword ptr 内存单元地址</code></p>
-<p>如：</p>
-<p>mov sp,10h</p>
-<p>mov ax,0123h</p>
-<p>mov ds:[0],ax</p>
-<p>mov word ptr ds:[2],0</p>
-<p>call dword ptr ds:[0]</p>
-<p>最后，CS=0，IP=0123h，栈指针SP=0ch</p>
-<h2 id="cmp与根据比较结果转移的指令"><a href="#cmp与根据比较结果转移的指令" class="headerlink" title="cmp与根据比较结果转移的指令"></a>cmp与根据比较结果转移的指令</h2><h3 id="先说说8086标志寄存器结构"><a href="#先说说8086标志寄存器结构" class="headerlink" title="先说说8086标志寄存器结构"></a>先说说8086标志寄存器结构</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/10-flag%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A81.png" alt=""></p>
-<p><strong>标志寄存器在Debug程序中的表示：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/13-debug%E4%B8%ADflag%E7%9A%84%E8%A1%A8%E7%A4%BA.png" alt=""></p>
-<p><strong>算术逻辑运算相关指令：</strong></p>
-<p>add, sub, mul, div, inc, dec, or, and 等</p>
-<p><strong>传送相关指令：</strong></p>
-<p>mov, push, pop 等</p>
-<p><strong>修改标志寄存器的指令：</strong></p>
-<p>pushf，把标志寄存器的值入栈</p>
-<p>popf，从栈中弹出数据放入标志寄存器</p>
-<h3 id="标志位含义"><a href="#标志位含义" class="headerlink" title="标志位含义"></a>标志位含义</h3><p>ZF：执行算数逻辑运算指令后，保存结果的寄存器中，结果是0，zf=1，反之zf=0</p>
-<p>PF：执行算数逻辑运算指令后，保存结果的寄存器中，有偶数个1（0个1也是偶数）时，pf=1，奇数个1时，pf=0</p>
-<p>SF：执行算数逻辑运算指令后，保存结果的寄存器中，符号位是1，sf=1，符号位是0，sf=0</p>
-<p>CF：执行<strong>无符号数</strong>运算后，加法有进位或减法有借位时，cf=1，反之，cf=0</p>
-<p>OF：执行<strong>有符号数</strong>运算后，如果有溢出（运算结果超出结果寄存器的有符号数表示范围称为溢出），of=1，否则of=0</p>
-<h3 id="cmp指令"><a href="#cmp指令" class="headerlink" title="cmp指令"></a>cmp指令</h3><p>cmp 是比较指令，相当于减法指令，但不会保存结果。cmp 执行后会对标志寄存器产生影响。</p>
-<p>格式：cmp 操作对象1, 操作对象2</p>
-<p><strong>无符号数的cmp（涉及到标志位 ZF、CF）：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/10-cmp%E6%8C%87%E4%BB%A4.png" alt=""></p>
-<p><strong>有符号数的cmp（涉及到标志位 SF、OF、ZF）：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/14-%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E6%98%AF%E5%90%A6%E7%9B%B8%E7%AD%89.png" alt=""></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/11-%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0cmp%E6%8C%87%E4%BB%A4.png" alt=""></p>
-<h3 id="根据比较结果转移的指令"><a href="#根据比较结果转移的指令" class="headerlink" title="根据比较结果转移的指令"></a>根据比较结果转移的指令</h3><p>这些指令与cmp配合使用，这些指令就是检测cmp执行后影响到的标志位：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/12-%E6%A0%B9%E6%8D%AE%E6%AF%94%E8%BE%83%E7%BB%93%E6%9E%9C%E7%9A%84%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4.png" alt=""></p>
-<p>根据有符号数的比较结果进行转移的条件转移指令与无符号数的原理相同，只是检查的标志位有所不同。</p>
 ]]></content>
       <categories>
         <category>汇编实战</category>
