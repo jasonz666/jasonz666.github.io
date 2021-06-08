@@ -1121,4 +1121,205 @@
         <tag>汇编实战</tag>
       </tags>
   </entry>
+  <entry>
+    <title>汇编：8086转移指令汇总</title>
+    <url>/2021/06/08/assembly-jump-instruction-collect.html</url>
+    <content><![CDATA[<p><strong>可以修改IP，或者同时修改CS与IP的指令统称为转移指令</strong>。</p>
+<p>因为CS:IP是指令寄存器，比较特殊，且CS无法用其他寄存器直接赋值，如：mov cs,ax。</p>
+<p>所以需要jmp，call，ret，loop等指令来修改IP或同时修改CS与IP。</p>
+<p>CS:IP的组合用来实现8086CPU的20位寻址（虽然8086的寄存器是16位的，但8086内部有20位地址加法器）。</p>
+<p>另外，8086CPU是<code>小端模式</code>。内存高地址存放数据高位，内存低地址存放数据低位。</p>
+<h2 id="转移指令种类"><a href="#转移指令种类" class="headerlink" title="转移指令种类"></a>转移指令种类</h2><p>8086转移指令种类：</p>
+<ul>
+<li><p>无条件转移指令（如 jmp）</p>
+</li>
+<li><p>条件转移指令（如 jcxz）</p>
+</li>
+<li><p>循环指令（如 loop）</p>
+</li>
+<li><p>过程（如 call、ret、retf）</p>
+</li>
+<li><p>中断</p>
+</li>
+</ul>
+<h2 id="伪指令offset"><a href="#伪指令offset" class="headerlink" title="伪指令offset"></a>伪指令offset</h2><p>offset 是伪指令，由汇编器识别并处理，用于取得标号的偏移地址。如：</p>
+<a id="more"></a>
+
+<p>start: mov ax,offset start     ; 相当于mov ax,0</p>
+<p>s: mov ax,offset s               ; 相当于mov ax,3（因为 mov ax,0 指令占3字节）</p>
+<h2 id="jmp无条件转移"><a href="#jmp无条件转移" class="headerlink" title="jmp无条件转移"></a>jmp无条件转移</h2><h3 id="根据位移来转移的jmp指令"><a href="#根据位移来转移的jmp指令" class="headerlink" title="根据位移来转移的jmp指令"></a>根据位移来转移的jmp指令</h3><p><strong>jmp short 标号，段内短转移</strong></p>
+<p>功能：</p>
+<p>jmp short 标号 功能为：IP=IP+8位位移</p>
+<ol>
+<li>8位位移=标号处的地址 - jmp指令后的第一个字节的地址；</li>
+<li>short 指明此处的位移为8位位移；</li>
+<li>8位位移的范围是 <code>-128～127</code>，用补码表示 [注1]；</li>
+<li>8位位移由编译程序在编译时算出。</li>
+</ol>
+<p>注1：</p>
+<p>正数的原码与反码、补码相同。负数的反码为绝对值相同的正数按位取反，补码为反码+1。</p>
+<p><strong>jmp near ptr 标号，段内近转移</strong></p>
+<p>功能：</p>
+<p>jmp near ptr 标号 功能为：IP=IP+16位位移</p>
+<ol>
+<li>16位位移=标号处的地址 - jmp指令后的第一个字节的地址；</li>
+<li>near ptr 指明此处的位移为16位位移；</li>
+<li>16位位移的范围是 <code>-32768~32767</code> ，用补码表示；</li>
+<li>16位位移由编译程序再编译时算出。</li>
+</ol>
+<h3 id="段间转移、远转移jmp"><a href="#段间转移、远转移jmp" class="headerlink" title="段间转移、远转移jmp"></a>段间转移、远转移jmp</h3><p><strong>jmp far ptr 标号</strong></p>
+<p>功能：</p>
+<p>CS=标号所在段的段地址；IP=标号所在段的偏移地址。</p>
+<p>如：</p>
+<p>start: mov ax,0  ; 假设标号处段地址=0123h、偏移地址=10h</p>
+<p>mov bx,0</p>
+<p>jmp far ptr start  ; 执行完后，CS=0123h，IP=10h</p>
+<h3 id="转移地址在寄存器中的jmp"><a href="#转移地址在寄存器中的jmp" class="headerlink" title="转移地址在寄存器中的jmp"></a>转移地址在寄存器中的jmp</h3><p><strong>jmp 16位寄存器</strong></p>
+<p>如：jmp ax，功能：IP=AX。</p>
+<h3 id="转移地址在内存中的jmp"><a href="#转移地址在内存中的jmp" class="headerlink" title="转移地址在内存中的jmp"></a>转移地址在内存中的jmp</h3><p><strong>jmp word ptr 内存单元地址</strong></p>
+<p>功能：</p>
+<p>段内转移，使得 IP=内存单元地址处的一个字（占2字节）</p>
+<p>如：</p>
+<p>mov ax,0123h</p>
+<p>mov ds:[0],ax</p>
+<p>jmp word ptr [0]  ; 执行后，IP=0123h</p>
+<p><strong>jmp dword ptr 内存单元地址</strong></p>
+<p>功能：</p>
+<p>段间转移，使得 <code>CS=内存单元地址+2 处的一个字</code>（2字节）、<code>IP=内存单元地址 处的一个字</code>（2字节）</p>
+<p>也就是说，内存高位的一个字给CS寄存器，内存低位的一个字给IP寄存器。</p>
+<p>如：</p>
+<p>mov ax,0123h</p>
+<p>mov [bx],ax</p>
+<p>mov word ptr [bx+2],0</p>
+<p>jmp dword ptr [bx] ; 执行后，CS=0，IP=0123h</p>
+<h2 id="jcxz条件转移指令"><a href="#jcxz条件转移指令" class="headerlink" title="jcxz条件转移指令"></a>jcxz条件转移指令</h2><p>jcxz可以理解为：<strong>J</strong>ump if <strong>CX</strong> equal <strong>Z</strong>ero。</p>
+<p><strong>语法：jcxz 标号（如果 cx=0，转移到标号处执行）</strong></p>
+<p>功能：</p>
+<p>jcxz 指令为有条件转移指令，所有有条件转移指令都是<strong>短转移</strong>，指令机器码中包含位移而不是目的地址。</p>
+<ol>
+<li>当 cx=0 时，IP=IP+8位位移；</li>
+<li>8位位移=标号处的地址 - jcxz指令后的第一个字节的地址；</li>
+<li>8位位移的范围是 <code>-128~127</code>，用补码表示；</li>
+<li>8位位移由编译程序在编译时算出。</li>
+<li>当 cx ≠ 0 时，什么也不做，程序继续向下执行。</li>
+</ol>
+<p>jcxz 标号 的功能相当于：</p>
+<p><code>if (cx == 0) jmp short 标号</code></p>
+<h2 id="loop转移指令"><a href="#loop转移指令" class="headerlink" title="loop转移指令"></a>loop转移指令</h2><p><strong>语法：loop 标号（cx–，如果cx ≠ 0，转移到标号处执行）</strong></p>
+<p>功能：</p>
+<p>loop 指令位循环指令，所有循环指令都是<strong>短转移</strong>，指令机器码中包含位移而不是目的地址。</p>
+<p>操作：</p>
+<p>cx=cx-1<br>如果 cx ≠ 0，IP=IP+8位位移</p>
+<ol>
+<li>8位位移=标号处的地址 - loop指令后的第一个字节的地址；</li>
+<li>8位位移的范围是 <code>-128～127</code>，用补码表示；</li>
+<li>8位位移由编译程序在编译时算出。</li>
+<li>当 cx = 0 时，什么也不做，程序继续向下执行。</li>
+</ol>
+<p>loop 标号 的功能相当于：</p>
+<p><code>cx--;</code><br><code>if (cx != 0) jmp short 标号</code></p>
+<h2 id="ret和retf转移指令"><a href="#ret和retf转移指令" class="headerlink" title="ret和retf转移指令"></a>ret和retf转移指令</h2><h3 id="ret与retf指令"><a href="#ret与retf指令" class="headerlink" title="ret与retf指令"></a>ret与retf指令</h3><p>ret 指令用栈中的一个字的数据（ss:sp指向的栈），修改IP寄存器，实现近转移（段内转移）。</p>
+<p>retf 指令用栈中的二个字的数据（ss:sp指向的栈），修改CS和IP，实现远转移（段间转移）。</p>
+<p>功能：</p>
+<p>ret 指令，进行如下两步操作：</p>
+<ol>
+<li>IP=SS*16 + SP      出栈，令IP=栈顶的2个字节</li>
+<li>SP=SP+2              栈指针指向栈中下一个字节</li>
+</ol>
+<p>retf 指令，进行如下4步操作：</p>
+<ol>
+<li>IP=SS*16 + SP      栈顶2字节给IP</li>
+<li>SP=SP+2</li>
+<li>CS=SS*16 + SP     栈中接下来2字节CS</li>
+<li>SP= SP+2</li>
+</ol>
+<p>如果用汇编语法来解释 ret 相当于：</p>
+<p>pop IP</p>
+<p>如果用汇编语法来解释 retf 相当于：</p>
+<p>pop IP</p>
+<p>pop CS</p>
+<h3 id="ret-n-指令"><a href="#ret-n-指令" class="headerlink" title="ret n 指令"></a>ret n 指令</h3><p>ret n 的含义相当于：</p>
+<p>pop ip<br>add sp,n</p>
+<h2 id="call转移指令"><a href="#call转移指令" class="headerlink" title="call转移指令"></a>call转移指令</h2><h3 id="call-标号（将当前IP压栈，转到标号处执行指令）"><a href="#call-标号（将当前IP压栈，转到标号处执行指令）" class="headerlink" title="call 标号（将当前IP压栈，转到标号处执行指令）"></a>call 标号（将当前IP压栈，转到标号处执行指令）</h3><p>操作：</p>
+<ol>
+<li>SP=SP-2                   修改栈顶指针</li>
+<li>SS*16+SP=IP            当前IP的值压栈</li>
+<li>IP=IP+16位位移       IP加上根据标号计算出的16位位移（即段内近转移，call指令没有段内短转移）</li>
+</ol>
+<p>说明：</p>
+<ol>
+<li>16位位移=标号处的地址 - call指令后的第一个字节的地址；</li>
+<li>16位位移的范围是 <code>-32768~32767</code>，用补码表示；</li>
+<li>16位位移由编译程序在编译时算出。</li>
+</ol>
+<p>call 标号 相当于：</p>
+<p><code>push IP</code></p>
+<p><code>jmp near ptr 标号</code></p>
+<h3 id="call-far-ptr-标号（将当前CS和IP依次压栈，转到标号处执行指令）"><a href="#call-far-ptr-标号（将当前CS和IP依次压栈，转到标号处执行指令）" class="headerlink" title="call far ptr 标号（将当前CS和IP依次压栈，转到标号处执行指令）"></a>call far ptr 标号（将当前CS和IP依次压栈，转到标号处执行指令）</h3><p>call far ptr 标号 实现段间转移，操作：</p>
+<ol>
+<li>sp=sp-2<br>ss*16+sp=CS<br>sp=sp-2<br>ss*16+sp=IP</li>
+<li>CS=标号所在段地址<br>IP=标号所在段的偏移地址</li>
+</ol>
+<p>call far ptr 标号，相当于：</p>
+<p><code>push CS</code></p>
+<p><code>push IP</code></p>
+<p><code>jmp far ptr 标号</code></p>
+<h3 id="call-16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）"><a href="#call-16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）" class="headerlink" title="call 16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）"></a>call 16位寄存器（将当前IP压栈，从寄存器获得偏移地址给IP）</h3><p>功能：</p>
+<p>sp=sp-2<br>ss*16+sp=IP<br>IP=16位寄存器</p>
+<p>call 16位寄存器 相当于执行：</p>
+<p><code>push IP</code></p>
+<p><code>jmp 16位reg</code></p>
+<h3 id="call-word-ptr-内存单元地址"><a href="#call-word-ptr-内存单元地址" class="headerlink" title="call word ptr 内存单元地址"></a>call word ptr 内存单元地址</h3><p>此指令相当于执行：</p>
+<p><code>push IP</code></p>
+<p><code>jmp word ptr 内存单元地址</code></p>
+<p>如：</p>
+<p>mov sp,10h</p>
+<p>mov ax,0123h</p>
+<p>mov ds:[0],ax</p>
+<p>call word ptr ds:[0]</p>
+<p>最后，IP=0123h，栈指针SP=0eh</p>
+<h3 id="call-dword-ptr-内存单元地址"><a href="#call-dword-ptr-内存单元地址" class="headerlink" title="call dword ptr 内存单元地址"></a>call dword ptr 内存单元地址</h3><p>此指令相当于执行：</p>
+<p><code>push CS</code></p>
+<p><code>push IP</code></p>
+<p><code>jmp dword ptr 内存单元地址</code></p>
+<p>如：</p>
+<p>mov sp,10h</p>
+<p>mov ax,0123h</p>
+<p>mov ds:[0],ax</p>
+<p>mov word ptr ds:[2],0</p>
+<p>call dword ptr ds:[0]</p>
+<p>最后，CS=0，IP=0123h，栈指针SP=0ch</p>
+<h2 id="cmp与根据比较结果转移的指令"><a href="#cmp与根据比较结果转移的指令" class="headerlink" title="cmp与根据比较结果转移的指令"></a>cmp与根据比较结果转移的指令</h2><h3 id="先说说8086标志寄存器结构"><a href="#先说说8086标志寄存器结构" class="headerlink" title="先说说8086标志寄存器结构"></a>先说说8086标志寄存器结构</h3><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/10-flag%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A81.png" alt=""></p>
+<p><strong>标志寄存器在Debug程序中的表示：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/13-debug%E4%B8%ADflag%E7%9A%84%E8%A1%A8%E7%A4%BA.png" alt=""></p>
+<p><strong>算术逻辑运算相关指令：</strong></p>
+<p>add, sub, mul, div, inc, dec, or, and 等</p>
+<p><strong>传送相关指令：</strong></p>
+<p>mov, push, pop 等</p>
+<p><strong>修改标志寄存器的指令：</strong></p>
+<p>pushf，把标志寄存器的值入栈</p>
+<p>popf，从栈中弹出数据放入标志寄存器</p>
+<h3 id="标志位含义"><a href="#标志位含义" class="headerlink" title="标志位含义"></a>标志位含义</h3><p>ZF：执行算数逻辑运算指令后，保存结果的寄存器中，结果是0，zf=1，反之zf=0</p>
+<p>PF：执行算数逻辑运算指令后，保存结果的寄存器中，有偶数个1（0个1也是偶数）时，pf=1，奇数个1时，pf=0</p>
+<p>SF：执行算数逻辑运算指令后，保存结果的寄存器中，符号位是1，sf=1，符号位是0，sf=0</p>
+<p>CF：执行<strong>无符号数</strong>运算后，加法有进位或减法有借位时，cf=1，反之，cf=0</p>
+<p>OF：执行<strong>有符号数</strong>运算后，如果有溢出（运算结果超出结果寄存器的有符号数表示范围称为溢出），of=1，否则of=0</p>
+<h3 id="cmp指令"><a href="#cmp指令" class="headerlink" title="cmp指令"></a>cmp指令</h3><p>cmp 是比较指令，相当于减法指令，但不会保存结果。cmp 执行后会对标志寄存器产生影响。</p>
+<p>格式：cmp 操作对象1, 操作对象2</p>
+<p><strong>无符号数的cmp（涉及到标志位 ZF、CF）：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/10-cmp%E6%8C%87%E4%BB%A4.png" alt=""></p>
+<p><strong>有符号数的cmp（涉及到标志位 SF、OF、ZF）：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/14-%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0%E6%98%AF%E5%90%A6%E7%9B%B8%E7%AD%89.png" alt=""></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/11-%E6%9C%89%E7%AC%A6%E5%8F%B7%E6%95%B0cmp%E6%8C%87%E4%BB%A4.png" alt=""></p>
+<h3 id="根据比较结果转移的指令"><a href="#根据比较结果转移的指令" class="headerlink" title="根据比较结果转移的指令"></a>根据比较结果转移的指令</h3><p>这些指令与cmp配合使用，这些指令就是检测cmp执行后影响到的标志位：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/12-%E6%A0%B9%E6%8D%AE%E6%AF%94%E8%BE%83%E7%BB%93%E6%9E%9C%E7%9A%84%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4.png" alt=""></p>
+<p>根据有符号数的比较结果进行转移的条件转移指令与无符号数的原理相同，只是检查的标志位有所不同。</p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
 </search>
