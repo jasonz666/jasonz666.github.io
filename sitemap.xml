@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://izhaojie.com/2021/06/08/assembly-experiment11.html</loc>
+    
+    <lastmod>2021-06-08</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://izhaojie.com/2021/06/06/assembly-experiment10.html</loc>
     
     <lastmod>2021-06-06</lastmod>
@@ -151,7 +158,7 @@
 
   <url>
     <loc>https://izhaojie.com/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -159,77 +166,77 @@
   
   <url>
     <loc>https://izhaojie.com/tags/CS/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Shell/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Bash/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Github/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Gpg/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Encryption/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/SSH/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Ubuntu/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/UEFI/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -238,14 +245,14 @@
   
   <url>
     <loc>https://izhaojie.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-06-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
