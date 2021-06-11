@@ -1397,4 +1397,37 @@
         <tag>汇编实战</tag>
       </tags>
   </entry>
+  <entry>
+    <title>汇编：实验15：安装新的int9中断例程</title>
+    <url>/2021/06/11/assembly-experiment15.html</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>安装一个新的int 9中断例程，功能是在DOS下，按下A键后，除非不松开，否则一松开就显示满屏幕的A。</p>
+<p>这个程序在win2k的DOS下会有问题，dosbox中执行正常。</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><a id="more"></a>
+
+<p>汇编源码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 实验15</span><br><span class="line">; 安装新的int9中断例程</span><br><span class="line">; 功能是在DOS下，按下A键，除非一直按住，只要松开就显示满屏幕的A</span><br><span class="line">; 此程序在DOS下有问题，在dosbox下执行正常</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    db 128 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    cli</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,128</span><br><span class="line">    sti</span><br><span class="line"></span><br><span class="line">    push cs</span><br><span class="line">    pop ds</span><br><span class="line"></span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line"></span><br><span class="line">    mov si,offset int9 ; ds:si指向新int9中断例程的代码</span><br><span class="line">    mov di,204h        ; es:di指向新int9例程存放处</span><br><span class="line">    mov cx,offset int9end - offset int9</span><br><span class="line">    cld</span><br><span class="line">    rep movsb</span><br><span class="line"></span><br><span class="line">    ; 原int9入口地址保存在0:200h、0:202h</span><br><span class="line">    push es:[9*4]</span><br><span class="line">    pop es:[200h]</span><br><span class="line">    push es:[9*4+2]</span><br><span class="line">    pop es:[202h]</span><br><span class="line"></span><br><span class="line">    ; 中断向量表9号中断保存新入口地址</span><br><span class="line">    cli</span><br><span class="line">    mov word ptr es:[9*4],204h</span><br><span class="line">    mov word ptr es:[9*4+2],0</span><br><span class="line">    sti</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">; 新int9中断例程</span><br><span class="line">int9:</span><br><span class="line">    push ax</span><br><span class="line">    push bx</span><br><span class="line">    push cx</span><br><span class="line">    push es</span><br><span class="line"></span><br><span class="line">    in al,60h</span><br><span class="line"></span><br><span class="line">    pushf</span><br><span class="line">    call dword ptr cs:[200h] ; 此中断执行时，cs&#x3D;0</span><br><span class="line"></span><br><span class="line">    cmp al,1eh+80h ; A按键的通码1eh，断码&#x3D;通码+80h</span><br><span class="line">    jne int9ret</span><br><span class="line"></span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov bx,0</span><br><span class="line">    mov cx,2000</span><br><span class="line">s:</span><br><span class="line">    mov byte ptr es:[bx],&#39;A&#39;</span><br><span class="line">    add bx,2</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">int9ret:</span><br><span class="line">    pop es</span><br><span class="line">    pop cx</span><br><span class="line">    pop bx</span><br><span class="line">    pop ax</span><br><span class="line">    iret</span><br><span class="line"></span><br><span class="line">int9end:</span><br><span class="line">    nop</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>执行结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/Untitled.gif" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：指令系统总结</title>
+    <url>/2021/06/11/assembly-instruction-system.html</url>
+    <content><![CDATA[<p>指令系统总结：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
 </search>
