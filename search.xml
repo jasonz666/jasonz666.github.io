@@ -1378,4 +1378,23 @@
         <tag>汇编实战</tag>
       </tags>
   </entry>
+  <entry>
+    <title>汇编：实验14：从CMOS读取并显示时间</title>
+    <url>/2021/06/11/assembly-experiment14.html</url>
+    <content><![CDATA[<p>从 CMOS RAM 读取时间并显示到屏幕。</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 显示CMOS中当前日期时间</span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">src:</span><br><span class="line">    db 9,8,7,4,2,0 ; 年月日时分秒的地址</span><br><span class="line">dst:</span><br><span class="line">    db &#39;yy&#x2F;mm&#x2F;dd hh:mm:ss&#39;,0</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">    mov ax,cs</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,offset src</span><br><span class="line">    mov di,offset dst</span><br><span class="line">    mov cx,6</span><br><span class="line">s:</span><br><span class="line">    mov dx,cx</span><br><span class="line">    mov al,[si]</span><br><span class="line">    out 70h,al ; 70h为地址端口</span><br><span class="line">    in al,71h ; 71h为数据端口</span><br><span class="line">    mov ah,al</span><br><span class="line">    mov cl,4</span><br><span class="line">    shr ah,cl ; 右移4位，ah为十进制的十位数</span><br><span class="line">    and al,00001111b ; al为十进制的个位数</span><br><span class="line">    add ah,30h</span><br><span class="line">    add al,30h ; 数值转字符形式</span><br><span class="line">    xor ah,al</span><br><span class="line">    xor al,ah</span><br><span class="line">    xor ah,al ; 交换ah al的值</span><br><span class="line">    mov [di],ax</span><br><span class="line">    add di,3</span><br><span class="line">    inc si</span><br><span class="line">    mov cx,dx</span><br><span class="line">    loop s</span><br><span class="line"></span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,0</span><br><span class="line">    mov si,offset dst</span><br><span class="line">s1:</span><br><span class="line">    mov ch,0</span><br><span class="line">    mov cl,[si]</span><br><span class="line">    jcxz ok</span><br><span class="line">    mov ch,2 ; 绿色字</span><br><span class="line">    mov es:[di],cx</span><br><span class="line">    inc si</span><br><span class="line">    add di,2</span><br><span class="line">    jmp s1</span><br><span class="line">ok:</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E7%BB%93%E6%9E%9C.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
 </search>
