@@ -1442,7 +1442,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 测试新的 7ch 中断例程</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    ; 测试清屏</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 测试绿色字</span><br><span class="line">    mov ah,1</span><br><span class="line">    mov al,2</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 测试红底</span><br><span class="line">    mov ah,2</span><br><span class="line">    mov al,4</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 向上滚动一行</span><br><span class="line">    mov ah,3</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 
 <p>结果：</p>
-<p><img src="Untitled.gif" alt=""></p>
+<img src="/2021/06/16/assembly-experiment16/Untitled.gif" class="">
 ]]></content>
       <categories>
         <category>汇编实战</category>
