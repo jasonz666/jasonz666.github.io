@@ -1456,6 +1456,7 @@
     <url>/2021/06/21/assembly-course-design2.html</url>
     <content><![CDATA[<p>课程设计2</p>
 <p>题目见 汇编语言 第四版 作者王爽 p312</p>
+<p>这篇文章是《汇编语言 第四版》的完结篇。</p>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>1、vm虚拟机中安装win98se，以下称为<code>win98</code>。</p>
 <p>2、成功安装系统后，虚拟机添加一个新软盘（需要创建软盘映像.img文件）。</p>
 <p>3、启动win98系统，将下文源码编译，然后执行程序（需要masm汇编器）。</p>
