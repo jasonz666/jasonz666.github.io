@@ -236,7 +236,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.1k</span>
+              <span>5.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -255,12 +255,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>下面的探讨主要针对Python3，在Python2中不一定适用。</p>
-<h2 id="查看Python的浮点数如何在内存中存储"><a href="#查看Python的浮点数如何在内存中存储" class="headerlink" title="查看Python的浮点数如何在内存中存储"></a>查看Python的浮点数如何在内存中存储</h2><p>Python的浮点数实现原理：<br>CPython实现有一个PyFloatObject的结构体，用来构造Python的浮点数类型：</p>
-<p>typedef struct {<br>  PyObject_HEAD  # 这个对象包含：引用计数+对象类型，占8+8=16字节<br>  double ob_fval;   # 这个是存储浮点数的地方，Python的浮点数就是C的double，即双精度浮点<br>} PyFloatObject;</p>
+          <h2 id="查看Python的浮点数如何在内存中存储"><a href="#查看Python的浮点数如何在内存中存储" class="headerlink" title="查看Python的浮点数如何在内存中存储"></a>查看Python的浮点数如何在内存中存储</h2><p>下面的探讨主要针对Python3，在Python2中不一定适用。</p>
+<p>Python的浮点数实现原理：<br>CPython实现有一个PyFloatObject的结构体，用来构造Python的浮点数类型：</p>
+<p>typedef struct {<br>  PyObject_HEAD  # 这个对象包含：引用计数+对象类型，占8+8=16字节<br>  double ob_fval;   # 这个是存储浮点数的地方，Python的浮点数就是C的double，双精度<br>} PyFloatObject;</p>
 <p>所以Python的浮点数类型占24字节：<br>引用计数+对象类型+双精度浮点数 = 8+8+8 = 24字节<br>不过Python3的整数长度无限，所以占字节数不定</p>
 <p>用Python代码验证浮点数：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/py-float-1.png" alt="py-float-1"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/py-float-1.png" alt=""></p>
 <p>代码：</p>
           <!--noindex-->
             <div class="post-button">

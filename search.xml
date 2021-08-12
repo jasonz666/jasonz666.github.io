@@ -1486,20 +1486,24 @@
   <entry>
     <title>Python中的浮点数探秘</title>
     <url>/2021/08/12/float-in-python3.html</url>
-    <content><![CDATA[<p>下面的探讨主要针对Python3，在Python2中不一定适用。</p>
-<h2 id="查看Python的浮点数如何在内存中存储"><a href="#查看Python的浮点数如何在内存中存储" class="headerlink" title="查看Python的浮点数如何在内存中存储"></a>查看Python的浮点数如何在内存中存储</h2><p>Python的浮点数实现原理：<br>CPython实现有一个PyFloatObject的结构体，用来构造Python的浮点数类型：</p>
-<p>typedef struct {<br>  PyObject_HEAD  # 这个对象包含：引用计数+对象类型，占8+8=16字节<br>  double ob_fval;   # 这个是存储浮点数的地方，Python的浮点数就是C的double，即双精度浮点<br>} PyFloatObject;</p>
+    <content><![CDATA[<h2 id="查看Python的浮点数如何在内存中存储"><a href="#查看Python的浮点数如何在内存中存储" class="headerlink" title="查看Python的浮点数如何在内存中存储"></a>查看Python的浮点数如何在内存中存储</h2><p>下面的探讨主要针对Python3，在Python2中不一定适用。</p>
+<p>Python的浮点数实现原理：<br>CPython实现有一个PyFloatObject的结构体，用来构造Python的浮点数类型：</p>
+<p>typedef struct {<br>  PyObject_HEAD  # 这个对象包含：引用计数+对象类型，占8+8=16字节<br>  double ob_fval;   # 这个是存储浮点数的地方，Python的浮点数就是C的double，双精度<br>} PyFloatObject;</p>
 <p>所以Python的浮点数类型占24字节：<br>引用计数+对象类型+双精度浮点数 = 8+8+8 = 24字节<br>不过Python3的整数长度无限，所以占字节数不定</p>
 <p>用Python代码验证浮点数：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/py-float-1.png" alt="py-float-1"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/py-float-1.png" alt=""></p>
 <p>代码：</p>
 <a id="more"></a>
 
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> ctypes <span class="keyword">import</span> string_at</span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> getsizeof</span><br><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> hexlify</span><br><span class="line">a=<span class="number">134.375</span></span><br><span class="line">buffer=hexlify(string_at(id(a),getsizeof(a)))</span><br><span class="line">print(buffer)</span><br><span class="line">buffer_float=buffer[len(buffer)<span class="number">-16</span>:]</span><br><span class="line">print(buffer_float)</span><br><span class="line">tmp=[buffer_float[i:i+<span class="number">2</span>] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(buffer_float),<span class="number">2</span>)]</span><br><span class="line">tmp=[bin(int(tmp[i].decode(),<span class="number">16</span>))[<span class="number">2</span>:].rjust(<span class="number">8</span>,<span class="string">'0'</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(tmp)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>)]</span><br><span class="line">print(<span class="string">' '</span>.join(tmp))</span><br><span class="line">print(<span class="string">'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>)</span><br><span class="line">b = <span class="string">''</span>.join(tmp)</span><br><span class="line">S=b[<span class="number">0</span>]</span><br><span class="line">print(<span class="string">'符号位'</span>,S)</span><br><span class="line">E=b[<span class="number">1</span>:<span class="number">12</span>]</span><br><span class="line">print(<span class="string">'指数位'</span>,E)</span><br><span class="line">M=b[<span class="number">12</span>:]</span><br><span class="line">print(<span class="string">'尾数位'</span>,M)</span><br></pre></td></tr></table></figure>
 
-<h3 id="探讨一下"><a href="#探讨一下" class="headerlink" title="探讨一下"></a>探讨一下</h3><p>十进制数 134.375 如何转换为二进制浮点数，并存储在内存中的：<br>134.375 等于二进制的 10000110.011，转换为IEEE754的浮点数格式：1.0000110011x2^7，其中首位1隐藏，尾数位=0000110011，符号位=0，指数位=(7+1023)的二进制=10000000110<br>134.375转换二进制小数的方法详见：<a href="https://blog.csdn.net/u014470361/article/details/79820892" target="_blank" rel="noopener">浮点数在内存中是怎么存储的？</a></p>
-<p>十进制小数部分最后一位不是5时，小数部分与2相乘不会得到1.0，就无法准确转换为二进制，比如134.372，小数0.372如果允许60个二进制位，将转换为：<br>010111110011101101100100010110100001110010101,100000010000000</p>
-<p>整数部分134二进制为：10000110，首位1隐藏，变成0000110(7位)，双精度52位尾数-7位整数部分=45位供小数存储。<br>因为小数0.372无法准确转换为二进制，第46进行“向偶数舍入”（见 <a href="https://blog.csdn.net/S_o_l_o_n/article/details/106483412" target="_blank" rel="noopener">整数转浮点数精度溢出的原因和处理方式</a>），变成：<br>010111110011101101100100010110100001110010110<br>010111110011101101100100010110100001110010101,100000010000000 (原60位小数)</p>
+<h3 id="探讨一下"><a href="#探讨一下" class="headerlink" title="探讨一下"></a>探讨一下</h3><p>十进制数 134.375 如何转换为二进制浮点数，并存储在内存中的：</p>
+<p>134.375 等于二进制的 10000110.011，转换为IEEE754的浮点数格式：1.0000110011x2^7，其中首位1隐藏，尾数位=0000110011，符号位=0，指数位=(7+1023)的二进制=10000000110</p>
+<p>134.375转换二进制小数的方法详见 <a href="https://blog.csdn.net/u014470361/article/details/79820892" target="_blank" rel="noopener">浮点数在内存中是怎么存储的？</a></p>
+<p>十进制小数部分最后一位不是5时，小数部分与2相乘不会得到1.0，就无法准确转换为二进制，比如134.372，小数0.372如果允许60个二进制位，将转换为：</p>
+<p>010111110011101101100100010110100001110010101,100000010000000</p>
+<p>整数部分134二进制为：10000110，首位1隐藏，变成0000110(7位)，双精度52位尾数-7位整数部分=45位供小数存储。<br>因为小数0.372无法准确转换为二进制，第46进行“向偶数舍入” [1]，变成：</p>
+<p>010111110011101101100100010110100001110010110<br>010111110011101101100100010110100001110010101,100000010000000 (原60位小数)</p>
 <p>用代码验证</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="comment"># 134.372 整数部分隐藏首位1 二进制=0000110</span></span><br><span class="line"><span class="comment"># 小数部分向偶数舍入后 二进制=010111110011101101100100010110100001110010110</span></span><br><span class="line"><span class="comment"># 指数二进制=10000000110</span></span><br><span class="line"><span class="comment"># 符号位=0</span></span><br><span class="line"><span class="comment"># S E M = 0,10000000110,0000110(整数)010111110011101101100100010110100001110010110(小数)</span></span><br><span class="line"><span class="comment"># 134.372 64位浮点数实际如下</span></span><br><span class="line">a = <span class="string">'0100000001100000110010111110011101101100100010110100001110010110'</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line">h = <span class="string">''</span></span><br><span class="line"><span class="keyword">while</span> i&lt;<span class="number">64</span>:</span><br><span class="line">    h += <span class="string">f'<span class="subst">&#123;int(a[i:i+<span class="number">8</span>],<span class="number">2</span>):x&#125;</span>'</span></span><br><span class="line">    i+=<span class="number">8</span></span><br><span class="line"><span class="comment"># 134.372 的浮点数十六进制</span></span><br><span class="line">print(h)  <span class="comment"># 4060cbe76c8b4396</span></span><br><span class="line"><span class="comment"># 复原</span></span><br><span class="line">print(struct.unpack(<span class="string">'!d'</span>, bytes.fromhex(h)))  <span class="comment"># 输出结果是 (134.372,)</span></span><br></pre></td></tr></table></figure>
 
@@ -1513,26 +1517,23 @@
 <h3 id="浮点数（双精度）转换十进制数步骤"><a href="#浮点数（双精度）转换十进制数步骤" class="headerlink" title="浮点数（双精度）转换十进制数步骤"></a>浮点数（双精度）转换十进制数步骤</h3><p>1、提取尾数位：补全首位的到，1.0000110011000000000000000000000000000000000000000000</p>
 <p>2、指数移位操作：指数位10000000110=1030，1030-偏移1023=7，对尾数右移位7（负指数向左移位）=10000110.011000000000000000000000000000000000000000000</p>
 <p>3、转换二进制整数+小数部分：<code>1x2^7+0x2^6...0x2^0.0x(2^-1)+1x(2^-2)+1x(2^-3)...=134.375</code></p>
-<h2 id="Python的struct-pack-与struct-unpack"><a href="#Python的struct-pack-与struct-unpack" class="headerlink" title="Python的struct.pack()与struct.unpack()"></a>Python的struct.pack()与struct.unpack()</h2><p>python的struct主要用来处理C结构数据。主要有如下两个方法：</p>
+<h2 id="Python的struct-pack-与struct-unpack"><a href="#Python的struct-pack-与struct-unpack" class="headerlink" title="Python的struct.pack()与struct.unpack()"></a>Python的struct.pack()与struct.unpack()</h2><p>python的struct主要用来处理C结构数据。主要有如下两个方法 [2]：</p>
 <p>struct.pack(fmt, v1, v2, …)<br>struct.unpack(fmt, string)</p>
-<p>参考：<a href="https://blog.csdn.net/D_R_L_T/article/details/91910774" target="_blank" rel="noopener">Python中struct.pack()和struct.unpack()用法详细说明</a></p>
 <p>下面用struct来验证python的浮点数是不是C的double：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/py-float-2.png" alt="py-float-2"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/py-float-2.png" alt=""></p>
 <p>可以看到，上面截图的两段代码显示的134.375浮点数的S、E、M是完全一样的。</p>
 <h2 id="浮点数的IEEE754标准"><a href="#浮点数的IEEE754标准" class="headerlink" title="浮点数的IEEE754标准"></a>浮点数的IEEE754标准</h2><h3 id="有效位计算方法1"><a href="#有效位计算方法1" class="headerlink" title="有效位计算方法1"></a>有效位计算方法1</h3><p>一个十进制位需要多少二进制位来表示：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/py-float-3.png" alt="py-float-3"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/py-float-3.png" alt=""></p>
 <p>大约需要3.322个二进制位来表示一个十进制位，所以：</p>
 <p>单精度浮点数24（23尾数位+1隐藏位）位二进制可以表示大约：24/3.322≈7.225 位的十进制。</p>
 <p>可见单精度浮点数的准确有效位是7（有效位表示非零整数部分+小数部分的数字位数，如1.23有效位是3，0.1234有效位是4）。</p>
 <p>双精度浮点数的有效位同理计算可得：53/3.322≈15.95，有效位是15，总的来说：</p>
 <p>1、单精度浮点数是4字节32位，符号位+指数位+尾数位=1位+8位+23位，有效位7～8位</p>
-<p>2、双精度浮点数是8字节64位，符号位+指数位+尾数位=1位+11位+52位，有效位15～16位</p>
-<p>参考：<a href="https://blog.csdn.net/bluewanderer/article/details/86671653" target="_blank" rel="noopener">浮点数的有效数字位数</a>、<a href="https://blog.csdn.net/startwithdp/article/details/8721466" target="_blank" rel="noopener">浮点数(单精度、双精度数)的有效位</a>、<a href="https://blog.csdn.net/dreamer2020/article/details/24158303" target="_blank" rel="noopener">深入理解浮点数有效位</a></p>
-<h3 id="有效位计算方法2"><a href="#有效位计算方法2" class="headerlink" title="有效位计算方法2"></a>有效位计算方法2</h3><p>1、单精度浮点数有效数24位全是1时：10^7 &lt; 2^24-1=16777215 &lt; 10^8</p>
+<p>2、双精度浮点数是8字节64位，符号位+指数位+尾数位=1位+11位+52位，有效位15～16位 [3]</p>
+<h3 id="有效位计算方法2"><a href="#有效位计算方法2" class="headerlink" title="有效位计算方法2"></a>有效位计算方法2</h3><p>1、单精度浮点数有效数24位全是1时：<code>10^7 &lt; 2^24-1=16777215 &lt; 10^8</code></p>
 <p>所以单精度浮点数能准确表示小数点后第7位，第8位部分准确。16777215是能够转化为单精度浮点数表示的整数的最大精度，超过这个数会进行“舍入”导致丢失精度。</p>
-<p>2、双精度浮点数有效数53位全是1时：10^15 &lt; 2^53-1=9007199254740991 &lt; 10^16</p>
-<p>所以双精度浮点数能准确表示小数点后第15位，第16位部分准确。9007199254740991是能够转化为双精度浮点数表示的整数的最大精度，超过这个数会进行“舍入”导丢失精度。</p>
-<p>参考：<a href="https://blog.csdn.net/S_o_l_o_n/article/details/106438708" target="_blank" rel="noopener">理解浮点数的二进制表示</a>、<a href="https://blog.csdn.net/S_o_l_o_n/article/details/106483412" target="_blank" rel="noopener">整数转浮点数精度溢出的原因和处理方式</a>、<a href="http://c.biancheng.net/view/314.html" target="_blank" rel="noopener">浮点数标准详解参考</a></p>
+<p>2、双精度浮点数有效数53位全是1时：<code>10^15 &lt; 2^53-1=9007199254740991 &lt; 10^16</code></p>
+<p>所以双精度浮点数能准确表示小数点后第15位，第16位部分准确。9007199254740991是能够转化为双精度浮点数表示的整数的最大精度，超过这个数会进行“舍入”导丢失精度。[4]</p>
 <h2 id="Python的sys-float-info详解"><a href="#Python的sys-float-info详解" class="headerlink" title="Python的sys.float_info详解"></a>Python的sys.float_info详解</h2><p>sys.float_info输出内容：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">In [<span class="number">202</span>]: sys.float_info</span><br><span class="line">Out[<span class="number">202</span>]: sys.float_info(max=<span class="number">1.7976931348623157e+308</span>, max_exp=<span class="number">1024</span>, max_10_exp=<span class="number">308</span>, min=<span class="number">2.2250738585072014e-308</span>, min_exp=<span class="number">-1021</span>, min_10_exp=<span class="number">-307</span>, dig=<span class="number">15</span>, mant_dig=<span class="number">53</span>, epsilon=<span class="number">2.220446049250313e-16</span>, radix=<span class="number">2</span>, rounds=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 
@@ -1546,8 +1547,7 @@
 <p>8、dig表示可以保证被精确的转为浮点数的整数的数字个数，保证被精确的转为浮点数的整数应该小于等于9007199254740991，该数有16位数字，但是大于该数的16位数字的整数是无法被精确的转为浮点数的，所以能确保精确的有效位是15；</p>
 <p>9、mant_dig就是mantissa digits，即尾数位数，因为尾数的首位1被隐藏，所以真正的尾数位数共有52+1=53位；</p>
 <p>10、epsilon表示最小的大于1的浮点数和1之间的差值；</p>
-<p>11、rounds表示的是当一个整数转成浮点数，对无法精确表示的整数的近似模式，这里为1表示的是取距离原值最近的浮点数表示；</p>
-<p>参考：<a href="https://blog.csdn.net/S_o_l_o_n/article/details/106459473" target="_blank" rel="noopener">浮点数的各种最值推算以及对python sys.float_info的解释</a>、<a href="https://blog.csdn.net/S_o_l_o_n/article/details/106483412" target="_blank" rel="noopener">整数转浮点数精度溢出的原因和处理方式</a>、<a href="https://docs.python.org/3.8/library/sys.html#sys.float_info" target="_blank" rel="noopener">python文档</a></p>
+<p>11、rounds表示的是当一个整数转成浮点数，对无法精确表示的整数的近似模式，这里为1表示的是取距离原值最近的浮点数表示；[5]</p>
 <h2 id="Python浮点数举例"><a href="#Python浮点数举例" class="headerlink" title="Python浮点数举例"></a>Python浮点数举例</h2><p>首先，双精度浮点数的全部53有效位可表示的最大十进制数是（53位全是1的情况）：</p>
 <p>2**53-1=<strong>9007199254740991</strong></p>
 <p>看一个更长的小数：</p>
@@ -1561,7 +1561,8 @@
 <p>Out[264]: 0.1234567891234567<strong>4</strong></p>
 <p>In [265]: 0.123456789123456759</p>
 <p>Out[265]: 0.1234567891234567<strong>6</strong></p>
-<p>可以明显看到最后一位4或6是舍入值，因为它变大还是变小是不精确的，这取决于浮点数的舍入规则，见 <a href="https://blog.csdn.net/S_o_l_o_n/article/details/106483412" target="_blank" rel="noopener">整数转浮点数精度溢出的原因和处理方式</a></p>
+<p>可以明显看到最后一位4或6是舍入值，因为它变大还是变小是不精确的，这取决于浮点数的舍入规则。[6]</p>
+<p>参考：<br>[1] <a href="https://blog.csdn.net/S_o_l_o_n/article/details/106483412" target="_blank" rel="noopener">整数转浮点数精度溢出的原因和处理方式</a><br>[2] <a href="https://blog.csdn.net/D_R_L_T/article/details/91910774" target="_blank" rel="noopener">Python中struct.pack()和struct.unpack()用法详细说明</a><br>[3] <a href="https://blog.csdn.net/bluewanderer/article/details/86671653" target="_blank" rel="noopener">浮点数的有效数字位数</a>、<a href="https://blog.csdn.net/startwithdp/article/details/8721466" target="_blank" rel="noopener">浮点数(单精度、双精度数)的有效位</a>、<a href="https://blog.csdn.net/dreamer2020/article/details/24158303" target="_blank" rel="noopener">深入理解浮点数有效位</a><br>[4] <a href="https://blog.csdn.net/S_o_l_o_n/article/details/106438708" target="_blank" rel="noopener">理解浮点数的二进制表示</a>、<a href="https://blog.csdn.net/S_o_l_o_n/article/details/106483412" target="_blank" rel="noopener">整数转浮点数精度溢出的原因和处理方式</a>、<a href="http://c.biancheng.net/view/314.html" target="_blank" rel="noopener">浮点数标准详解参考</a><br>[5] <a href="https://blog.csdn.net/S_o_l_o_n/article/details/106459473" target="_blank" rel="noopener">浮点数的各种最值推算以及对python sys.float_info的解释</a>、<a href="https://blog.csdn.net/S_o_l_o_n/article/details/106483412" target="_blank" rel="noopener">整数转浮点数精度溢出的原因和处理方式</a>、<a href="https://docs.python.org/3.8/library/sys.html#sys.float_info" target="_blank" rel="noopener">python文档</a><br>[6] <a href="https://blog.csdn.net/S_o_l_o_n/article/details/106483412" target="_blank" rel="noopener">整数转浮点数精度溢出的原因和处理方式</a></p>
 ]]></content>
       <categories>
         <category>Python</category>
