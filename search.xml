@@ -1572,4 +1572,17 @@
         <tag>浮点数</tag>
       </tags>
   </entry>
+  <entry>
+    <title>一文彻底搞懂 Python中的描述器</title>
+    <url>/2021/08/19/python-descriptor.html</url>
+    <content><![CDATA[<h2 id="描述器"><a href="#描述器" class="headerlink" title="描述器"></a>描述器</h2><h3 id="什么是描述器？"><a href="#什么是描述器？" class="headerlink" title="什么是描述器？"></a>什么是描述器？</h3><p>参考 md 笔记</p>
+<p>未完。。。。。。。。。</p>
+<h3 id="描述器的应用：实现ClassMethod、StaticMethod、Property"><a href="#描述器的应用：实现ClassMethod、StaticMethod、Property" class="headerlink" title="描述器的应用：实现ClassMethod、StaticMethod、Property"></a>描述器的应用：实现ClassMethod、StaticMethod、Property</h3>]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>描述器</tag>
+      </tags>
+  </entry>
 </search>
