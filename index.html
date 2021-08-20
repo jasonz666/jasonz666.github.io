@@ -406,7 +406,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/08/19/python-descriptor.html" class="post-title-link" itemprop="url">一文彻底搞懂 Python中的描述器</a>
+            <a href="/2021/08/19/python-descriptor.html" class="post-title-link" itemprop="url">一文彻底搞懂 Python中的描述器、反射</a>
         </h2>
 
         <div class="post-meta">
@@ -434,14 +434,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>91</span>
+              <span>6.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -453,9 +453,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="描述器"><a href="#描述器" class="headerlink" title="描述器"></a>描述器</h2><h3 id="什么是描述器？"><a href="#什么是描述器？" class="headerlink" title="什么是描述器？"></a>什么是描述器？</h3><p>参考 md 笔记</p>
-<p>未完。。。。。。。。。<br>未完。。。。。。。。。<br>未完。。。。。。。。。</p>
-<h3 id="描述器的应用：实现ClassMethod、StaticMethod、Property"><a href="#描述器的应用：实现ClassMethod、StaticMethod、Property" class="headerlink" title="描述器的应用：实现ClassMethod、StaticMethod、Property"></a>描述器的应用：实现ClassMethod、StaticMethod、Property</h3>
+          <h2 id="描述器"><a href="#描述器" class="headerlink" title="描述器"></a>描述器</h2><h3 id="什么是描述器？"><a href="#什么是描述器？" class="headerlink" title="什么是描述器？"></a>什么是描述器？</h3><p>一个类中定义了如下一个或多个魔术方法，这个<strong>类的实例</strong>就是描述器：</p>
+<p><code>__get__，__set__，__delete__</code></p>
+<p>通常需要两个类来构建描述器：</p>
+<p>如果类B的类属性x，指向另一个类A的实例。被指向的A的实例就是描述器对象。B.x是描述器，B也是描述器的属主（owner）。比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    x = A()  <span class="comment"># x是描述器</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>类属性的值，通常是一些已有类型的对象，比如字符串、列表等。</p>
+<p>当使用了描述器，类属性就指向一个描述器对象，描述器通过三个魔术方法，可以自定义属性的行为。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/19/python-descriptor.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1188,7 +1201,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1224,12 +1237,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">97k</span>
+    <span title="站点总字数">104k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:29</span>
+    <span title="站点阅读时长">1:34</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
