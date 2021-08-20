@@ -1682,4 +1682,43 @@
         <tag>偏函数</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Python中的属性搜索顺序</title>
+    <url>/2021/08/21/python-attribute-search-order.html</url>
+    <content><![CDATA[<p>属性：这里表示类（或类的实例）中的变量与方法的统称。</p>
+<p>所以搜索顺序包括：类的属性搜索顺序、类的实例的属性搜索顺序。</p>
+<p>下面是所有魔术方法同时出现的情况下，类或实例的属性搜索顺序。</p>
+<h2 id="默认搜索顺序"><a href="#默认搜索顺序" class="headerlink" title="默认搜索顺序"></a>默认搜索顺序</h2><p><strong>对于类</strong>，比如查找A.x。A是类，x是类的属性。</p>
+<p>类属性的默认搜索顺序：A自己的x（即A的属性字典__dict__） ⟶ A的父类的x [1] ⟶ 父类的父类的x… ⟶ object的x</p>
+<p><strong>对于类的实例</strong>，比如查找a.x。a是A的实例，x是实例的属性。</p>
+<p>实例的默认搜索顺序：a自己的x（即a的属性字典__dict__） ⟶ A自己的x ⟶ A的父类的x [1] ⟶  父类的父类的x… ⟶ object的x</p>
+<p>[1]：</p>
+<p>如果A是单继承，直接不断向上找父类。如果A是多继承，由Python3的mro生成一个有序的继承列表，依次找父类。</p>
+<h2 id="相关的魔术方法"><a href="#相关的魔术方法" class="headerlink" title="相关的魔术方法"></a>相关的魔术方法</h2><p><strong>与搜索顺序相关的魔术方法有：</strong></p>
+<p>1、反射相关的：<code>__getattr__, __setattr__, __delattr__, __getattribute__</code></p>
+<p>2、描述器相关的：<code>__get__，__set__，__delete__</code></p>
+<p>下面是所有魔术方法同时出现的情况下，类或实例的属性搜索顺序：</p>
+<a id="more"></a>
+
+<h2 id="实例属性搜索顺序"><a href="#实例属性搜索顺序" class="headerlink" title="实例属性搜索顺序"></a>实例属性搜索顺序</h2><p>还是以 a.x 为例。</p>
+<h3 id="修改-删除-a-x-时"><a href="#修改-删除-a-x-时" class="headerlink" title="修改/删除 a.x 时"></a>修改/删除 a.x 时</h3><p>不管 x 这个属性是不是描述器，描述器不起作用：<br>修改a.x时，直接调 __setattr__<br>删除a.x时，直接调 __delattr__</p>
+<p>因为修改/删除肯定是操作a自己的x，不会去操作继承位置的x，显然是直接调用类A的 __setattr__ 或 __delattr__。</p>
+<h3 id="读取-a-x-时"><a href="#读取-a-x-时" class="headerlink" title="读取 a.x 时"></a>读取 a.x 时</h3><p><strong>如果 x 是描述器：</strong></p>
+<p>1、非数据描述器时，描述器不起作用：<br>__getattribute__ ⟶ 实例默认搜索顺序 ⟶ __getattr__</p>
+<p>2、数据描述器时：<br>__getattribute__ ⟶ 描述器的__get__</p>
+<p><strong>如果 x 不是描述器：</strong></p>
+<p>__getattribute__ ⟶ 实例默认搜索顺序 ⟶ __getattr__</p>
+<h2 id="类属性搜索顺序"><a href="#类属性搜索顺序" class="headerlink" title="类属性搜索顺序"></a>类属性搜索顺序</h2><h3 id="修改-删除-A-x"><a href="#修改-删除-A-x" class="headerlink" title="修改/删除 A.x"></a>修改/删除 A.x</h3><p>与实例一样，是操作A自己的x，不存在搜索顺序。</p>
+<p>修改时，比如A.x=100，赋值即重新定义。</p>
+<h3 id="读取-A-x"><a href="#读取-A-x" class="headerlink" title="读取 A.x"></a>读取 A.x</h3><p>如果 x 是描述器：调描述器的 __get__</p>
+<p>如果不是描述器：符合上文的 <strong>类属性的默认搜索顺序</strong></p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>MRO</tag>
+        <tag>属性</tag>
+      </tags>
+  </entry>
 </search>
