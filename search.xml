@@ -1633,7 +1633,8 @@
 <td align="left">此方法只影响实例。实例的<strong>所有属性</strong>的访问，第一个就调用此方法。此方法能完全控制属性的默认访问顺序。可以在此方法中做一些处理，然后手动抛出<code>AttributeError</code>异常，这将继续调用<code>__getattr__</code>方法(如果有的话)。</td>
 </tr>
 </tbody></table>
-<h4 id="getattr-VS-getattribute"><a href="#getattr-VS-getattribute" class="headerlink" title="__getattr__ VS __getattribute__"></a>__getattr__ VS __getattribute__</h4><p>两者的执行时间点不同。</p>
+<p><code>__getattr__ VS __getattribute__</code></p>
+<p>两者的执行时间点不同。</p>
 <p>前者会在默认属性搜索顺序中未找到属性时，拦截异常，并执行。</p>
 <p>后者会在第一时间执行，完全拦截默认属性搜索顺序。两者执行顺序如下：</p>
 <p><code>__getattribute__</code> ⟶ <code>实例属性的默认搜索顺序</code> ⟶ <code>__getattr__</code></p>
