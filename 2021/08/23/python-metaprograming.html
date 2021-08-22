@@ -33,7 +33,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/class-and-metaclass1.png">
 <meta property="article:published_time" content="2021-08-22T16:32:38.000Z">
-<meta property="article:modified_time" content="2021-08-22T16:33:33.345Z">
+<meta property="article:modified_time" content="2021-08-22T16:35:54.202Z">
 <meta property="article:author" content="Jason">
 <meta property="article:tag" content="元编程">
 <meta name="twitter:card" content="summary">
@@ -270,6 +270,8 @@
 <h3 id="type元类"><a href="#type元类" class="headerlink" title="type元类"></a>type元类</h3><p>type这个类，不仅可以获取Python中对象的类型，比如type(123)，会告诉你123是int类型（int也是类）。</p>
 <p>type也可以作为元类，来构建其他类。语法是：</p>
 <p><code>type(name, bases, dict) -&gt; a new type</code> 返回一个新的类型</p>
+<a id="more"></a>
+
 <p>其中，name为类的名称，bases为类的继承列表，dict为类的属性字典。比如：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.x = <span class="number">123</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用type创建了一个新的类，变量名NewClass，新类的类名是newclass</span></span><br><span class="line">NewClass = type(<span class="string">'newclass'</span>, (object,), &#123;<span class="string">'a'</span>:<span class="number">100</span>, <span class="string">'b'</span>:[], <span class="string">'__init__'</span>:__init__&#125;)</span><br><span class="line">print(NewClass.__dict__)  <span class="comment"># 类的属性里会有a, b, __init__</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 等价于如下class关键字创建的类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">newclass</span><span class="params">(object)</span>:</span></span><br><span class="line">    a = <span class="number">100</span></span><br><span class="line">    b = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.x = <span class="number">456</span></span><br><span class="line">print(newclass.__dict__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不同之处在于，type创建的newclass的__init__函数在全局作用域里，</span></span><br><span class="line"><span class="comment"># class关键字创建的newclass的__init__函数在类内部，即newclass.__init__</span></span><br></pre></td></tr></table></figure>
 
