@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://izhaojie.com/2021/08/23/python-metaprograming.html</loc>
+    
+    <lastmod>2021-08-22</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://izhaojie.com/2021/08/19/python-descriptor.html</loc>
     
     <lastmod>2021-08-20</lastmod>
@@ -242,7 +249,7 @@
 
   <url>
     <loc>https://izhaojie.com/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -250,133 +257,140 @@
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/CS/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Shell/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Bash/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Github/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Gpg/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Encryption/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/SSH/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Ubuntu/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/UEFI/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Python/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%B5%AE%E7%82%B9%E6%95%B0/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E5%81%8F%E5%87%BD%E6%95%B0/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/MRO/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E5%B1%9E%E6%80%A7/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E5%8F%8D%E5%B0%84/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://izhaojie.com/tags/%E5%85%83%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -385,21 +399,21 @@
   
   <url>
     <loc>https://izhaojie.com/categories/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/Python/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-08-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
