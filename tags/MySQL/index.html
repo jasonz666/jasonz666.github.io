@@ -24,27 +24,17 @@
     var CONFIG = {"hostname":"izhaojie.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="本文配合极客时间《操作系统实战45讲》，因而学习《汇编第四版》使用Win2k系统。 参考前一篇 汇编：8086CPU寻址模式、Debug程序用法。 Win2k无法安装vm-tools 下载补丁：  补丁链接 提取码：5640  无法安装vm-tools的错误提示：">
-<meta property="og:type" content="article">
-<meta property="og:title" content="汇编：解决Win2k无法安装vm-tools、以及安装MASM汇编器连接器">
-<meta property="og:url" content="https://izhaojie.com/2021/05/23/win2k-vm-tools-problem-and-install-masm.html">
+  <meta name="description" content="小杰玩编程，有趣又有料">
+<meta property="og:type" content="website">
+<meta property="og:title" content="小杰玩编程">
+<meta property="og:url" content="https://izhaojie.com/tags/MySQL/index.html">
 <meta property="og:site_name" content="小杰玩编程">
-<meta property="og:description" content="本文配合极客时间《操作系统实战45讲》，因而学习《汇编第四版》使用Win2k系统。 参考前一篇 汇编：8086CPU寻址模式、Debug程序用法。 Win2k无法安装vm-tools 下载补丁：  补丁链接 提取码：5640  无法安装vm-tools的错误提示：">
+<meta property="og:description" content="小杰玩编程，有趣又有料">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-win2k-vm-tools%E5%AE%89%E8%A3%85%E9%94%99%E8%AF%AF.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E5%8A%A0%E8%BD%BD%E8%A1%A5%E4%B8%81%E6%96%87%E4%BB%B6.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/3-%E5%AE%89%E8%A3%85%E8%A1%A5%E4%B8%81.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/4-%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85vm-tools.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/5-%E8%AE%BE%E7%BD%AE%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/6-%E6%B1%87%E7%BC%96%E5%99%A8%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%99%A8.png">
-<meta property="article:published_time" content="2021-05-23T07:32:31.000Z">
-<meta property="article:modified_time" content="2021-05-23T07:38:09.677Z">
 <meta property="article:author" content="Jason">
-<meta property="article:tag" content="汇编实战">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-win2k-vm-tools%E5%AE%89%E8%A3%85%E9%94%99%E8%AF%AF.png">
 
-<link rel="canonical" href="https://izhaojie.com/2021/05/23/win2k-vm-tools-problem-and-install-masm.html">
+<link rel="canonical" href="https://izhaojie.com/tags/MySQL/">
 
 
 <script id="page-configurations">
@@ -52,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>汇编：解决Win2k无法安装vm-tools、以及安装MASM汇编器连接器 | 小杰玩编程</title>
+  <title>标签: MySQL | 小杰玩编程</title>
   
 
 
@@ -198,160 +188,51 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content tag">
             
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2021/05/23/win2k-vm-tools-problem-and-install-masm.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/cropped-avatar1-180x180.png">
-      <meta itemprop="name" content="Jason">
-      <meta itemprop="description" content="小杰玩编程，有趣又有料">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小杰玩编程">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          汇编：解决Win2k无法安装vm-tools、以及安装MASM汇编器连接器
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-23 15:32:31" itemprop="dateCreated datePublished" datetime="2021-05-23T15:32:31+08:00">2021-05-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">汇编实战</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>455</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">MySQL
+          <small>标签</small>
+        </h2>
+      </div>
 
       
-        <p>本文配合极客时间《操作系统实战45讲》，因而学习《汇编第四版》使用Win2k系统。</p>
-<p>参考前一篇 <a href="https://izhaojie.com/2021/05/21/assembly-preparing.html">汇编：8086CPU寻址模式、Debug程序用法</a>。</p>
-<h2 id="Win2k无法安装vm-tools"><a href="#Win2k无法安装vm-tools" class="headerlink" title="Win2k无法安装vm-tools"></a>Win2k无法安装vm-tools</h2><ol>
-<li>下载补丁：</li>
-</ol>
-<p><a href="https://pan.baidu.com/s/1ztioEwh1CPF-ojsaXNvLIA" target="_blank" rel="noopener">补丁链接</a> 提取码：5640</p>
-<ol start="2">
-<li>无法安装vm-tools的错误提示：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-win2k-vm-tools%E5%AE%89%E8%A3%85%E9%94%99%E8%AF%AF.png" alt="win2k无法安装vm-tools"></p>
-<a id="more"></a>
-
-<ol start="3">
-<li>把下载的补丁iso文件，放入虚拟机光驱：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E5%8A%A0%E8%BD%BD%E8%A1%A5%E4%B8%81%E6%96%87%E4%BB%B6.png" alt="加载补丁文件"></p>
-<p>安装补丁：在Win2k系统里，点我的电脑，双击光驱，打开补丁安装程序：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/3-%E5%AE%89%E8%A3%85%E8%A1%A5%E4%B8%81.png" alt="安装补丁"></p>
-<p>一直点下一步，直到点完成，会重启系统。</p>
-<ol start="4">
-<li>重启Win2k后，就可以装vm-tools了：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/4-%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85vm-tools.png" alt="重新安装vm-tools"></p>
-<ol start="5">
-<li>最后要打开虚拟机的<code>启用拷贝粘贴功能</code>，用来拷贝MASM编译器文件到Win2k系统：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/5-%E8%AE%BE%E7%BD%AE%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4.png" alt="设置拷贝粘贴"></p>
-<h2 id="安装汇编器MASM5-0"><a href="#安装汇编器MASM5-0" class="headerlink" title="安装汇编器MASM5.0"></a>安装汇编器MASM5.0</h2><ol>
-<li>汇编器与连接器下载地址：</li>
-</ol>
-<p><a href="https://pan.baidu.com/s/1oNQgtnHvuS_XRbE1zlXNuA" target="_blank" rel="noopener">汇编器链接</a> 提取码：gfr2</p>
-<ol start="2">
-<li>解压 <code>masm5.0_包含linker.rar</code>，把解压的文件夹复制一下，然后在Win2k的C盘下粘贴。</li>
-<li>取出文件夹内的 <code>MASM</code> 目录放到 <code>C:\</code> 盘下，搞定！</li>
-<li>Win2k开始菜单，运行，输入command，打开dos，然后输入 <code>cd c:\masm</code> 切换到汇编器目录。</li>
-<li>在dos里输入 <code>masm</code> 或 <code>link</code> 就能使用汇编器与连接器了：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/6-%E6%B1%87%E7%BC%96%E5%99%A8%E4%B8%8E%E8%BF%9E%E6%8E%A5%E5%99%A8.png" alt="汇编器与连接器"></p>
-<p>[完毕]</p>
-
+    <div class="collection-year">
+      <span class="collection-header">2021</span>
     </div>
 
-    
-    
-    
-        
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>Jason
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://izhaojie.com/2021/05/23/win2k-vm-tools-problem-and-install-masm.html" title="汇编：解决Win2k无法安装vm-tools、以及安装MASM汇编器连接器">https://izhaojie.com/2021/05/23/win2k-vm-tools-problem-and-install-masm.html</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-08-26T21:47:06+08:00"
+              content="2021-08-26">
+          08-26
+        </time>
+      </div>
 
+      <div class="post-title">
+          <a class="post-title-link" href="/2021/08/26/mysql-query-order.html" itemprop="url">
+            <span itemprop="name">MySQL查询语句及子句的执行顺序</span>
+          </a>
+      </div>
 
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/" rel="tag"># 汇编实战</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2021/05/21/assembly-preparing.html" rel="prev" title="汇编：8086CPU寻址模式、Debug程序用法">
-      <i class="fa fa-chevron-left"></i> 汇编：8086CPU寻址模式、Debug程序用法
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/05/26/assembly-experiment7.html" rel="next" title="汇编：实验7">
-      汇编：实验7 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+    </div>
+  </div>
   
   
+  
+
   
 
 
@@ -404,7 +285,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Win2k无法安装vm-tools"><span class="nav-number">1.</span> <span class="nav-text">Win2k无法安装vm-tools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装汇编器MASM5-0"><span class="nav-number">2.</span> <span class="nav-text">安装汇编器MASM5.0</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
