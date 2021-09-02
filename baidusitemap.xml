@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://izhaojie.com/2021/08/21/python-attribute-search-order.html</loc>
+    <lastmod>2021-09-02</lastmod>
+  </url>
+  <url>
     <loc>https://izhaojie.com/2021/08/26/mysql-query-order.html</loc>
     <lastmod>2021-08-26</lastmod>
   </url>
@@ -10,10 +14,6 @@
   </url>
   <url>
     <loc>https://izhaojie.com/2021/08/19/python-descriptor.html</loc>
-    <lastmod>2021-08-20</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/08/21/python-attribute-search-order.html</loc>
     <lastmod>2021-08-20</lastmod>
   </url>
   <url>

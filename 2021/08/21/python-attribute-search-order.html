@@ -32,7 +32,7 @@
 <meta property="og:description" content="属性：这里表示类（或类的实例）中的变量与方法的统称。 所以搜索顺序包括：类的属性搜索顺序、类的实例的属性搜索顺序。 下面是所有魔术方法同时出现的情况下，类或实例的属性搜索顺序。 默认搜索顺序对于类，比如查找A.x。A是类，x是类的属性。 类属性的默认搜索顺序：A自己的x（即A的属性字典__dict__） ⟶ A的父类的x [1] ⟶ 父类的父类的x… ⟶ object的x 对于类的实例，比如查找a">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-20T18:10:46.000Z">
-<meta property="article:modified_time" content="2021-08-20T18:12:22.257Z">
+<meta property="article:modified_time" content="2021-09-02T17:21:09.578Z">
 <meta property="article:author" content="Jason">
 <meta property="article:tag" content="MRO">
 <meta property="article:tag" content="属性">
@@ -240,7 +240,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>892</span>
+              <span>926</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -265,7 +265,7 @@
 <h2 id="默认搜索顺序"><a href="#默认搜索顺序" class="headerlink" title="默认搜索顺序"></a>默认搜索顺序</h2><p><strong>对于类</strong>，比如查找A.x。A是类，x是类的属性。</p>
 <p>类属性的默认搜索顺序：A自己的x（即A的属性字典__dict__） ⟶ A的父类的x [1] ⟶ 父类的父类的x… ⟶ object的x</p>
 <p><strong>对于类的实例</strong>，比如查找a.x。a是A的实例，x是实例的属性。</p>
-<p>实例的默认搜索顺序：a自己的x（即a的属性字典__dict__） ⟶ A自己的x ⟶ A的父类的x [1] ⟶  父类的父类的x… ⟶ object的x</p>
+<p>实例的默认搜索顺序：a自己的x（即a的属性字典__dict__）⟶ <strong>a从父类的构造方法（<code>__new__, __init__</code>）继承来的属性</strong> ⟶ A自己的x ⟶ A的父类的x [1] ⟶  父类的父类的x… ⟶ object的x</p>
 <p>[1]：</p>
 <p>如果A是单继承，直接不断向上找父类。如果A是多继承，由Python3的mro生成一个有序的继承列表，依次找父类。</p>
 <h2 id="相关的魔术方法"><a href="#相关的魔术方法" class="headerlink" title="相关的魔术方法"></a>相关的魔术方法</h2><p><strong>与搜索顺序相关的魔术方法有：</strong></p>

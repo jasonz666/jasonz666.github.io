@@ -416,7 +416,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>892</span>
+              <span>926</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -441,7 +441,7 @@
 <h2 id="默认搜索顺序"><a href="#默认搜索顺序" class="headerlink" title="默认搜索顺序"></a>默认搜索顺序</h2><p><strong>对于类</strong>，比如查找A.x。A是类，x是类的属性。</p>
 <p>类属性的默认搜索顺序：A自己的x（即A的属性字典__dict__） ⟶ A的父类的x [1] ⟶ 父类的父类的x… ⟶ object的x</p>
 <p><strong>对于类的实例</strong>，比如查找a.x。a是A的实例，x是实例的属性。</p>
-<p>实例的默认搜索顺序：a自己的x（即a的属性字典__dict__） ⟶ A自己的x ⟶ A的父类的x [1] ⟶  父类的父类的x… ⟶ object的x</p>
+<p>实例的默认搜索顺序：a自己的x（即a的属性字典__dict__）⟶ <strong>a从父类的构造方法（<code>__new__, __init__</code>）继承来的属性</strong> ⟶ A自己的x ⟶ A的父类的x [1] ⟶  父类的父类的x… ⟶ object的x</p>
 <p>[1]：</p>
 <p>如果A是单继承，直接不断向上找父类。如果A是多继承，由Python3的mro生成一个有序的继承列表，依次找父类。</p>
 <h2 id="相关的魔术方法"><a href="#相关的魔术方法" class="headerlink" title="相关的魔术方法"></a>相关的魔术方法</h2><p><strong>与搜索顺序相关的魔术方法有：</strong></p>
