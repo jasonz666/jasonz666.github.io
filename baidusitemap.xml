@@ -1,135 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://izhaojie.com/2021/08/21/python-attribute-search-order.html</loc>
-    <lastmod>2021-09-02</lastmod>
-  </url>
-  <url>
     <loc>https://izhaojie.com/2021/08/26/mysql-query-order.html</loc>
-    <lastmod>2021-08-26</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/08/23/python-metaprograming.html</loc>
-    <lastmod>2021-08-22</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/08/19/python-descriptor.html</loc>
-    <lastmod>2021-08-20</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/08/19/python-decorator-and-partial.html</loc>
-    <lastmod>2021-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/08/12/float-in-python3.html</loc>
-    <lastmod>2021-08-12</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/21/assembly-course-design2.html</loc>
-    <lastmod>2021-08-06</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/16/assembly-experiment16.html</loc>
-    <lastmod>2021-06-15</lastmod>
+    <lastmod>2021-09-27</lastmod>
   </url>
   <url>
     <loc>https://izhaojie.com/2021/06/11/assembly-instruction-system.html</loc>
-    <lastmod>2021-06-11</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/11/assembly-experiment15.html</loc>
-    <lastmod>2021-06-11</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/11/assembly-experiment14.html</loc>
-    <lastmod>2021-06-11</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/11/assembly-experiment13.html</loc>
-    <lastmod>2021-06-10</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/08/assembly-experiment12.html</loc>
-    <lastmod>2021-06-08</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/08/assembly-jump-instruction-collect.html</loc>
-    <lastmod>2021-06-08</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/08/assembly-experiment11.html</loc>
-    <lastmod>2021-06-08</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/06/06/assembly-experiment10.html</loc>
-    <lastmod>2021-06-06</lastmod>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
     <loc>https://izhaojie.com/2021/05/28/assembly-experiment9.html</loc>
-    <lastmod>2021-05-28</lastmod>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/08/12/float-in-python3.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
     <loc>https://izhaojie.com/2019/01/02/uefi-boot-principle.html</loc>
-    <lastmod>2021-05-27</lastmod>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/06/08/assembly-experiment11.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/06/08/assembly-jump-instruction-collect.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/06/11/assembly-experiment15.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/08/23/python-metaprograming.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/06/11/assembly-experiment14.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
     <loc>https://izhaojie.com/2021/05/26/assembly-experiment7.html</loc>
-    <lastmod>2021-05-26</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2021/05/23/win2k-vm-tools-problem-and-install-masm.html</loc>
-    <lastmod>2021-05-23</lastmod>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
     <loc>https://izhaojie.com/2021/05/21/assembly-preparing.html</loc>
-    <lastmod>2021-05-23</lastmod>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
-    <loc>https://izhaojie.com/2021/05/18/os-experiment-environment-and-faq.html</loc>
-    <lastmod>2021-05-18</lastmod>
+    <loc>https://izhaojie.com/2021/06/06/assembly-experiment10.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
-    <loc>https://izhaojie.com/2021/04/26/cs-learn-in-bilibili.html</loc>
-    <lastmod>2021-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2020/12/13/test-github-jsdelivr-pichost.html</loc>
-    <lastmod>2020-12-13</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2019/01/28/ubuntu-install-nvidia-driver.html</loc>
-    <lastmod>2020-08-06</lastmod>
+    <loc>https://izhaojie.com/2021/05/23/win2k-vm-tools-problem-and-install-masm.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
     <loc>https://izhaojie.com/2018/12/24/set-ubuntu-night-light-temperature.html</loc>
-    <lastmod>2020-08-06</lastmod>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
-    <loc>https://izhaojie.com/2019/01/02/stdin-stdout-and-redirection.html</loc>
-    <lastmod>2020-08-06</lastmod>
+    <loc>https://izhaojie.com/2021/08/21/python-attribute-search-order.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/06/11/assembly-experiment13.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/08/19/python-descriptor.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/08/19/python-decorator-and-partial.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
     <loc>https://izhaojie.com/2018/12/21/pro-git-summary-1.html</loc>
-    <lastmod>2020-08-06</lastmod>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
-    <loc>https://izhaojie.com/2019/02/03/login-ssh-via-gpg-key.html</loc>
-    <lastmod>2020-08-06</lastmod>
+    <loc>https://izhaojie.com/2020/12/13/test-github-jsdelivr-pichost.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
-    <loc>https://izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html</loc>
-    <lastmod>2020-08-06</lastmod>
+    <loc>https://izhaojie.com/2021/04/26/cs-learn-in-bilibili.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
-    <loc>https://izhaojie.com/2018/12/23/git-commit-via-ssh-key.html</loc>
-    <lastmod>2020-08-06</lastmod>
-  </url>
-  <url>
-    <loc>https://izhaojie.com/2018/12/21/hello-world.html</loc>
-    <lastmod>2020-08-06</lastmod>
+    <loc>https://izhaojie.com/2021/06/08/assembly-experiment12.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
   <url>
     <loc>https://izhaojie.com/2018/12/24/diff-between-sh-and-bash.html</loc>
-    <lastmod>2020-08-06</lastmod>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/06/16/assembly-experiment16.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2019/01/09/learn-asymmetric-encryption-by-gpg.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2019/02/03/login-ssh-via-gpg-key.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/05/18/os-experiment-environment-and-faq.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2018/12/21/hello-world.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2019/01/28/ubuntu-install-nvidia-driver.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2018/12/23/git-commit-via-ssh-key.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2021/06/21/assembly-course-design2.html</loc>
+    <lastmod>2021-09-04</lastmod>
+  </url>
+  <url>
+    <loc>https://izhaojie.com/2019/01/02/stdin-stdout-and-redirection.html</loc>
+    <lastmod>2021-09-04</lastmod>
   </url>
 </urlset> 
