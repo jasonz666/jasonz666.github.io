@@ -1850,6 +1850,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── .babelrc</span><br><span class="line">├── .npmrc</span><br><span class="line">├── lib</span><br><span class="line">├── package.json</span><br><span class="line">└── src</span><br><span class="line">    └── index.js</span><br></pre></td></tr></table></figure>
 
 <p>babel的装饰器配置：</p>
+<a id="more"></a>
+
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># .babelrc</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        <span class="string">"@babel/preset-env"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"plugins"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"@babel/plugin-proposal-decorators"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"legacy"</span>: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"@babel/plugin-proposal-class-properties"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>依赖包与测试命令：</p>
