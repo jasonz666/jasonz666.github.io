@@ -193,6 +193,109 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2021/10/22/javascript-decorator.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/cropped-avatar1-180x180.png">
+      <meta itemprop="name" content="Jason">
+      <meta itemprop="description" content="小杰玩编程，有趣又有料">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小杰玩编程">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/22/javascript-decorator.html" class="post-title-link" itemprop="url">JavaScript装饰器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-22 00:34:40" itemprop="dateCreated datePublished" datetime="2021-10-22T00:34:40+08:00">2021-10-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>JS装饰器是ES7的新语法，浏览器，nodejs不一定支持，需要babel转译。</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>创建一个目录test，结构为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── .babelrc</span><br><span class="line">├── .npmrc</span><br><span class="line">├── lib</span><br><span class="line">├── package.json</span><br><span class="line">└── src</span><br><span class="line">    └── index.js</span><br></pre></td></tr></table></figure>
+
+<p>babel的装饰器配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .babelrc</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        <span class="string">"@babel/preset-env"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"plugins"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"@babel/plugin-proposal-decorators"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"legacy"</span>: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"@babel/plugin-proposal-class-properties"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依赖包与测试命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"testmobx"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"testmobx"</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="string">"directories"</span>: &#123;</span><br><span class="line">    <span class="string">"lib"</span>: <span class="string">"lib"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"babel src -d lib"</span>,</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"node lib/index.js"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"jason"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"MIT"</span>,</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"@babel/core"</span>: <span class="string">"^7.15.5"</span>,</span><br><span class="line">    <span class="string">"@babel/cli"</span>: <span class="string">"^7.15.0"</span>,</span><br><span class="line">    <span class="string">"@babel/plugin-proposal-class-properties"</span>: <span class="string">"^7.14.5"</span>,</span><br><span class="line">    <span class="string">"@babel/plugin-proposal-decorators"</span>: <span class="string">"^7.15.4"</span>,</span><br><span class="line">    <span class="string">"@babel/preset-env"</span>: <span class="string">"^7.15.6"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>npm源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .npmrc</span></span><br><span class="line">registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p>安装依赖包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="built_in">test</span></span><br><span class="line">yarn</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><p>源码都在 src/index.js 中。js装饰器可以装饰的对象：类、属性、方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 装饰器：</span></span><br><span class="line"><span class="comment">// 装饰属性（或方法）时：</span></span><br><span class="line"><span class="comment">// target为属性的类对象，key为属性名字符串，descriptor为属性key的属性描述符对象</span></span><br><span class="line"><span class="comment">// 装饰类时：</span></span><br><span class="line"><span class="comment">// target为类，key与descriptor都是undefined</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readOnly</span>(<span class="params">target, key, descriptor</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'target:'</span>, target, <span class="keyword">typeof</span> target);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'key:'</span>, key, <span class="keyword">typeof</span> key);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'desc:'</span>, descriptor, <span class="keyword">typeof</span> descriptor);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> key === <span class="string">'string'</span>) &#123; <span class="comment">// 作为属性或方法装饰器时，key为字符串</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> descriptor.value === <span class="string">'function'</span>) &#123; <span class="comment">// 作为方法装饰器</span></span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'~~~ decorator of method'</span>);</span><br><span class="line">            <span class="keyword">return</span> descriptor.value;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 作为属性装饰器</span></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...descriptor,</span><br><span class="line">                writable: <span class="literal">false</span> <span class="comment">// 覆盖为false</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 作为类装饰器</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'~~~ decorator of cls'</span>);</span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Oatmeal</span> </span>&#123;</span><br><span class="line">    @readOnly viscosity = <span class="number">20</span>; <span class="comment">// 属性装饰器</span></span><br><span class="line">    <span class="keyword">constructor</span>(flavor) &#123;</span><br><span class="line">        <span class="keyword">this</span>.flavor = flavor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> oatmeal = <span class="keyword">new</span> Oatmeal(<span class="string">'Brown Sugar Cinnamon'</span>);</span><br><span class="line"><span class="comment">// oatmeal.viscosity = 30; // 已设为只读，修改将报错</span></span><br><span class="line"><span class="built_in">console</span>.log(oatmeal);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);</span><br><span class="line"></span><br><span class="line">@readOnly</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.a = <span class="number">111</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> A();</span><br><span class="line"><span class="built_in">console</span>.log(a.a);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.b = <span class="number">222</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    @readOnly</span><br><span class="line">    show() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> B();</span><br><span class="line">b.show();</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h3><p>其中<code>initializer</code>与babel相关，当装饰器给属性装饰时，属性描述符对象中会有initializer，为函数，执行<code>descriptor.initializer()</code>后将返回属性的值20。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/js-decor1.png" alt="js-decor1"></p>
+<p>参考：</p>
+<p><a href="https://segmentfault.com/a/1190000021593373" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021593373</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2021/08/26/mysql-query-order.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1027,96 +1130,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2021/06/11/assembly-experiment15.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/cropped-avatar1-180x180.png">
-      <meta itemprop="name" content="Jason">
-      <meta itemprop="description" content="小杰玩编程，有趣又有料">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小杰玩编程">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/11/assembly-experiment15.html" class="post-title-link" itemprop="url">汇编：实验15：安装新的int9中断例程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-06-11 21:53:48" itemprop="dateCreated datePublished" datetime="2021-06-11T21:53:48+08:00">2021-06-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">汇编实战</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>995</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>安装一个新的int 9中断例程，功能是在DOS下，按下A键后，除非不松开，否则一松开就显示满屏幕的A。</p>
-<p>这个程序在win2k的DOS下会有问题，dosbox中执行正常。</p>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/11/assembly-experiment15.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1188,20 +1201,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1237,12 +1250,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">108k</span>
+    <span title="站点总字数">110k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:38</span>
+    <span title="站点阅读时长">1:40</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
