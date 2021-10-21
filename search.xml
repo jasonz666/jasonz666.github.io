@@ -1868,8 +1868,7 @@
 
 <h3 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h3><p>其中<code>initializer</code>与babel相关，当装饰器给属性装饰时，属性描述符对象中会有initializer，为函数，执行<code>descriptor.initializer()</code>后将返回属性的值20。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/js-decor1.png" alt="js-decor1"></p>
-<p>参考：</p>
-<p><a href="https://segmentfault.com/a/1190000021593373" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021593373</a></p>
+<p>参考：<br><a href="https://segmentfault.com/a/1190000021593373" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021593373</a></p>
 ]]></content>
       <categories>
         <category>JavaScript</category>
