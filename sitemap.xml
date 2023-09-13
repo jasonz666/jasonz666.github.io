@@ -530,11 +530,4 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>https://izhaojie.com/categories/docker/etcd/</loc>
-    <lastmod>2023-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 </urlset>

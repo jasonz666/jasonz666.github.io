@@ -1901,7 +1901,7 @@
       </tags>
   </entry>
   <entry>
-    <title>docker compose 运行 etcd3</title>
+    <title>Docker Compose 运行 etcd3</title>
     <url>/2023/09/13/etcd-docker-compose.html</url>
     <content><![CDATA[<p>本文以MacOS docker desktop为例。</p>
 <h2 id="下载安装MacOS版docker-desktop"><a href="#下载安装MacOS版docker-desktop" class="headerlink" title="下载安装MacOS版docker desktop"></a>下载安装MacOS版docker desktop</h2><ol>
@@ -1916,6 +1916,8 @@
 <li><p>在如上目录内创建 <code>docker-compose.yml</code> 文件，内容如下：</p>
 </li>
 </ol>
+<a id="more"></a>
+
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">etcd:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">quay.io/coreos/etcd:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2379</span><span class="string">:2379</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2380</span><span class="string">:2380</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcdnet</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">restart_policy:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">on-failure</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcd-data:/etcd-data</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_ADVERTISE_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ALLOW_NONE_AUTHENTICATION=yes"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_CLUSTER=node1=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_NAME=node1"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_DATA_DIR=./data"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">etcdnet:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">etcdnet</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">etcd-data:</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="运行docker-etcd3"><a href="#运行docker-etcd3" class="headerlink" title="运行docker etcd3"></a>运行docker etcd3</h2><ol>
@@ -1932,7 +1934,6 @@
 ]]></content>
       <categories>
         <category>docker</category>
-        <category>etcd</category>
       </categories>
       <tags>
         <tag>docker</tag>

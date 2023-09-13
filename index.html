@@ -207,7 +207,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/09/13/etcd-docker-compose.html" class="post-title-link" itemprop="url">docker compose 运行 etcd3</a>
+            <a href="/2023/09/13/etcd-docker-compose.html" class="post-title-link" itemprop="url">Docker Compose 运行 etcd3</a>
         </h2>
 
         <div class="post-meta">
@@ -226,10 +226,6 @@
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/etcd/" itemprop="url" rel="index"><span itemprop="name">etcd</span></a>
                 </span>
             </span>
 
@@ -271,20 +267,14 @@
 <li><p>在如上目录内创建 <code>docker-compose.yml</code> 文件，内容如下：</p>
 </li>
 </ol>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">etcd:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">quay.io/coreos/etcd:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2379</span><span class="string">:2379</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2380</span><span class="string">:2380</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcdnet</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">restart_policy:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">on-failure</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcd-data:/etcd-data</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_ADVERTISE_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ALLOW_NONE_AUTHENTICATION=yes"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_CLUSTER=node1=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_NAME=node1"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_DATA_DIR=./data"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">etcdnet:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">etcdnet</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">etcd-data:</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="运行docker-etcd3"><a href="#运行docker-etcd3" class="headerlink" title="运行docker etcd3"></a>运行docker etcd3</h2><ol>
-<li>进入上文创建的etcd3目录：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/etcd3  <span class="comment"># 该目录内已经创建好文件 docker-compose.yml</span></span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>docker desktop App上会看到容器已经运行（也可以用命令行查看）：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/macos-docker-desktop-etcd3-container.png" alt=""></p>
-<h2 id="测试etcd3是否运行正常"><a href="#测试etcd3是否运行正常" class="headerlink" title="测试etcd3是否运行正常"></a>测试etcd3是否运行正常</h2><p>执行如下命令，输出如下版本信息表示ok：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/get-etcd3-version.png" alt=""></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/13/etcd-docker-compose.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1224,7 +1214,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
