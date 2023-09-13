@@ -1900,4 +1900,43 @@
         <tag>UEFI</tag>
       </tags>
   </entry>
+  <entry>
+    <title>docker compose 运行 etcd3</title>
+    <url>/2023/09/13/etcd-docker-compose.html</url>
+    <content><![CDATA[<p>本文以MacOS docker desktop为例。</p>
+<h2 id="下载安装MacOS版docker-desktop"><a href="#下载安装MacOS版docker-desktop" class="headerlink" title="下载安装MacOS版docker desktop"></a>下载安装MacOS版docker desktop</h2><ol>
+<li><p><a href="https://desktop.docker.com/mac/main/amd64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module" target="_blank" rel="noopener">下载地址</a></p>
+</li>
+<li><p>双击安装 <code>Docker.dmg</code></p>
+</li>
+</ol>
+<h2 id="创建etcd3目录"><a href="#创建etcd3目录" class="headerlink" title="创建etcd3目录"></a>创建etcd3目录</h2><ol>
+<li><p>创建一个目录用于运行docker etcd3，如：<code>/path/to/etcd3</code></p>
+</li>
+<li><p>在如上目录内创建 <code>docker-compose.yml</code> 文件，内容如下：</p>
+</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">etcd:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">quay.io/coreos/etcd:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2379</span><span class="string">:2379</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2380</span><span class="string">:2380</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcdnet</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">restart_policy:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">on-failure</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcd-data:/etcd-data</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_ADVERTISE_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ALLOW_NONE_AUTHENTICATION=yes"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_CLUSTER=node1=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_NAME=node1"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_DATA_DIR=./data"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">etcdnet:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">etcdnet</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">etcd-data:</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="运行docker-etcd3"><a href="#运行docker-etcd3" class="headerlink" title="运行docker etcd3"></a>运行docker etcd3</h2><ol>
+<li>进入上文创建的etcd3目录：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/etcd3  <span class="comment"># 该目录内已经创建好文件 docker-compose.yml</span></span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>docker desktop App上会看到容器已经运行（也可以用命令行查看）：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/macos-docker-desktop-etcd3-container.png" alt=""></p>
+<h2 id="测试etcd3是否运行正常"><a href="#测试etcd3是否运行正常" class="headerlink" title="测试etcd3是否运行正常"></a>测试etcd3是否运行正常</h2><p>执行如下命令，输出如下版本信息表示ok：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/get-etcd3-version.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>docker</category>
+        <category>etcd</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>etcd</tag>
+      </tags>
+  </entry>
 </search>
