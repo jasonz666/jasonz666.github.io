@@ -33,26 +33,6 @@
       </tags>
   </entry>
   <entry>
-    <title>汇编：实验11：字符串中小写转大写</title>
-    <url>/2021/06/08/assembly-experiment11.html</url>
-    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>写个汇编程序，将以0结尾的字符串中的小写字母转换为大写字母。</p>
-<p>定义函数 letterc，用于转换，参数 ds:si 指向字符串的首地址。</p>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>汇编源码：</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 把字符串中的小写字母转换为大写</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db &quot;Beginner&#39;s All-purpose Symbolic Instruction Code.&quot;,0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">begin:</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,10h</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,0</span><br><span class="line">    call letterc</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">letterc:</span><br><span class="line">    push si</span><br><span class="line">s:</span><br><span class="line">    mov cl,[si]</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz ok</span><br><span class="line">    cmp cx,&#39;a&#39;</span><br><span class="line">    jna s0</span><br><span class="line">    cmp cx,&#39;z&#39;</span><br><span class="line">    jnb s0</span><br><span class="line">    and byte ptr [si],11011111b</span><br><span class="line"></span><br><span class="line">s0:</span><br><span class="line">    inc si</span><br><span class="line">    jmp short s</span><br><span class="line"></span><br><span class="line">ok:</span><br><span class="line">    pop si</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end begin</span><br></pre></td></tr></table></figure>
-
-<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p>截图：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E8%BD%AC%E5%A4%A7%E5%86%99%E6%88%AA%E5%9B%BE.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>汇编：实验10三题</title>
     <url>/2021/06/06/assembly-experiment10.html</url>
     <content><![CDATA[<h2 id="1、显示字符串"><a href="#1、显示字符串" class="headerlink" title="1、显示字符串"></a>1、显示字符串</h2><p>题目：</p>
@@ -78,6 +58,61 @@
 
 <p>执行结果：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/6-%E9%A2%98%E7%9B%AE3-%E7%BB%93%E6%9E%9C.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：实验11：字符串中小写转大写</title>
+    <url>/2021/06/08/assembly-experiment11.html</url>
+    <content><![CDATA[<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>写个汇编程序，将以0结尾的字符串中的小写字母转换为大写字母。</p>
+<p>定义函数 letterc，用于转换，参数 ds:si 指向字符串的首地址。</p>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>汇编源码：</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 把字符串中的小写字母转换为大写</span><br><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">    db &quot;Beginner&#39;s All-purpose Symbolic Instruction Code.&quot;,0</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">    dw 8 dup (0)</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">begin:</span><br><span class="line">    mov ax,stack</span><br><span class="line">    mov ss,ax</span><br><span class="line">    mov sp,10h</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,0</span><br><span class="line">    call letterc</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">letterc:</span><br><span class="line">    push si</span><br><span class="line">s:</span><br><span class="line">    mov cl,[si]</span><br><span class="line">    mov ch,0</span><br><span class="line">    jcxz ok</span><br><span class="line">    cmp cx,&#39;a&#39;</span><br><span class="line">    jna s0</span><br><span class="line">    cmp cx,&#39;z&#39;</span><br><span class="line">    jnb s0</span><br><span class="line">    and byte ptr [si],11011111b</span><br><span class="line"></span><br><span class="line">s0:</span><br><span class="line">    inc si</span><br><span class="line">    jmp short s</span><br><span class="line"></span><br><span class="line">ok:</span><br><span class="line">    pop si</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end begin</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p>截图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E8%BD%AC%E5%A4%A7%E5%86%99%E6%88%AA%E5%9B%BE.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：实验13三题</title>
+    <url>/2021/06/11/assembly-experiment13.html</url>
+    <content><![CDATA[<h2 id="1、编写安装7ch号中断例程，显示0结尾的字符串"><a href="#1、编写安装7ch号中断例程，显示0结尾的字符串" class="headerlink" title="1、编写安装7ch号中断例程，显示0结尾的字符串"></a>1、编写安装7ch号中断例程，显示0结尾的字符串</h2><p>中断例程装载程序：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 8086实模式 中断例程装载程序</span><br><span class="line">; 中断号 7ch</span><br><span class="line">; 装载位置 0:200h</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,cs</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,offset handler ; ds:si指向中断例程的代码</span><br><span class="line"></span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,200h ; es:di指向中断例程装载位置</span><br><span class="line">    mov cx,offset handlerend - offset handler ; 中断例程长度</span><br><span class="line">    cld</span><br><span class="line">    rep movsb ; 串传输</span><br><span class="line"></span><br><span class="line">    ; 设置 7ch 号中断向量</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov word ptr es:[7ch*4],200h</span><br><span class="line">    mov word ptr es:[7ch*4+2],0</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">handler:</span><br><span class="line">    ; 注意！下文中断例程装载程序，只提供 handler 标号的部分，即，</span><br><span class="line">    ; 中断处理程序开始 与 中断处理程序结束 包裹的部分</span><br><span class="line"></span><br><span class="line">    ; 中断处理程序开始</span><br><span class="line">    ; 显示0结尾的字符串</span><br><span class="line">    ; dh 行号、dl 列号、cl 颜色、ds:si指向字符串首</span><br><span class="line">    push si</span><br><span class="line">    push es</span><br><span class="line">    push di</span><br><span class="line">    push ax</span><br><span class="line">    push dx</span><br><span class="line">    push cx</span><br><span class="line"></span><br><span class="line">    mov ax,0b800h ; 显存开始位置</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov al,dh</span><br><span class="line">    mov dh,160</span><br><span class="line">    mul dh ; ax&#x3D;行号*160</span><br><span class="line">    mov dh,0</span><br><span class="line">    add dx,dx ; dx&#x3D;列号*2</span><br><span class="line">    add ax,dx</span><br><span class="line">    mov di,ax ; di&#x3D;行号*160+列号*2</span><br><span class="line"></span><br><span class="line">s:</span><br><span class="line">    mov al,[si]</span><br><span class="line">    cmp al,0</span><br><span class="line">    je ok</span><br><span class="line">    mov ah,cl</span><br><span class="line">    mov es:[di],ax</span><br><span class="line">    add di,2</span><br><span class="line">    inc si</span><br><span class="line">    jmp s</span><br><span class="line"></span><br><span class="line">ok:</span><br><span class="line">    pop cx</span><br><span class="line">    pop dx</span><br><span class="line">    pop ax</span><br><span class="line">    pop di</span><br><span class="line">    pop es</span><br><span class="line">    pop si</span><br><span class="line">    iret</span><br><span class="line">    ; 中断处理程序结束</span><br><span class="line">handlerend:</span><br><span class="line">    nop</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>调用者程序：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">data segment</span><br><span class="line">    db &quot;welcome to masm! &quot;,0</span><br><span class="line">data ends</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov dh,10</span><br><span class="line">    mov dl,10</span><br><span class="line">    mov cl,2</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,0</span><br><span class="line">    int 7ch</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E5%AE%9E%E9%AA%8C131%E8%A3%85%E8%BD%BD%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%AF%91.png" alt="装载程序的编译执行"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E5%AE%9E%E9%AA%8C131-%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt="调用者程序执行结果"></p>
+<h2 id="2、编写安装7ch号中断例程，模拟loop指令"><a href="#2、编写安装7ch号中断例程，模拟loop指令" class="headerlink" title="2、编写安装7ch号中断例程，模拟loop指令"></a>2、编写安装7ch号中断例程，模拟loop指令</h2><p>中断例程：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 中断处理程序开始</span><br><span class="line">lp:</span><br><span class="line">    push bp</span><br><span class="line">    mov bp,sp</span><br><span class="line">    dec cx</span><br><span class="line">    jcxz lpret</span><br><span class="line">    add [bp+2],bx ; bx是转移位移</span><br><span class="line">lpret:</span><br><span class="line">    pop bp</span><br><span class="line">    iret</span><br><span class="line">; 中断处理程序结束</span><br></pre></td></tr></table></figure>
+
+<p>调用者：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,160*12</span><br><span class="line">    mov bx,offset s - offset se ; 这里的结果必须是负数，bx即转移位移</span><br><span class="line">    mov cx,80</span><br><span class="line">s:</span><br><span class="line">    mov byte ptr es:[di],&#39;!&#39;</span><br><span class="line">    add di,2</span><br><span class="line">    int 7ch ; 如果cx≠0，转移到标号s处</span><br><span class="line">se:</span><br><span class="line">    nop</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/3-%E5%AE%9E%E9%AA%8C132%E7%BB%93%E6%9E%9C.png" alt=""></p>
+<h2 id="3、补全程序，在屏幕2、4、6、8行显示英文诗"><a href="#3、补全程序，在屏幕2、4、6、8行显示英文诗" class="headerlink" title="3、补全程序，在屏幕2、4、6、8行显示英文诗"></a>3、补全程序，在屏幕2、4、6、8行显示英文诗</h2><p>源码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 在 2 4 6 8 行显示4句英文诗</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    s1:     db &#39;Good,better,best,&#39;,&#39;$&#39;</span><br><span class="line">    s2:     db &#39;Never let it rest,&#39;,&#39;$&#39;</span><br><span class="line">    s3:     db &#39;Till good is better,&#39;,&#39;$&#39;</span><br><span class="line">    s4:     db &#39;And better,best.&#39;,&#39;$&#39;</span><br><span class="line">    s:      dw offset s1,offset s2, offset s3,offset s4</span><br><span class="line">    row:    db 2,4,6,8</span><br><span class="line"></span><br><span class="line">    start:</span><br><span class="line">        mov ax,cs</span><br><span class="line">        mov ds,ax</span><br><span class="line">        mov bx,offset s</span><br><span class="line">        mov si,offset row</span><br><span class="line">        mov cx,4</span><br><span class="line">    ok:</span><br><span class="line">        mov bh,0 ; 第0页</span><br><span class="line">        mov dh,[si] ; 行号</span><br><span class="line">        mov dl,0 ; 列号</span><br><span class="line">        mov ah,2 ; 调10h中断例程中的显示例程</span><br><span class="line">        int 10h ; 调bios的10h号例程</span><br><span class="line"></span><br><span class="line">        mov dx,ds:[bx] ; ds:dx执行要显示字符串首</span><br><span class="line">        mov ah,9 ; 调21h中断例程的9号例程</span><br><span class="line">        int 21h ; 调dos的21h号中断例程</span><br><span class="line"></span><br><span class="line">        inc si</span><br><span class="line">        add bx,2</span><br><span class="line"></span><br><span class="line">        loop ok</span><br><span class="line">        mov ax,4c00h</span><br><span class="line">        int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/4-%E8%8B%B1%E6%96%87%E8%AF%97%E7%BB%93%E6%9E%9C.png" alt=""></p>
 ]]></content>
       <categories>
         <category>汇编实战</category>
@@ -118,41 +153,6 @@
 
 <p>结果：</p>
 <p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E7%BB%93%E6%9E%9C.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>汇编：实验13三题</title>
-    <url>/2021/06/11/assembly-experiment13.html</url>
-    <content><![CDATA[<h2 id="1、编写安装7ch号中断例程，显示0结尾的字符串"><a href="#1、编写安装7ch号中断例程，显示0结尾的字符串" class="headerlink" title="1、编写安装7ch号中断例程，显示0结尾的字符串"></a>1、编写安装7ch号中断例程，显示0结尾的字符串</h2><p>中断例程装载程序：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 8086实模式 中断例程装载程序</span><br><span class="line">; 中断号 7ch</span><br><span class="line">; 装载位置 0:200h</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,cs</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,offset handler ; ds:si指向中断例程的代码</span><br><span class="line"></span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,200h ; es:di指向中断例程装载位置</span><br><span class="line">    mov cx,offset handlerend - offset handler ; 中断例程长度</span><br><span class="line">    cld</span><br><span class="line">    rep movsb ; 串传输</span><br><span class="line"></span><br><span class="line">    ; 设置 7ch 号中断向量</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov word ptr es:[7ch*4],200h</span><br><span class="line">    mov word ptr es:[7ch*4+2],0</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">handler:</span><br><span class="line">    ; 注意！下文中断例程装载程序，只提供 handler 标号的部分，即，</span><br><span class="line">    ; 中断处理程序开始 与 中断处理程序结束 包裹的部分</span><br><span class="line"></span><br><span class="line">    ; 中断处理程序开始</span><br><span class="line">    ; 显示0结尾的字符串</span><br><span class="line">    ; dh 行号、dl 列号、cl 颜色、ds:si指向字符串首</span><br><span class="line">    push si</span><br><span class="line">    push es</span><br><span class="line">    push di</span><br><span class="line">    push ax</span><br><span class="line">    push dx</span><br><span class="line">    push cx</span><br><span class="line"></span><br><span class="line">    mov ax,0b800h ; 显存开始位置</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov al,dh</span><br><span class="line">    mov dh,160</span><br><span class="line">    mul dh ; ax&#x3D;行号*160</span><br><span class="line">    mov dh,0</span><br><span class="line">    add dx,dx ; dx&#x3D;列号*2</span><br><span class="line">    add ax,dx</span><br><span class="line">    mov di,ax ; di&#x3D;行号*160+列号*2</span><br><span class="line"></span><br><span class="line">s:</span><br><span class="line">    mov al,[si]</span><br><span class="line">    cmp al,0</span><br><span class="line">    je ok</span><br><span class="line">    mov ah,cl</span><br><span class="line">    mov es:[di],ax</span><br><span class="line">    add di,2</span><br><span class="line">    inc si</span><br><span class="line">    jmp s</span><br><span class="line"></span><br><span class="line">ok:</span><br><span class="line">    pop cx</span><br><span class="line">    pop dx</span><br><span class="line">    pop ax</span><br><span class="line">    pop di</span><br><span class="line">    pop es</span><br><span class="line">    pop si</span><br><span class="line">    iret</span><br><span class="line">    ; 中断处理程序结束</span><br><span class="line">handlerend:</span><br><span class="line">    nop</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<p>调用者程序：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">data segment</span><br><span class="line">    db &quot;welcome to masm! &quot;,0</span><br><span class="line">data ends</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov dh,10</span><br><span class="line">    mov dl,10</span><br><span class="line">    mov cl,2</span><br><span class="line">    mov ax,data</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,0</span><br><span class="line">    int 7ch</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-
-<p>执行结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E5%AE%9E%E9%AA%8C131%E8%A3%85%E8%BD%BD%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%AF%91.png" alt="装载程序的编译执行"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/2-%E5%AE%9E%E9%AA%8C131-%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png" alt="调用者程序执行结果"></p>
-<h2 id="2、编写安装7ch号中断例程，模拟loop指令"><a href="#2、编写安装7ch号中断例程，模拟loop指令" class="headerlink" title="2、编写安装7ch号中断例程，模拟loop指令"></a>2、编写安装7ch号中断例程，模拟loop指令</h2><p>中断例程：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 中断处理程序开始</span><br><span class="line">lp:</span><br><span class="line">    push bp</span><br><span class="line">    mov bp,sp</span><br><span class="line">    dec cx</span><br><span class="line">    jcxz lpret</span><br><span class="line">    add [bp+2],bx ; bx是转移位移</span><br><span class="line">lpret:</span><br><span class="line">    pop bp</span><br><span class="line">    iret</span><br><span class="line">; 中断处理程序结束</span><br></pre></td></tr></table></figure>
-
-<p>调用者：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,0b800h</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,160*12</span><br><span class="line">    mov bx,offset s - offset se ; 这里的结果必须是负数，bx即转移位移</span><br><span class="line">    mov cx,80</span><br><span class="line">s:</span><br><span class="line">    mov byte ptr es:[di],&#39;!&#39;</span><br><span class="line">    add di,2</span><br><span class="line">    int 7ch ; 如果cx≠0，转移到标号s处</span><br><span class="line">se:</span><br><span class="line">    nop</span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-
-<p>执行结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/3-%E5%AE%9E%E9%AA%8C132%E7%BB%93%E6%9E%9C.png" alt=""></p>
-<h2 id="3、补全程序，在屏幕2、4、6、8行显示英文诗"><a href="#3、补全程序，在屏幕2、4、6、8行显示英文诗" class="headerlink" title="3、补全程序，在屏幕2、4、6、8行显示英文诗"></a>3、补全程序，在屏幕2、4、6、8行显示英文诗</h2><p>源码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 在 2 4 6 8 行显示4句英文诗</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    s1:     db &#39;Good,better,best,&#39;,&#39;$&#39;</span><br><span class="line">    s2:     db &#39;Never let it rest,&#39;,&#39;$&#39;</span><br><span class="line">    s3:     db &#39;Till good is better,&#39;,&#39;$&#39;</span><br><span class="line">    s4:     db &#39;And better,best.&#39;,&#39;$&#39;</span><br><span class="line">    s:      dw offset s1,offset s2, offset s3,offset s4</span><br><span class="line">    row:    db 2,4,6,8</span><br><span class="line"></span><br><span class="line">    start:</span><br><span class="line">        mov ax,cs</span><br><span class="line">        mov ds,ax</span><br><span class="line">        mov bx,offset s</span><br><span class="line">        mov si,offset row</span><br><span class="line">        mov cx,4</span><br><span class="line">    ok:</span><br><span class="line">        mov bh,0 ; 第0页</span><br><span class="line">        mov dh,[si] ; 行号</span><br><span class="line">        mov dl,0 ; 列号</span><br><span class="line">        mov ah,2 ; 调10h中断例程中的显示例程</span><br><span class="line">        int 10h ; 调bios的10h号例程</span><br><span class="line"></span><br><span class="line">        mov dx,ds:[bx] ; ds:dx执行要显示字符串首</span><br><span class="line">        mov ah,9 ; 调21h中断例程的9号例程</span><br><span class="line">        int 21h ; 调dos的21h号中断例程</span><br><span class="line"></span><br><span class="line">        inc si</span><br><span class="line">        add bx,2</span><br><span class="line"></span><br><span class="line">        loop ok</span><br><span class="line">        mov ax,4c00h</span><br><span class="line">        int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-
-<p>结果：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/4-%E8%8B%B1%E6%96%87%E8%AF%97%E7%BB%93%E6%9E%9C.png" alt=""></p>
 ]]></content>
       <categories>
         <category>汇编实战</category>
@@ -409,61 +409,6 @@
       </tags>
   </entry>
   <entry>
-    <title>汇编：实验16：安装新的7ch中断例程</title>
-    <url>/2021/06/16/assembly-experiment16.html</url>
-    <content><![CDATA[<p>中断例程装载程序源码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 安装新的 7ch 中断例程，实现如下功能的子程序：</span><br><span class="line">; 1) 清屏</span><br><span class="line">; 2) 设置前景色</span><br><span class="line">; 3) 设置背景色</span><br><span class="line">; 4) 向上滚动一行</span><br><span class="line"></span><br><span class="line">; 入口参数：</span><br><span class="line">; ah&#x3D;功能号：0清屏，1前景色，2背景色，3向上滚动一行</span><br><span class="line">; 对于1、2号功能，用al传递颜色值，范围0~7的整数</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,cs</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,offset setscreent ; ds:si指向中断例程的代码</span><br><span class="line"></span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,200h ; es:di指向中断例程装载位置</span><br><span class="line">    mov cx,offset setsrcend - offset setscreent ; 中断例程长度</span><br><span class="line">    cld</span><br><span class="line">    rep movsb ; 串传输</span><br><span class="line"></span><br><span class="line">    ; 设置 7ch 号中断向量</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov word ptr es:[7ch*4],200h</span><br><span class="line">    mov word ptr es:[7ch*4+2],0</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">; 中断处理程序开始</span><br><span class="line">setscreent:</span><br><span class="line">    jmp short set ; 此指令占2字节</span><br><span class="line">    ; 此dw数据开始地址为 0:200h入口地址+2 即0:202h</span><br><span class="line">    ; sub1为数据标号，dw sub1相当于dw offset sub1</span><br><span class="line">    dw 200h+sub1-setscreent,200h+sub2-setscreent,200h+sub3-setscreent,200h+sub4-setscreent</span><br><span class="line">set:</span><br><span class="line">    push bx</span><br><span class="line">    cmp ah,3  ; 判断功能号是否大于3</span><br><span class="line">    ja sret</span><br><span class="line">    mov bl,ah</span><br><span class="line">    mov bh,0</span><br><span class="line">    add bx,bx ; ah中的功能号*2&#x3D;table表中的偏移</span><br><span class="line">    call word ptr cs:[bx+202h] ; 此中断执行时，cs&#x3D;0</span><br><span class="line">sret:</span><br><span class="line">    pop bx</span><br><span class="line">    iret</span><br><span class="line"></span><br><span class="line">sub1: ; 清屏</span><br><span class="line">    push bx</span><br><span class="line">    push cx</span><br><span class="line">    push es</span><br><span class="line">    mov bx,0b800h</span><br><span class="line">    mov es,bx</span><br><span class="line">    mov bx,0 ; 显存的偶地址单元为字符</span><br><span class="line">    mov cx,2000</span><br><span class="line">sub1s:</span><br><span class="line">    mov byte ptr es:[bx],&#39; &#39; ; 空格填充屏幕</span><br><span class="line">    add bx,2</span><br><span class="line">    loop sub1s</span><br><span class="line">    pop es</span><br><span class="line">    pop cx</span><br><span class="line">    pop bx</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">sub2: ; 设置字体颜色</span><br><span class="line">    push bx</span><br><span class="line">    push cx</span><br><span class="line">    push es</span><br><span class="line">    mov bx,0b800h</span><br><span class="line">    mov es,bx</span><br><span class="line">    mov bx,1 ; 显存的奇地址单元为属性</span><br><span class="line">    mov cx,2000</span><br><span class="line">sub2s:</span><br><span class="line">    and byte ptr es:[bx],11111000b</span><br><span class="line">    or es:[bx],al</span><br><span class="line">    add bx,2</span><br><span class="line">    loop sub2s</span><br><span class="line">    pop es</span><br><span class="line">    pop cx</span><br><span class="line">    pop bx</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">sub3: ; 设置背景色</span><br><span class="line">    push bx</span><br><span class="line">    push cx</span><br><span class="line">    push es</span><br><span class="line">    mov cl,4</span><br><span class="line">    shl al,cl</span><br><span class="line">    mov bx,0b800h</span><br><span class="line">    mov es,bx</span><br><span class="line">    mov bx,1</span><br><span class="line">    mov cx,2000</span><br><span class="line">sub3s:</span><br><span class="line">    and byte ptr es:[bx],10001111b</span><br><span class="line">    or es:[bx],al</span><br><span class="line">    add bx,2</span><br><span class="line">    loop sub3s</span><br><span class="line">    pop es</span><br><span class="line">    pop cx</span><br><span class="line">    pop bx</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">sub4: ; 向上滚动一行</span><br><span class="line">    push cx</span><br><span class="line">    push si</span><br><span class="line">    push di</span><br><span class="line">    push es</span><br><span class="line">    push ds</span><br><span class="line">    mov si,0b800h</span><br><span class="line">    mov es,si</span><br><span class="line">    mov ds,si</span><br><span class="line">    mov si,160 ; ds:si指向n+1行</span><br><span class="line">    mov di,0   ; es:di指向n行</span><br><span class="line">    cld</span><br><span class="line">    mov cx,24  ; 共复制24行</span><br><span class="line">sub4s:</span><br><span class="line">    push cx</span><br><span class="line">    mov cx,160</span><br><span class="line">    rep movsb  ; 一行复制完，si+&#x3D;160，di+&#x3D;160</span><br><span class="line">    pop cx</span><br><span class="line">    loop sub4s</span><br><span class="line">    mov cx,80</span><br><span class="line">    mov si,0</span><br><span class="line">sub4s1:</span><br><span class="line">    mov byte ptr [160*24+si],&#39; &#39;  ; 最后一行清空</span><br><span class="line">    add si,2</span><br><span class="line">    loop sub4s1</span><br><span class="line">    pop ds</span><br><span class="line">    pop es</span><br><span class="line">    pop di</span><br><span class="line">    pop si</span><br><span class="line">    pop cx</span><br><span class="line">    ret</span><br><span class="line">; 中断处理程序结束</span><br><span class="line"></span><br><span class="line">setsrcend:</span><br><span class="line">    nop</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<p>测试源码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 测试新的 7ch 中断例程</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    ; 测试清屏</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 测试绿色字</span><br><span class="line">    mov ah,1</span><br><span class="line">    mov al,2</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 测试红底</span><br><span class="line">    mov ah,2</span><br><span class="line">    mov al,4</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 向上滚动一行</span><br><span class="line">    mov ah,3</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-
-<p>结果：</p>
-<img src="/2021/06/16/assembly-experiment16/Untitled.gif" class="">
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>计科B站学习视频</title>
-    <url>/2021/04/26/cs-learn-in-bilibili.html</url>
-    <content><![CDATA[<p><strong>计算机科学入门：</strong></p>
-<p>《计算机科学速成课》，<a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">B站</a><a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">中文字幕版</a>，共40集</p>
-<p>《CS50 哈佛计算机科学导论》，非常经典，<a href="https://www.bilibili.com/video/BV1cE411j7in?from=search&seid=10548244881245554190" target="_blank" rel="noopener">B站地址</a></p>
-<p>《算法导论-MIT麻省理工》，<a href="https://www.bilibili.com/video/BV1Kx411f7bL?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《物理学十分钟速成课》，<a href="https://www.bilibili.com/video/BV1Nb411L7fQ?from=search&seid=17238245196463281490" target="_blank" rel="noopener">B站地址</a></p>
-<p><strong>计算机组成原理：</strong></p>
-<p>《计算机组成原理 快速复习》，<a href="https://www.bilibili.com/video/BV1rV411k7Xf?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《计算机组成原理 唐朔飞》，哈工大，<a href="https://www.bilibili.com/video/BV1WW411Q7PF?p=1" target="_blank" rel="noopener">B站</a></p>
-<p><strong>操作系统：</strong></p>
-<p>《操作系统 清华大学》，向勇、陈渝，<a href="https://www.bilibili.com/video/BV1js411b7vg?from=search&seid=10033970866122426678" target="_blank" rel="noopener">B站地址</a></p>
-<p>《操作系统 哈工大》，李治军，内容比清华的更详细，<a href="https://www.bilibili.com/video/BV1d4411v7u7?p=1" target="_blank" rel="noopener">B站地址</a></p>
-<a id="more"></a>
-
-<p><strong>计算机网络：</strong></p>
-<p>《计算机网络微课堂》，湖南科技大学，<a href="https://www.bilibili.com/video/BV1c4411d7jb?from=search&seid=12426748443173359886" target="_blank" rel="noopener">B站地址</a></p>
-<p>《计算机网络 谢希仁第七版》，方老师讲解，<a href="https://www.bilibili.com/video/BV1yE411G7Ma?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《Wireshark抓包 从入门到入坟》，<a href="https://www.bilibili.com/video/BV1X5411x7R4?p=1" target="_blank" rel="noopener">B站</a></p>
-<p><strong>数据库：</strong></p>
-<p>《SQL进阶教程》，<a href="https://www.bilibili.com/video/BV1UE41147KC?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《MySQL高级教程》，涉及底层原理，<a href="https://www.bilibili.com/video/BV1CZ4y1M7MQ?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《Redis教程》，<a href="https://www.bilibili.com/video/BV1S54y1R7SB?p=1" target="_blank" rel="noopener">B站</a></p>
-<p><strong>数据结构与算法：</strong></p>
-<p>《数据结构 浙江大学》，讲的经典而系统，<a href="https://www.bilibili.com/video/BV1JW411i731?p=1" target="_blank" rel="noopener">B站</a></p>
-<p>《LeetCode算法刷题解析》，左程云，<a href="https://www.bilibili.com/video/BV15D4y1X7Tt?p=1" target="_blank" rel="noopener">B站</a></p>
-<p><strong>C/C++语言：</strong></p>
-<p>《郝斌C语言自学教程》，<a href="https://www.bilibili.com/video/BV1os411h77o?from=search&seid=5426432897798417990" target="_blank" rel="noopener">B站地址</a></p>
-]]></content>
-      <tags>
-        <tag>CS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>汇编：8086CPU寻址模式、Debug程序用法</title>
     <url>/2021/05/21/assembly-preparing.html</url>
     <content><![CDATA[<p>为了配合《操作系统实战45讲》，还是得重学一下汇编。所以就有了这个系列。</p>
@@ -491,6 +436,27 @@
 <h3 id="Debug程序的常用操作按键"><a href="#Debug程序的常用操作按键" class="headerlink" title="Debug程序的常用操作按键"></a>Debug程序的常用操作按键</h3><p>Debug常用功能一览。包括查看、修改寄存器或内存的命令。机器码翻译成汇编，输入汇编指令，执行汇编指令等。</p>
 <p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/DOS%E7%9A%84Debug%E7%A8%8B%E5%BA%8F%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD.png" alt=""></p>
 <p>好了，环境搭好，后面就可以学习汇编了。</p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汇编：实验16：安装新的7ch中断例程</title>
+    <url>/2021/06/16/assembly-experiment16.html</url>
+    <content><![CDATA[<p>中断例程装载程序源码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 安装新的 7ch 中断例程，实现如下功能的子程序：</span><br><span class="line">; 1) 清屏</span><br><span class="line">; 2) 设置前景色</span><br><span class="line">; 3) 设置背景色</span><br><span class="line">; 4) 向上滚动一行</span><br><span class="line"></span><br><span class="line">; 入口参数：</span><br><span class="line">; ah&#x3D;功能号：0清屏，1前景色，2背景色，3向上滚动一行</span><br><span class="line">; 对于1、2号功能，用al传递颜色值，范围0~7的整数</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">    mov ax,cs</span><br><span class="line">    mov ds,ax</span><br><span class="line">    mov si,offset setscreent ; ds:si指向中断例程的代码</span><br><span class="line"></span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov di,200h ; es:di指向中断例程装载位置</span><br><span class="line">    mov cx,offset setsrcend - offset setscreent ; 中断例程长度</span><br><span class="line">    cld</span><br><span class="line">    rep movsb ; 串传输</span><br><span class="line"></span><br><span class="line">    ; 设置 7ch 号中断向量</span><br><span class="line">    mov ax,0</span><br><span class="line">    mov es,ax</span><br><span class="line">    mov word ptr es:[7ch*4],200h</span><br><span class="line">    mov word ptr es:[7ch*4+2],0</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line"></span><br><span class="line">; 中断处理程序开始</span><br><span class="line">setscreent:</span><br><span class="line">    jmp short set ; 此指令占2字节</span><br><span class="line">    ; 此dw数据开始地址为 0:200h入口地址+2 即0:202h</span><br><span class="line">    ; sub1为数据标号，dw sub1相当于dw offset sub1</span><br><span class="line">    dw 200h+sub1-setscreent,200h+sub2-setscreent,200h+sub3-setscreent,200h+sub4-setscreent</span><br><span class="line">set:</span><br><span class="line">    push bx</span><br><span class="line">    cmp ah,3  ; 判断功能号是否大于3</span><br><span class="line">    ja sret</span><br><span class="line">    mov bl,ah</span><br><span class="line">    mov bh,0</span><br><span class="line">    add bx,bx ; ah中的功能号*2&#x3D;table表中的偏移</span><br><span class="line">    call word ptr cs:[bx+202h] ; 此中断执行时，cs&#x3D;0</span><br><span class="line">sret:</span><br><span class="line">    pop bx</span><br><span class="line">    iret</span><br><span class="line"></span><br><span class="line">sub1: ; 清屏</span><br><span class="line">    push bx</span><br><span class="line">    push cx</span><br><span class="line">    push es</span><br><span class="line">    mov bx,0b800h</span><br><span class="line">    mov es,bx</span><br><span class="line">    mov bx,0 ; 显存的偶地址单元为字符</span><br><span class="line">    mov cx,2000</span><br><span class="line">sub1s:</span><br><span class="line">    mov byte ptr es:[bx],&#39; &#39; ; 空格填充屏幕</span><br><span class="line">    add bx,2</span><br><span class="line">    loop sub1s</span><br><span class="line">    pop es</span><br><span class="line">    pop cx</span><br><span class="line">    pop bx</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">sub2: ; 设置字体颜色</span><br><span class="line">    push bx</span><br><span class="line">    push cx</span><br><span class="line">    push es</span><br><span class="line">    mov bx,0b800h</span><br><span class="line">    mov es,bx</span><br><span class="line">    mov bx,1 ; 显存的奇地址单元为属性</span><br><span class="line">    mov cx,2000</span><br><span class="line">sub2s:</span><br><span class="line">    and byte ptr es:[bx],11111000b</span><br><span class="line">    or es:[bx],al</span><br><span class="line">    add bx,2</span><br><span class="line">    loop sub2s</span><br><span class="line">    pop es</span><br><span class="line">    pop cx</span><br><span class="line">    pop bx</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">sub3: ; 设置背景色</span><br><span class="line">    push bx</span><br><span class="line">    push cx</span><br><span class="line">    push es</span><br><span class="line">    mov cl,4</span><br><span class="line">    shl al,cl</span><br><span class="line">    mov bx,0b800h</span><br><span class="line">    mov es,bx</span><br><span class="line">    mov bx,1</span><br><span class="line">    mov cx,2000</span><br><span class="line">sub3s:</span><br><span class="line">    and byte ptr es:[bx],10001111b</span><br><span class="line">    or es:[bx],al</span><br><span class="line">    add bx,2</span><br><span class="line">    loop sub3s</span><br><span class="line">    pop es</span><br><span class="line">    pop cx</span><br><span class="line">    pop bx</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line">sub4: ; 向上滚动一行</span><br><span class="line">    push cx</span><br><span class="line">    push si</span><br><span class="line">    push di</span><br><span class="line">    push es</span><br><span class="line">    push ds</span><br><span class="line">    mov si,0b800h</span><br><span class="line">    mov es,si</span><br><span class="line">    mov ds,si</span><br><span class="line">    mov si,160 ; ds:si指向n+1行</span><br><span class="line">    mov di,0   ; es:di指向n行</span><br><span class="line">    cld</span><br><span class="line">    mov cx,24  ; 共复制24行</span><br><span class="line">sub4s:</span><br><span class="line">    push cx</span><br><span class="line">    mov cx,160</span><br><span class="line">    rep movsb  ; 一行复制完，si+&#x3D;160，di+&#x3D;160</span><br><span class="line">    pop cx</span><br><span class="line">    loop sub4s</span><br><span class="line">    mov cx,80</span><br><span class="line">    mov si,0</span><br><span class="line">sub4s1:</span><br><span class="line">    mov byte ptr [160*24+si],&#39; &#39;  ; 最后一行清空</span><br><span class="line">    add si,2</span><br><span class="line">    loop sub4s1</span><br><span class="line">    pop ds</span><br><span class="line">    pop es</span><br><span class="line">    pop di</span><br><span class="line">    pop si</span><br><span class="line">    pop cx</span><br><span class="line">    ret</span><br><span class="line">; 中断处理程序结束</span><br><span class="line"></span><br><span class="line">setsrcend:</span><br><span class="line">    nop</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>测试源码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">; 测试新的 7ch 中断例程</span><br><span class="line"></span><br><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">    ; 测试清屏</span><br><span class="line">    mov ah,0</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 测试绿色字</span><br><span class="line">    mov ah,1</span><br><span class="line">    mov al,2</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 测试红底</span><br><span class="line">    mov ah,2</span><br><span class="line">    mov al,4</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    ; 向上滚动一行</span><br><span class="line">    mov ah,3</span><br><span class="line">    int 7ch</span><br><span class="line"></span><br><span class="line">    mov ax,4c00h</span><br><span class="line">    int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<img src="/2021/06/16/assembly-experiment16/Untitled.gif" class="">
 ]]></content>
       <categories>
         <category>汇编实战</category>
@@ -533,6 +499,59 @@
       </tags>
   </entry>
   <entry>
+    <title>汇编：指令系统总结</title>
+    <url>/2021/06/11/assembly-instruction-system.html</url>
+    <content><![CDATA[<p>指令系统总结：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>汇编实战</category>
+      </categories>
+      <tags>
+        <tag>汇编实战</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker Compose 运行 etcd3</title>
+    <url>/2023/09/13/etcd-docker-compose.html</url>
+    <content><![CDATA[<p>本文以MacOS docker desktop为例。</p>
+<h2 id="下载安装MacOS版docker-desktop"><a href="#下载安装MacOS版docker-desktop" class="headerlink" title="下载安装MacOS版docker desktop"></a>下载安装MacOS版docker desktop</h2><ol>
+<li><p><a href="https://desktop.docker.com/mac/main/amd64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module" target="_blank" rel="noopener">下载地址</a></p>
+</li>
+<li><p>双击安装 <code>Docker.dmg</code></p>
+</li>
+</ol>
+<h2 id="创建etcd3目录"><a href="#创建etcd3目录" class="headerlink" title="创建etcd3目录"></a>创建etcd3目录</h2><ol>
+<li><p>创建一个目录用于运行docker etcd3，如：<code>/path/to/etcd3</code></p>
+</li>
+<li><p>在如上目录内创建 <code>docker-compose.yml</code> 文件，内容如下：</p>
+</li>
+</ol>
+<a id="more"></a>
+
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">etcd:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">quay.io/coreos/etcd:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2379</span><span class="string">:2379</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2380</span><span class="string">:2380</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcdnet</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">restart_policy:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">on-failure</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcd-data:/etcd-data</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_ADVERTISE_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ALLOW_NONE_AUTHENTICATION=yes"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_CLUSTER=node1=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_NAME=node1"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_DATA_DIR=./data"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">etcdnet:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">etcdnet</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">etcd-data:</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="运行docker-etcd3"><a href="#运行docker-etcd3" class="headerlink" title="运行docker etcd3"></a>运行docker etcd3</h2><ol>
+<li>进入上文创建的etcd3目录：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/etcd3  <span class="comment"># 该目录内已经创建好文件 docker-compose.yml</span></span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>docker desktop App上会看到容器已经运行（也可以用命令行查看）：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/macos-docker-desktop-etcd3-container.png" alt=""></p>
+<h2 id="测试etcd3是否运行正常"><a href="#测试etcd3是否运行正常" class="headerlink" title="测试etcd3是否运行正常"></a>测试etcd3是否运行正常</h2><p>执行如下命令，输出如下版本信息表示ok：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/get-etcd3-version.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+        <tag>etcd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Sh 和 Bash 之间的区别</title>
     <url>/2018/12/24/diff-between-sh-and-bash.html</url>
     <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一般情况下，<code>sh</code> 是指向 <code>bash</code> 的链接。查看 bash 的手册页可知，bash 作为 sh 运行时，相当于 <code>bash --posix</code>，即 sh 以符合 POSIX 标准的方式来运行。</p>
@@ -556,51 +575,37 @@
       </tags>
   </entry>
   <entry>
-    <title>汇编：指令系统总结</title>
-    <url>/2021/06/11/assembly-instruction-system.html</url>
-    <content><![CDATA[<p>指令系统总结：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93.png" alt=""></p>
-]]></content>
-      <categories>
-        <category>汇编实战</category>
-      </categories>
-      <tags>
-        <tag>汇编实战</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git 使用指定的 SSH 密钥克隆和提交</title>
-    <url>/2018/12/23/git-commit-via-ssh-key.html</url>
-    <content><![CDATA[<h2 id="Git-使用指定的密钥"><a href="#Git-使用指定的密钥" class="headerlink" title="Git 使用指定的密钥"></a>Git 使用指定的密钥</h2><p>默认情况，Git 会使用 <code>~/.ssh/id_ecdsa</code> 来登录远程仓库，比如登录 <code>github.com</code>。我这里使用的是 <code>ecdsa</code> 算法，所以是 <code>id_ecdsa</code>。</p>
-<p>怎么样使用指定的密钥呢？比如使用 <code>id_ecdsa_123</code>。创建 ssh 配置文件 <code>config</code> 即可：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置文件内容</span></span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_ecdsa_github</span><br><span class="line">    IdentitiesOnly yes</span><br></pre></td></tr></table></figure>
-
-<p>配置文件的含义：</p>
-<ul>
-<li><code>Host github.com</code>：指定一个主机</li>
-<li><code>HostName github.com</code>：上面指定的主机的主机名</li>
-<li><code>User git</code>：登录该主机的用户名，如果是登录 <code>github.com</code>，就必须是 <code>git</code></li>
-<li><code>IdentityFile ~/.ssh/id_ecdsa_github</code>：关键配置，这里指定了使用哪个私钥文件</li>
-<li><code>IdentitiesOnly yes</code>：它指示 ssh 仅使用在命令行上指定的私钥文件或在 <code>config</code> 文件中配置的私钥文件</li>
-</ul>
+    <title>计科B站学习视频</title>
+    <url>/2021/04/26/cs-learn-in-bilibili.html</url>
+    <content><![CDATA[<p><strong>计算机科学入门：</strong></p>
+<p>《计算机科学速成课》，<a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">B站</a><a href="https://www.bilibili.com/video/av21376839/?p=1" target="_blank" rel="noopener">中文字幕版</a>，共40集</p>
+<p>《CS50 哈佛计算机科学导论》，非常经典，<a href="https://www.bilibili.com/video/BV1cE411j7in?from=search&seid=10548244881245554190" target="_blank" rel="noopener">B站地址</a></p>
+<p>《算法导论-MIT麻省理工》，<a href="https://www.bilibili.com/video/BV1Kx411f7bL?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《物理学十分钟速成课》，<a href="https://www.bilibili.com/video/BV1Nb411L7fQ?from=search&seid=17238245196463281490" target="_blank" rel="noopener">B站地址</a></p>
+<p><strong>计算机组成原理：</strong></p>
+<p>《计算机组成原理 快速复习》，<a href="https://www.bilibili.com/video/BV1rV411k7Xf?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《计算机组成原理 唐朔飞》，哈工大，<a href="https://www.bilibili.com/video/BV1WW411Q7PF?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>操作系统：</strong></p>
+<p>《操作系统 清华大学》，向勇、陈渝，<a href="https://www.bilibili.com/video/BV1js411b7vg?from=search&seid=10033970866122426678" target="_blank" rel="noopener">B站地址</a></p>
+<p>《操作系统 哈工大》，李治军，内容比清华的更详细，<a href="https://www.bilibili.com/video/BV1d4411v7u7?p=1" target="_blank" rel="noopener">B站地址</a></p>
 <a id="more"></a>
 
-<h2 id="使用密钥克隆"><a href="#使用密钥克隆" class="headerlink" title="使用密钥克隆"></a>使用密钥克隆</h2><p>配置完上面的 <code>config</code> 文件之后，就可以使用指定的私钥文件来克隆。比如：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:jasonz666/shell-utils</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用密钥提交修改"><a href="#使用密钥提交修改" class="headerlink" title="使用密钥提交修改"></a>使用密钥提交修改</h2><p>如果我们使用 HTTPS 方式克隆了一个仓库，而不是像上面那样使用 SSH 密钥方式。先要将 SSH 密钥登录远程服务器 <code>github.com</code> 的方式关联到本地仓库。执行：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入本地仓库目录</span></span><br><span class="line">$ <span class="built_in">cd</span> shell-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已关联的远程仓库服务器</span></span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (fetch)</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (push)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加新的远程仓库服务器</span></span><br><span class="line">$ git remote add ssh git@github.com:jasonz666/shell-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次查看远程仓库服务器</span></span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (fetch)</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (push)</span><br><span class="line">ssh	gitgit@github.com:jasonz666/shell-utils (fetch)</span><br><span class="line">ssh	gitgit@github.com:jasonz666/shell-utils (push)</span><br></pre></td></tr></table></figure>
-
-<p>使用 SSH 密钥方式提交：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push ssh master</span><br></pre></td></tr></table></figure>
-
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.jianshu.com/p/82aa1678411e" target="_blank" rel="noopener">https://www.jianshu.com/p/82aa1678411e</a><br><a href="https://www.howtoing.com/fix-ssh-too-many-authentication-failures-error" target="_blank" rel="noopener">https://www.howtoing.com/fix-ssh-too-many-authentication-failures-error</a></p>
-</blockquote>
+<p><strong>计算机网络：</strong></p>
+<p>《计算机网络微课堂》，湖南科技大学，<a href="https://www.bilibili.com/video/BV1c4411d7jb?from=search&seid=12426748443173359886" target="_blank" rel="noopener">B站地址</a></p>
+<p>《计算机网络 谢希仁第七版》，方老师讲解，<a href="https://www.bilibili.com/video/BV1yE411G7Ma?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《Wireshark抓包 从入门到入坟》，<a href="https://www.bilibili.com/video/BV1X5411x7R4?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>数据库：</strong></p>
+<p>《SQL进阶教程》，<a href="https://www.bilibili.com/video/BV1UE41147KC?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《MySQL高级教程》，涉及底层原理，<a href="https://www.bilibili.com/video/BV1CZ4y1M7MQ?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《Redis教程》，<a href="https://www.bilibili.com/video/BV1S54y1R7SB?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>数据结构与算法：</strong></p>
+<p>《数据结构 浙江大学》，讲的经典而系统，<a href="https://www.bilibili.com/video/BV1JW411i731?p=1" target="_blank" rel="noopener">B站</a></p>
+<p>《LeetCode算法刷题解析》，左程云，<a href="https://www.bilibili.com/video/BV15D4y1X7Tt?p=1" target="_blank" rel="noopener">B站</a></p>
+<p><strong>C/C++语言：</strong></p>
+<p>《郝斌C语言自学教程》，<a href="https://www.bilibili.com/video/BV1os411h77o?from=search&seid=5426432897798417990" target="_blank" rel="noopener">B站地址</a></p>
 ]]></content>
       <tags>
-        <tag>Github</tag>
+        <tag>CS</tag>
       </tags>
   </entry>
   <entry>
@@ -693,24 +698,39 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2018/12/21/hello-world.html</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+    <title>Git 使用指定的 SSH 密钥克隆和提交</title>
+    <url>/2018/12/23/git-commit-via-ssh-key.html</url>
+    <content><![CDATA[<h2 id="Git-使用指定的密钥"><a href="#Git-使用指定的密钥" class="headerlink" title="Git 使用指定的密钥"></a>Git 使用指定的密钥</h2><p>默认情况，Git 会使用 <code>~/.ssh/id_ecdsa</code> 来登录远程仓库，比如登录 <code>github.com</code>。我这里使用的是 <code>ecdsa</code> 算法，所以是 <code>id_ecdsa</code>。</p>
+<p>怎么样使用指定的密钥呢？比如使用 <code>id_ecdsa_123</code>。创建 ssh 配置文件 <code>config</code> 即可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim ~/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置文件内容</span></span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_ecdsa_github</span><br><span class="line">    IdentitiesOnly yes</span><br></pre></td></tr></table></figure>
+
+<p>配置文件的含义：</p>
+<ul>
+<li><code>Host github.com</code>：指定一个主机</li>
+<li><code>HostName github.com</code>：上面指定的主机的主机名</li>
+<li><code>User git</code>：登录该主机的用户名，如果是登录 <code>github.com</code>，就必须是 <code>git</code></li>
+<li><code>IdentityFile ~/.ssh/id_ecdsa_github</code>：关键配置，这里指定了使用哪个私钥文件</li>
+<li><code>IdentitiesOnly yes</code>：它指示 ssh 仅使用在命令行上指定的私钥文件或在 <code>config</code> 文件中配置的私钥文件</li>
+</ul>
 <a id="more"></a>
 
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<h2 id="使用密钥克隆"><a href="#使用密钥克隆" class="headerlink" title="使用密钥克隆"></a>使用密钥克隆</h2><p>配置完上面的 <code>config</code> 文件之后，就可以使用指定的私钥文件来克隆。比如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:jasonz666/shell-utils</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h2 id="使用密钥提交修改"><a href="#使用密钥提交修改" class="headerlink" title="使用密钥提交修改"></a>使用密钥提交修改</h2><p>如果我们使用 HTTPS 方式克隆了一个仓库，而不是像上面那样使用 SSH 密钥方式。先要将 SSH 密钥登录远程服务器 <code>github.com</code> 的方式关联到本地仓库。执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入本地仓库目录</span></span><br><span class="line">$ <span class="built_in">cd</span> shell-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已关联的远程仓库服务器</span></span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (fetch)</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (push)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加新的远程仓库服务器</span></span><br><span class="line">$ git remote add ssh git@github.com:jasonz666/shell-utils</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次查看远程仓库服务器</span></span><br><span class="line">$ git remote -v</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (fetch)</span><br><span class="line">origin	https://github.com/jasonz666/shell-utils (push)</span><br><span class="line">ssh	gitgit@github.com:jasonz666/shell-utils (fetch)</span><br><span class="line">ssh	gitgit@github.com:jasonz666/shell-utils (push)</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>使用 SSH 密钥方式提交：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push ssh master</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.jianshu.com/p/82aa1678411e" target="_blank" rel="noopener">https://www.jianshu.com/p/82aa1678411e</a><br><a href="https://www.howtoing.com/fix-ssh-too-many-authentication-failures-error" target="_blank" rel="noopener">https://www.howtoing.com/fix-ssh-too-many-authentication-failures-error</a></p>
+</blockquote>
 ]]></content>
+      <tags>
+        <tag>Github</tag>
+      </tags>
   </entry>
   <entry>
     <title>使用 GPG 学习非对称加密</title>
@@ -808,6 +828,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2018/12/21/hello-world.html</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<a id="more"></a>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>使用 GPG 密钥登录 SSH</title>
     <url>/2019/02/03/login-ssh-via-gpg-key.html</url>
     <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>SSH 通常有密码登录和密钥登录两种方式。密钥登录时使用的是 SSH 的密钥，由 ssh-agent 来处理。这里介绍使用 GnuPG 生成的 PGP 密钥来登录 SSH。此时使用 gpg-agent 来处理登录过程。</p>
@@ -848,43 +888,6 @@
       <tags>
         <tag>Gpg</tag>
         <tag>SSH</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JavaScript装饰器</title>
-    <url>/2021/10/22/javascript-decorator.html</url>
-    <content><![CDATA[<p>JS装饰器是ES7的新语法，浏览器，nodejs不一定支持，需要babel转译。</p>
-<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>创建一个目录test，结构为：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── .babelrc</span><br><span class="line">├── .npmrc</span><br><span class="line">├── lib</span><br><span class="line">├── package.json</span><br><span class="line">└── src</span><br><span class="line">    └── index.js</span><br></pre></td></tr></table></figure>
-
-<p>babel的装饰器配置：</p>
-<a id="more"></a>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># .babelrc</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        <span class="string">"@babel/preset-env"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"plugins"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"@babel/plugin-proposal-decorators"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"legacy"</span>: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"@babel/plugin-proposal-class-properties"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>依赖包与测试命令：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"testmobx"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"testmobx"</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="string">"directories"</span>: &#123;</span><br><span class="line">    <span class="string">"lib"</span>: <span class="string">"lib"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"babel src -d lib"</span>,</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"node lib/index.js"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"jason"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"MIT"</span>,</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"@babel/core"</span>: <span class="string">"^7.15.5"</span>,</span><br><span class="line">    <span class="string">"@babel/cli"</span>: <span class="string">"^7.15.0"</span>,</span><br><span class="line">    <span class="string">"@babel/plugin-proposal-class-properties"</span>: <span class="string">"^7.14.5"</span>,</span><br><span class="line">    <span class="string">"@babel/plugin-proposal-decorators"</span>: <span class="string">"^7.15.4"</span>,</span><br><span class="line">    <span class="string">"@babel/preset-env"</span>: <span class="string">"^7.15.6"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>npm源：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># .npmrc</span></span><br><span class="line">registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
-
-<p>安装依赖包：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="built_in">test</span></span><br><span class="line">yarn</span><br></pre></td></tr></table></figure>
-
-<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><p>源码都在 src/index.js 中。js装饰器可以装饰的对象：类、属性、方法。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 装饰器：</span></span><br><span class="line"><span class="comment">// 装饰属性（或方法）时：</span></span><br><span class="line"><span class="comment">// target为属性的类对象，key为属性名字符串，descriptor为属性key的属性描述符对象</span></span><br><span class="line"><span class="comment">// 装饰类时：</span></span><br><span class="line"><span class="comment">// target为类，key与descriptor都是undefined</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readOnly</span>(<span class="params">target, key, descriptor</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'target:'</span>, target, <span class="keyword">typeof</span> target);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'key:'</span>, key, <span class="keyword">typeof</span> key);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'desc:'</span>, descriptor, <span class="keyword">typeof</span> descriptor);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> key === <span class="string">'string'</span>) &#123; <span class="comment">// 作为属性或方法装饰器时，key为字符串</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> descriptor.value === <span class="string">'function'</span>) &#123; <span class="comment">// 作为方法装饰器</span></span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'~~~ decorator of method'</span>);</span><br><span class="line">            <span class="keyword">return</span> descriptor.value;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 作为属性装饰器</span></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...descriptor,</span><br><span class="line">                writable: <span class="literal">false</span> <span class="comment">// 覆盖为false</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 作为类装饰器</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'~~~ decorator of cls'</span>);</span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Oatmeal</span> </span>&#123;</span><br><span class="line">    @readOnly viscosity = <span class="number">20</span>; <span class="comment">// 属性装饰器</span></span><br><span class="line">    <span class="keyword">constructor</span>(flavor) &#123;</span><br><span class="line">        <span class="keyword">this</span>.flavor = flavor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> oatmeal = <span class="keyword">new</span> Oatmeal(<span class="string">'Brown Sugar Cinnamon'</span>);</span><br><span class="line"><span class="comment">// oatmeal.viscosity = 30; // 已设为只读，修改将报错</span></span><br><span class="line"><span class="built_in">console</span>.log(oatmeal);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);</span><br><span class="line"></span><br><span class="line">@readOnly</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.a = <span class="number">111</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> A();</span><br><span class="line"><span class="built_in">console</span>.log(a.a);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.b = <span class="number">222</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    @readOnly</span><br><span class="line">    show() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> B();</span><br><span class="line">b.show();</span><br></pre></td></tr></table></figure>
-
-<h3 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h3><p>其中<code>initializer</code>与babel相关，当装饰器给属性装饰时，属性描述符对象中会有initializer，为函数，执行<code>descriptor.initializer()</code>后将返回属性的值20。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/js-decor1.png" alt="js-decor1"></p>
-<p>参考：<br><a href="https://segmentfault.com/a/1190000021593373" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021593373</a></p>
-]]></content>
-      <categories>
-        <category>JavaScript</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-        <tag>ES6/ES7</tag>
-        <tag>装饰器</tag>
       </tags>
   </entry>
   <entry>
@@ -968,6 +971,43 @@
       </tags>
   </entry>
   <entry>
+    <title>JavaScript装饰器</title>
+    <url>/2021/10/22/javascript-decorator.html</url>
+    <content><![CDATA[<p>JS装饰器是ES7的新语法，浏览器，nodejs不一定支持，需要babel转译。</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>创建一个目录test，结构为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── .babelrc</span><br><span class="line">├── .npmrc</span><br><span class="line">├── lib</span><br><span class="line">├── package.json</span><br><span class="line">└── src</span><br><span class="line">    └── index.js</span><br></pre></td></tr></table></figure>
+
+<p>babel的装饰器配置：</p>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># .babelrc</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        <span class="string">"@babel/preset-env"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"plugins"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"@babel/plugin-proposal-decorators"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"legacy"</span>: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"@babel/plugin-proposal-class-properties"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依赖包与测试命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"testmobx"</span>,</span><br><span class="line">  <span class="string">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="string">"description"</span>: <span class="string">"testmobx"</span>,</span><br><span class="line">  <span class="string">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="string">"directories"</span>: &#123;</span><br><span class="line">    <span class="string">"lib"</span>: <span class="string">"lib"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"scripts"</span>: &#123;</span><br><span class="line">    <span class="string">"build"</span>: <span class="string">"babel src -d lib"</span>,</span><br><span class="line">    <span class="string">"test"</span>: <span class="string">"node lib/index.js"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"author"</span>: <span class="string">"jason"</span>,</span><br><span class="line">  <span class="string">"license"</span>: <span class="string">"MIT"</span>,</span><br><span class="line">  <span class="string">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"@babel/core"</span>: <span class="string">"^7.15.5"</span>,</span><br><span class="line">    <span class="string">"@babel/cli"</span>: <span class="string">"^7.15.0"</span>,</span><br><span class="line">    <span class="string">"@babel/plugin-proposal-class-properties"</span>: <span class="string">"^7.14.5"</span>,</span><br><span class="line">    <span class="string">"@babel/plugin-proposal-decorators"</span>: <span class="string">"^7.15.4"</span>,</span><br><span class="line">    <span class="string">"@babel/preset-env"</span>: <span class="string">"^7.15.6"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>npm源：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># .npmrc</span></span><br><span class="line">registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<p>安装依赖包：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="built_in">test</span></span><br><span class="line">yarn</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><p>源码都在 src/index.js 中。js装饰器可以装饰的对象：类、属性、方法。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 装饰器：</span></span><br><span class="line"><span class="comment">// 装饰属性（或方法）时：</span></span><br><span class="line"><span class="comment">// target为属性的类对象，key为属性名字符串，descriptor为属性key的属性描述符对象</span></span><br><span class="line"><span class="comment">// 装饰类时：</span></span><br><span class="line"><span class="comment">// target为类，key与descriptor都是undefined</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">readOnly</span>(<span class="params">target, key, descriptor</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'target:'</span>, target, <span class="keyword">typeof</span> target);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'key:'</span>, key, <span class="keyword">typeof</span> key);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'desc:'</span>, descriptor, <span class="keyword">typeof</span> descriptor);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> key === <span class="string">'string'</span>) &#123; <span class="comment">// 作为属性或方法装饰器时，key为字符串</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> descriptor.value === <span class="string">'function'</span>) &#123; <span class="comment">// 作为方法装饰器</span></span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'~~~ decorator of method'</span>);</span><br><span class="line">            <span class="keyword">return</span> descriptor.value;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 作为属性装饰器</span></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...descriptor,</span><br><span class="line">                writable: <span class="literal">false</span> <span class="comment">// 覆盖为false</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 作为类装饰器</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'~~~ decorator of cls'</span>);</span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Oatmeal</span> </span>&#123;</span><br><span class="line">    @readOnly viscosity = <span class="number">20</span>; <span class="comment">// 属性装饰器</span></span><br><span class="line">    <span class="keyword">constructor</span>(flavor) &#123;</span><br><span class="line">        <span class="keyword">this</span>.flavor = flavor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> oatmeal = <span class="keyword">new</span> Oatmeal(<span class="string">'Brown Sugar Cinnamon'</span>);</span><br><span class="line"><span class="comment">// oatmeal.viscosity = 30; // 已设为只读，修改将报错</span></span><br><span class="line"><span class="built_in">console</span>.log(oatmeal);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);</span><br><span class="line"></span><br><span class="line">@readOnly</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.a = <span class="number">111</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> A();</span><br><span class="line"><span class="built_in">console</span>.log(a.a);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line">        <span class="keyword">this</span>.b = <span class="number">222</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    @readOnly</span><br><span class="line">    show() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> B();</span><br><span class="line">b.show();</span><br></pre></td></tr></table></figure>
+
+<h3 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h3><p>其中<code>initializer</code>与babel相关，当装饰器给属性装饰时，属性描述符对象中会有initializer，为函数，执行<code>descriptor.initializer()</code>后将返回属性的值20。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/js-decor1.png" alt="js-decor1"></p>
+<p>参考：<br><a href="https://segmentfault.com/a/1190000021593373" target="_blank" rel="noopener">https://segmentfault.com/a/1190000021593373</a></p>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>ES6/ES7</tag>
+        <tag>装饰器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL查询语句及子句的执行顺序</title>
     <url>/2021/08/26/mysql-query-order.html</url>
     <content><![CDATA[<p>MySQL SELECT 查询语句及各子句的执行顺序：</p>
@@ -1018,6 +1058,90 @@
       <tags>
         <tag>MRO</tag>
         <tag>属性</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一文彻底搞懂 Python中的描述器、反射</title>
+    <url>/2021/08/19/python-descriptor.html</url>
+    <content><![CDATA[<h2 id="描述器"><a href="#描述器" class="headerlink" title="描述器"></a>描述器</h2><h3 id="什么是描述器？"><a href="#什么是描述器？" class="headerlink" title="什么是描述器？"></a>什么是描述器？</h3><p>一个类中定义了如下一个或多个魔术方法，这个<strong>类的实例</strong>就是描述器：</p>
+<p><code>__get__，__set__，__delete__</code></p>
+<p>通常需要两个类来构建描述器：</p>
+<p>如果类B的类属性x，指向另一个类A的实例。被指向的A的实例就是描述器对象。B.x是描述器，B也是描述器的属主（owner）。比如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    x = A()  <span class="comment"># x是描述器</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>类属性的值，通常是一些已有类型的对象，比如字符串、列表等。</p>
+<p>当使用了描述器，类属性就指向一个描述器对象，描述器通过三个魔术方法，可以自定义属性的行为。</p>
+<a id="more"></a>
+
+<h3 id="描述器的分类"><a href="#描述器的分类" class="headerlink" title="描述器的分类"></a>描述器的分类</h3><p>非数据描述器：</p>
+<p>只定义了<code>__get__</code>，就是非数据描述器（non-data descriptor）。</p>
+<p>数据描述器：</p>
+<p>定义了<code>__get__</code>，且定义了<code>__set__</code>或<code>__set__ 与 __delete__</code>，就是数据描述器（data descriptor）。</p>
+<h3 id="属性搜索顺序"><a href="#属性搜索顺序" class="headerlink" title="属性搜索顺序"></a>属性搜索顺序</h3><p>当一个实例与它所属的类有相同的属性名时：</p>
+<p><strong>非数据描述器，实例的属性搜索顺序：</strong></p>
+<p><code>__getattribute__</code> ⟶ 默认搜索顺序 [1] ⟶ <code>__getattr__</code>。也就是说，此时__get__无效。</p>
+<p><strong>数据描述器，会拦截实例属性字典的访问：</strong></p>
+<p>不会访问实例属性字典<code>__dict__</code>。属性访问或修改会被描述器的<code>__get__</code>, <code>__set__</code>, <code>__delete__</code>方法处理。</p>
+<p><strong>注意：</strong></p>
+<p>如果有 __getattribute__ 方法，不管有没有描述器，实例属性搜索时，都优先调用此方法，可以拦截一切（包括 实例.__dict__ 的访问也拦截）。</p>
+<p>__getattribute__ 和 __getattr__ 又是做什么的？下文讲。</p>
+<p><strong>[1] 默认搜索顺序：</strong><br>默认搜索顺序就是没有描述器时的搜索顺序，遵循如下规则：<br>实例的属性字典(__dict__) ⟶ 类的属性字典 ⟶ 类的父类的属性字典 ⟶ … ⟶ 祖先类object的属性字典</p>
+<p>属性搜索顺序与类的继承有关。如果是单继承，属性（或方法）搜索路径是确定的，一直向上找。如果是多继承，就涉及到MRO（方法解析顺序）。Python3的MRO采用C3算法，在类被创建出来的时候，就计算出一个MRO有序列表。关于C3算法，见<a href="https://www.python.org/download/releases/2.3/mro/" target="_blank" rel="noopener">官方文档</a>。</p>
+<h3 id="属性读写操作示例"><a href="#属性读写操作示例" class="headerlink" title="属性读写操作示例"></a>属性读写操作示例</h3><p>B.x = 400，类属性赋值（赋值即重新定义），如果x是描述器，将被覆盖。<br>b.x = 500，非数据描述器时，将修改实例自己的属性（__dict__）。<br>b.x = 600，数据描述器时，将调用描述器的<code>__set__</code>方法。</p>
+<p>B.x，若x是描述器，调用描述器的<code>__get__</code>方法。<br>b.x，若x是描述器，调用描述器的<code>__get__</code>方法。</p>
+<p>直接操作实例的<code>__dict__</code>字典，可以绕开描述器对<code>__get__</code>，<code>__set__</code>等的调用。</p>
+<p>举例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'A().init'</span>)</span><br><span class="line">        self.x = <span class="number">101</span>       <span class="comment"># 这是A自己的实例，与B无关</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        print(<span class="string">'~~~~ A.get ~~~~'</span>)</span><br><span class="line">        print(self)         <span class="comment"># A的实例本身</span></span><br><span class="line">        print(instance)     <span class="comment"># B.x访问时，为None。b.x访问时，为B的实例对象</span></span><br><span class="line">        print(owner)        <span class="comment"># 类B</span></span><br><span class="line">        print(<span class="string">'~~~~ A.get ~~~~'</span>)</span><br><span class="line">        <span class="keyword">return</span> getattr(instance, <span class="string">'z'</span>, <span class="string">'no_z_found'</span>)  <span class="comment"># 查找b.z时，又会回去调用B.__getattribute__</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        print(<span class="string">'~~~~~ A.set ~~~~'</span>)</span><br><span class="line">        print(self)         <span class="comment"># A的实例本身</span></span><br><span class="line">        print(instance)     <span class="comment"># 修改b.x时，才进入此方法，instance为B的实例对象</span></span><br><span class="line">        print(value)        <span class="comment"># 赋给 b.x 的值</span></span><br><span class="line">        print(<span class="string">'~~~~~ A.set ~~~~'</span>)</span><br><span class="line">        instance.z = value  <span class="comment"># 演示，把b.x的值保存到b.z，而不是b的属性字典__dict__</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        print(<span class="string">'~~~~~ in delete'</span>)</span><br><span class="line">        <span class="keyword">del</span> instance.z</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    <span class="comment"># 创建描述器x</span></span><br><span class="line">    x = A()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义如下方法，实例属性访问最先调用它，但在类A中定义无用</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        print(<span class="string">'___ in getattribute ___'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 查找b.x时，此处又会调用A.__get__（因为x是描述器），而不是调B.__getattribute__，不然会递归</span></span><br><span class="line">        <span class="keyword">return</span> object.__getattribute__(self, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'B().init'</span>)</span><br><span class="line">        self.x = <span class="number">1000</span>       <span class="comment"># 非数据描述器时，实例修改自己的属性，self.x会访问实例自己的__dict__</span></span><br><span class="line">                            <span class="comment"># 数据描述器时，调用 A.__set__</span></span><br><span class="line"></span><br><span class="line">b = B()          <span class="comment"># 先生成A的实例，即执行A.__init__，生成描述器对象，然后执行B.__init__</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 属性访问</span></span><br><span class="line">print(<span class="string">'\n'</span> + <span class="string">'-'</span> * <span class="number">30</span>)</span><br><span class="line">print(B.x)</span><br><span class="line">print()</span><br><span class="line">print(b.x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 属性修改</span></span><br><span class="line"><span class="comment"># 覆盖描述器</span></span><br><span class="line"><span class="comment">#B.x = 123</span></span><br><span class="line"><span class="comment">#print(B.x)</span></span><br><span class="line">print(<span class="string">'\n'</span> + <span class="string">'#'</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 非数据描述器时，b修改自己的属性，赋值即重新定义，覆盖描述器x</span></span><br><span class="line"><span class="comment"># 数据描述器时，b.x 调用 A.__set__</span></span><br><span class="line">b.x = <span class="number">456</span></span><br><span class="line">print(b.x)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'\n'</span> + <span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line">print(b.__dict__)  <span class="comment"># 甚至访问b的属性字典，也是调用B.__getattribute__</span></span><br><span class="line"><span class="keyword">del</span> b.x            <span class="comment"># 删除属性，会调用 A.__delete__</span></span><br><span class="line">print(b.x)</span><br><span class="line">print(b.__dict__)</span><br></pre></td></tr></table></figure>
+
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>上文提到的__getattribute__跟__get__有什么关系呢？实际上前者是<strong>反射</strong>相关的魔术方法。那什么是反射呢？</p>
+<p>当我们需要用到对象的某个属性（或方法），但是由于某种原因无法确定这个属性是否存在，这时我们需要用一种特殊的机制，去访问和操作这个未知的属性，这种机制就称为<strong>反射（reflection）</strong>。反射就相当于一种自我检查机制。</p>
+<p>反射机制不仅包括，要能在运行时对程序自身信息进行检测，还要求程序能进一步根据这些信息，改变程序状态或结构。总之一句话，反射指的是运行时获取类型定义信息，并且还能修改这些信息。</p>
+<p>与反射相关的四个函数：<code>getattr、setattr、delattr、hasattr</code>。与这些函数相关的四个魔术方法：<code>__getattr__, __setattr__, __delattr__, __getattribute__</code>。见下面表格：</p>
+<table>
+<thead>
+<tr>
+<th align="left">魔术方法</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>__getattr__</code></td>
+<td align="left">此方法只影响实例。实例属性<strong>默认搜索顺序</strong>：实例自己(的__dict__，后同)、实例的类、类的父类、父类的父类、object祖先类。若从这个顺序中没有找到属性，会抛出<code>AttributeError</code>异常，但类中定义了<code>__getattr__</code>，实例将<strong>捕获异常</strong>，并调用此方法。此方法可用于实例没有找到属性时，拦截异常，做一些操作。</td>
+</tr>
+<tr>
+<td align="left"><code>__setattr__</code></td>
+<td align="left">此方法只影响实例。self.x = x, setattr(self, ‘x’, x) 等涉及到修改实例属性的操作时，如果定义了<code>__setattr__</code>，就会调用此方法。此方法可以拦截实例属性修改操作的默认行为。比如将实例的属性存储在新的字典中，而不是存储在默认字典__dict__。</td>
+</tr>
+<tr>
+<td align="left"><code>__delattr__</code></td>
+<td align="left">此方法只影响实例。del self.x, delattr(self, ‘x’) 等涉及删除实例属性的操作时，如果定义了<code>__delattr__</code>，将会调用此方法。</td>
+</tr>
+<tr>
+<td align="left"><code>__getattribute__</code></td>
+<td align="left">此方法只影响实例。实例的<strong>所有属性</strong>的访问，第一个就调用此方法。此方法能完全控制属性的默认访问顺序。可以在此方法中做一些处理，然后手动抛出<code>AttributeError</code>异常，这将继续调用<code>__getattr__</code>方法(如果有的话)。</td>
+</tr>
+</tbody></table>
+<p><code>__getattr__ VS __getattribute__</code></p>
+<p>两者的执行时间点不同。</p>
+<p>前者会在默认属性搜索顺序中未找到属性时，拦截异常，并执行。</p>
+<p>后者会在第一时间执行，完全拦截默认属性搜索顺序。两者执行顺序如下：</p>
+<p><code>__getattribute__</code> ⟶ <code>实例属性的默认搜索顺序</code> ⟶ <code>__getattr__</code></p>
+<p>举例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 用kv赋值方式增加属性 不会调用__setattr__</span></span><br><span class="line">        self.__dict__[<span class="string">'a'</span>] = <span class="number">7</span></span><br><span class="line">        self.__dict__[<span class="string">'_d'</span>] = &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如下属性将会存储到新字典_d 会调用__setattr__</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        print(<span class="string">'_in getattr:'</span>, item)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 属性未找到时 才调用__getattr__ 并从新字典返回属性</span></span><br><span class="line">        <span class="keyword">return</span> self._d[item]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">        print(<span class="string">'_in setattr:'</span>, key, value)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 下面写法都会递归 它们都调用__setattr__</span></span><br><span class="line">        <span class="comment"># self.key = value</span></span><br><span class="line">        <span class="comment"># setattr(self, str(key), value)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 用新字典存储属性</span></span><br><span class="line">        <span class="comment"># _d 属性在实例的__dict__，因为是字典操作，所以等号左边的self._d就不会调用__getattr__</span></span><br><span class="line">        self._d[key] = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        print(<span class="string">'_in delattr:'</span>, item)</span><br><span class="line">        <span class="keyword">del</span> self._d[item]</span><br><span class="line"></span><br><span class="line">a = A(<span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line">print(a.__dict__)  <span class="comment"># 打印属性字典，不会调用A.__getattr__，除非定义了_getattribute__</span></span><br><span class="line">print(a.x)</span><br><span class="line"><span class="keyword">del</span> a.x</span><br><span class="line">delattr(a, <span class="string">'y'</span>)</span><br><span class="line">a.t = <span class="number">123</span>          <span class="comment"># 这也会调__setattr__</span></span><br><span class="line">print(a.__dict__)</span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    d = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        print(item, <span class="string">'~~~~~~~'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 推荐写法</span></span><br><span class="line">        <span class="keyword">return</span> object.__getattribute__(self, item)</span><br><span class="line"></span><br><span class="line">a = A(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">print(<span class="string">'#'</span> * <span class="number">30</span>)</span><br><span class="line">print(a.x, a.d)</span><br></pre></td></tr></table></figure>
+
+<p>如果上面提及的魔术方法同时存在，会怎么样呢？详见 <a href="https://izhaojie.com/2021/08/21/python-attribute-search-order.html">Python中的属性搜索顺序</a></p>
+<h2 id="描述器的应用"><a href="#描述器的应用" class="headerlink" title="描述器的应用"></a>描述器的应用</h2><p>用描述器实现ClassMethod、StaticMethod（非数据描述器的应用）：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 非数据描述器 实现StaticMethod</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticMethod</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fn)</span>:</span></span><br><span class="line">        self.fn = fn</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        print(<span class="string">'_in StaticMethod'</span>)</span><br><span class="line">        print(self, instance, owner)</span><br><span class="line">        <span class="keyword">return</span> self.fn</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 非数据描述器 实现ClassMethod</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassMethod</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fn)</span>:</span></span><br><span class="line">        self.fn = fn</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        print(<span class="string">'_in ClassMethod'</span>)</span><br><span class="line">        print(self, instance, owner)</span><br><span class="line">        <span class="keyword">return</span> partial(self.fn, owner)  <span class="comment"># 固定fn的owner参数，就是固定bar函数的所属类A2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A2</span><span class="params">(object)</span>:</span></span><br><span class="line">    AGE = <span class="number">20</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.__age = age</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 装饰器语法</span></span><br><span class="line"><span class="meta">    @StaticMethod  # foo=StaticMethod(foo) 构建非数据描述器对象foo</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(x)</span>:</span></span><br><span class="line">        print(<span class="string">'_in foo'</span>)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 装饰器语法</span></span><br><span class="line"><span class="meta">    @ClassMethod  # bar=ClassMethod(bar) 构建非数据描述器对象bar</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">(cls, x)</span>:</span></span><br><span class="line">        print(<span class="string">'_in bar'</span>)</span><br><span class="line">        <span class="keyword">return</span> cls.AGE, x</span><br><span class="line"></span><br><span class="line">a = A2(<span class="string">'Tom'</span>, <span class="number">19</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里分两步，a.foo读取属性foo，会调用__get__返回A2里定义的foo函数，这个函数其实是描述器的属性fn，</span></span><br><span class="line"><span class="comment"># 然后调函数fn(3)，以此来实现静态方法foo</span></span><br><span class="line">print(a.foo(<span class="number">3</span>))</span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里分两步，a.bar读取属性bar，会调用__get__返回A2里定义的bar函数，这个函数其实是描述器的属性fn，</span></span><br><span class="line"><span class="comment"># 然后调函数fn(4)，cls参数已固定，实现了类方法</span></span><br><span class="line">print(a.bar(<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+
+<p>用描述器实现Property（数据描述器的应用）：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Property</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fget, fset=None, fdel=None)</span>:</span></span><br><span class="line">        self.fget = fget  <span class="comment"># fget是A的方法age</span></span><br><span class="line">        self.fset = fset</span><br><span class="line">        self.fdel = fdel</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="comment"># fget是self实例的属性，不是Property的方法，所以不会把self自动传递给fget，所以需要instance参数</span></span><br><span class="line">        <span class="keyword">return</span> self.fget(instance)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        self.fset(instance, value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        self.fdel(instance)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setter</span><span class="params">(self, fset)</span>:</span></span><br><span class="line">        self.fset = fset</span><br><span class="line">        <span class="keyword">return</span> self  <span class="comment"># 必须返回Property实例才能构建描述器</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleter</span><span class="params">(self, fdel)</span>:</span></span><br><span class="line">        self.fdel = fdel</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.__age = <span class="number">13</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># age=Property(age)=描述器对象</span></span><br><span class="line">    <span class="comment"># @Property必需在@age.setter与@age.deleter的前面</span></span><br><span class="line">    <span class="comment"># 因为@Property创建了描述器对象add，下面才能使用add对象</span></span><br><span class="line"><span class="meta">    @Property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__age</span><br><span class="line"></span><br><span class="line">    <span class="comment"># age=age.setter(age)=描述器对象</span></span><br><span class="line">    <span class="comment"># 因为age是描述器对象，指向Property的实例，该实例有属性setter</span></span><br><span class="line"><span class="meta">    @age.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        self.__age = value</span><br><span class="line"></span><br><span class="line"><span class="meta">    @age.deleter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">del</span> self.__age</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">print(a.age)  <span class="comment"># 把方法调用变成了属性访问</span></span><br><span class="line">a.age = <span class="number">17</span>    <span class="comment"># 调__set__</span></span><br><span class="line">print(a.age)</span><br><span class="line"><span class="keyword">del</span> a.age     <span class="comment"># 调__delete__</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>描述器</tag>
+        <tag>反射</tag>
       </tags>
   </entry>
   <entry>
@@ -1115,166 +1239,6 @@
       <tags>
         <tag>装饰器</tag>
         <tag>偏函数</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一文彻底搞懂 Python中的描述器、反射</title>
-    <url>/2021/08/19/python-descriptor.html</url>
-    <content><![CDATA[<h2 id="描述器"><a href="#描述器" class="headerlink" title="描述器"></a>描述器</h2><h3 id="什么是描述器？"><a href="#什么是描述器？" class="headerlink" title="什么是描述器？"></a>什么是描述器？</h3><p>一个类中定义了如下一个或多个魔术方法，这个<strong>类的实例</strong>就是描述器：</p>
-<p><code>__get__，__set__，__delete__</code></p>
-<p>通常需要两个类来构建描述器：</p>
-<p>如果类B的类属性x，指向另一个类A的实例。被指向的A的实例就是描述器对象。B.x是描述器，B也是描述器的属主（owner）。比如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    x = A()  <span class="comment"># x是描述器</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<p>类属性的值，通常是一些已有类型的对象，比如字符串、列表等。</p>
-<p>当使用了描述器，类属性就指向一个描述器对象，描述器通过三个魔术方法，可以自定义属性的行为。</p>
-<a id="more"></a>
-
-<h3 id="描述器的分类"><a href="#描述器的分类" class="headerlink" title="描述器的分类"></a>描述器的分类</h3><p>非数据描述器：</p>
-<p>只定义了<code>__get__</code>，就是非数据描述器（non-data descriptor）。</p>
-<p>数据描述器：</p>
-<p>定义了<code>__get__</code>，且定义了<code>__set__</code>或<code>__set__ 与 __delete__</code>，就是数据描述器（data descriptor）。</p>
-<h3 id="属性搜索顺序"><a href="#属性搜索顺序" class="headerlink" title="属性搜索顺序"></a>属性搜索顺序</h3><p>当一个实例与它所属的类有相同的属性名时：</p>
-<p><strong>非数据描述器，实例的属性搜索顺序：</strong></p>
-<p><code>__getattribute__</code> ⟶ 默认搜索顺序 [1] ⟶ <code>__getattr__</code>。也就是说，此时__get__无效。</p>
-<p><strong>数据描述器，会拦截实例属性字典的访问：</strong></p>
-<p>不会访问实例属性字典<code>__dict__</code>。属性访问或修改会被描述器的<code>__get__</code>, <code>__set__</code>, <code>__delete__</code>方法处理。</p>
-<p><strong>注意：</strong></p>
-<p>如果有 __getattribute__ 方法，不管有没有描述器，实例属性搜索时，都优先调用此方法，可以拦截一切（包括 实例.__dict__ 的访问也拦截）。</p>
-<p>__getattribute__ 和 __getattr__ 又是做什么的？下文讲。</p>
-<p><strong>[1] 默认搜索顺序：</strong><br>默认搜索顺序就是没有描述器时的搜索顺序，遵循如下规则：<br>实例的属性字典(__dict__) ⟶ 类的属性字典 ⟶ 类的父类的属性字典 ⟶ … ⟶ 祖先类object的属性字典</p>
-<p>属性搜索顺序与类的继承有关。如果是单继承，属性（或方法）搜索路径是确定的，一直向上找。如果是多继承，就涉及到MRO（方法解析顺序）。Python3的MRO采用C3算法，在类被创建出来的时候，就计算出一个MRO有序列表。关于C3算法，见<a href="https://www.python.org/download/releases/2.3/mro/" target="_blank" rel="noopener">官方文档</a>。</p>
-<h3 id="属性读写操作示例"><a href="#属性读写操作示例" class="headerlink" title="属性读写操作示例"></a>属性读写操作示例</h3><p>B.x = 400，类属性赋值（赋值即重新定义），如果x是描述器，将被覆盖。<br>b.x = 500，非数据描述器时，将修改实例自己的属性（__dict__）。<br>b.x = 600，数据描述器时，将调用描述器的<code>__set__</code>方法。</p>
-<p>B.x，若x是描述器，调用描述器的<code>__get__</code>方法。<br>b.x，若x是描述器，调用描述器的<code>__get__</code>方法。</p>
-<p>直接操作实例的<code>__dict__</code>字典，可以绕开描述器对<code>__get__</code>，<code>__set__</code>等的调用。</p>
-<p>举例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'A().init'</span>)</span><br><span class="line">        self.x = <span class="number">101</span>       <span class="comment"># 这是A自己的实例，与B无关</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        print(<span class="string">'~~~~ A.get ~~~~'</span>)</span><br><span class="line">        print(self)         <span class="comment"># A的实例本身</span></span><br><span class="line">        print(instance)     <span class="comment"># B.x访问时，为None。b.x访问时，为B的实例对象</span></span><br><span class="line">        print(owner)        <span class="comment"># 类B</span></span><br><span class="line">        print(<span class="string">'~~~~ A.get ~~~~'</span>)</span><br><span class="line">        <span class="keyword">return</span> getattr(instance, <span class="string">'z'</span>, <span class="string">'no_z_found'</span>)  <span class="comment"># 查找b.z时，又会回去调用B.__getattribute__</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        print(<span class="string">'~~~~~ A.set ~~~~'</span>)</span><br><span class="line">        print(self)         <span class="comment"># A的实例本身</span></span><br><span class="line">        print(instance)     <span class="comment"># 修改b.x时，才进入此方法，instance为B的实例对象</span></span><br><span class="line">        print(value)        <span class="comment"># 赋给 b.x 的值</span></span><br><span class="line">        print(<span class="string">'~~~~~ A.set ~~~~'</span>)</span><br><span class="line">        instance.z = value  <span class="comment"># 演示，把b.x的值保存到b.z，而不是b的属性字典__dict__</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        print(<span class="string">'~~~~~ in delete'</span>)</span><br><span class="line">        <span class="keyword">del</span> instance.z</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    <span class="comment"># 创建描述器x</span></span><br><span class="line">    x = A()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义如下方法，实例属性访问最先调用它，但在类A中定义无用</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        print(<span class="string">'___ in getattribute ___'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 查找b.x时，此处又会调用A.__get__（因为x是描述器），而不是调B.__getattribute__，不然会递归</span></span><br><span class="line">        <span class="keyword">return</span> object.__getattribute__(self, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'B().init'</span>)</span><br><span class="line">        self.x = <span class="number">1000</span>       <span class="comment"># 非数据描述器时，实例修改自己的属性，self.x会访问实例自己的__dict__</span></span><br><span class="line">                            <span class="comment"># 数据描述器时，调用 A.__set__</span></span><br><span class="line"></span><br><span class="line">b = B()          <span class="comment"># 先生成A的实例，即执行A.__init__，生成描述器对象，然后执行B.__init__</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 属性访问</span></span><br><span class="line">print(<span class="string">'\n'</span> + <span class="string">'-'</span> * <span class="number">30</span>)</span><br><span class="line">print(B.x)</span><br><span class="line">print()</span><br><span class="line">print(b.x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 属性修改</span></span><br><span class="line"><span class="comment"># 覆盖描述器</span></span><br><span class="line"><span class="comment">#B.x = 123</span></span><br><span class="line"><span class="comment">#print(B.x)</span></span><br><span class="line">print(<span class="string">'\n'</span> + <span class="string">'#'</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 非数据描述器时，b修改自己的属性，赋值即重新定义，覆盖描述器x</span></span><br><span class="line"><span class="comment"># 数据描述器时，b.x 调用 A.__set__</span></span><br><span class="line">b.x = <span class="number">456</span></span><br><span class="line">print(b.x)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'\n'</span> + <span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line">print(b.__dict__)  <span class="comment"># 甚至访问b的属性字典，也是调用B.__getattribute__</span></span><br><span class="line"><span class="keyword">del</span> b.x            <span class="comment"># 删除属性，会调用 A.__delete__</span></span><br><span class="line">print(b.x)</span><br><span class="line">print(b.__dict__)</span><br></pre></td></tr></table></figure>
-
-<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>上文提到的__getattribute__跟__get__有什么关系呢？实际上前者是<strong>反射</strong>相关的魔术方法。那什么是反射呢？</p>
-<p>当我们需要用到对象的某个属性（或方法），但是由于某种原因无法确定这个属性是否存在，这时我们需要用一种特殊的机制，去访问和操作这个未知的属性，这种机制就称为<strong>反射（reflection）</strong>。反射就相当于一种自我检查机制。</p>
-<p>反射机制不仅包括，要能在运行时对程序自身信息进行检测，还要求程序能进一步根据这些信息，改变程序状态或结构。总之一句话，反射指的是运行时获取类型定义信息，并且还能修改这些信息。</p>
-<p>与反射相关的四个函数：<code>getattr、setattr、delattr、hasattr</code>。与这些函数相关的四个魔术方法：<code>__getattr__, __setattr__, __delattr__, __getattribute__</code>。见下面表格：</p>
-<table>
-<thead>
-<tr>
-<th align="left">魔术方法</th>
-<th align="left">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>__getattr__</code></td>
-<td align="left">此方法只影响实例。实例属性<strong>默认搜索顺序</strong>：实例自己(的__dict__，后同)、实例的类、类的父类、父类的父类、object祖先类。若从这个顺序中没有找到属性，会抛出<code>AttributeError</code>异常，但类中定义了<code>__getattr__</code>，实例将<strong>捕获异常</strong>，并调用此方法。此方法可用于实例没有找到属性时，拦截异常，做一些操作。</td>
-</tr>
-<tr>
-<td align="left"><code>__setattr__</code></td>
-<td align="left">此方法只影响实例。self.x = x, setattr(self, ‘x’, x) 等涉及到修改实例属性的操作时，如果定义了<code>__setattr__</code>，就会调用此方法。此方法可以拦截实例属性修改操作的默认行为。比如将实例的属性存储在新的字典中，而不是存储在默认字典__dict__。</td>
-</tr>
-<tr>
-<td align="left"><code>__delattr__</code></td>
-<td align="left">此方法只影响实例。del self.x, delattr(self, ‘x’) 等涉及删除实例属性的操作时，如果定义了<code>__delattr__</code>，将会调用此方法。</td>
-</tr>
-<tr>
-<td align="left"><code>__getattribute__</code></td>
-<td align="left">此方法只影响实例。实例的<strong>所有属性</strong>的访问，第一个就调用此方法。此方法能完全控制属性的默认访问顺序。可以在此方法中做一些处理，然后手动抛出<code>AttributeError</code>异常，这将继续调用<code>__getattr__</code>方法(如果有的话)。</td>
-</tr>
-</tbody></table>
-<p><code>__getattr__ VS __getattribute__</code></p>
-<p>两者的执行时间点不同。</p>
-<p>前者会在默认属性搜索顺序中未找到属性时，拦截异常，并执行。</p>
-<p>后者会在第一时间执行，完全拦截默认属性搜索顺序。两者执行顺序如下：</p>
-<p><code>__getattribute__</code> ⟶ <code>实例属性的默认搜索顺序</code> ⟶ <code>__getattr__</code></p>
-<p>举例：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 用kv赋值方式增加属性 不会调用__setattr__</span></span><br><span class="line">        self.__dict__[<span class="string">'a'</span>] = <span class="number">7</span></span><br><span class="line">        self.__dict__[<span class="string">'_d'</span>] = &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如下属性将会存储到新字典_d 会调用__setattr__</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        print(<span class="string">'_in getattr:'</span>, item)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 属性未找到时 才调用__getattr__ 并从新字典返回属性</span></span><br><span class="line">        <span class="keyword">return</span> self._d[item]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">        print(<span class="string">'_in setattr:'</span>, key, value)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 下面写法都会递归 它们都调用__setattr__</span></span><br><span class="line">        <span class="comment"># self.key = value</span></span><br><span class="line">        <span class="comment"># setattr(self, str(key), value)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 用新字典存储属性</span></span><br><span class="line">        <span class="comment"># _d 属性在实例的__dict__，因为是字典操作，所以等号左边的self._d就不会调用__getattr__</span></span><br><span class="line">        self._d[key] = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delattr__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        print(<span class="string">'_in delattr:'</span>, item)</span><br><span class="line">        <span class="keyword">del</span> self._d[item]</span><br><span class="line"></span><br><span class="line">a = A(<span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line">print(a.__dict__)  <span class="comment"># 打印属性字典，不会调用A.__getattr__，除非定义了_getattribute__</span></span><br><span class="line">print(a.x)</span><br><span class="line"><span class="keyword">del</span> a.x</span><br><span class="line">delattr(a, <span class="string">'y'</span>)</span><br><span class="line">a.t = <span class="number">123</span>          <span class="comment"># 这也会调__setattr__</span></span><br><span class="line">print(a.__dict__)</span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    d = &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        print(item, <span class="string">'~~~~~~~'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 推荐写法</span></span><br><span class="line">        <span class="keyword">return</span> object.__getattribute__(self, item)</span><br><span class="line"></span><br><span class="line">a = A(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">print(<span class="string">'#'</span> * <span class="number">30</span>)</span><br><span class="line">print(a.x, a.d)</span><br></pre></td></tr></table></figure>
-
-<p>如果上面提及的魔术方法同时存在，会怎么样呢？详见 <a href="https://izhaojie.com/2021/08/21/python-attribute-search-order.html">Python中的属性搜索顺序</a></p>
-<h2 id="描述器的应用"><a href="#描述器的应用" class="headerlink" title="描述器的应用"></a>描述器的应用</h2><p>用描述器实现ClassMethod、StaticMethod（非数据描述器的应用）：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 非数据描述器 实现StaticMethod</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticMethod</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fn)</span>:</span></span><br><span class="line">        self.fn = fn</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        print(<span class="string">'_in StaticMethod'</span>)</span><br><span class="line">        print(self, instance, owner)</span><br><span class="line">        <span class="keyword">return</span> self.fn</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 非数据描述器 实现ClassMethod</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassMethod</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fn)</span>:</span></span><br><span class="line">        self.fn = fn</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        print(<span class="string">'_in ClassMethod'</span>)</span><br><span class="line">        print(self, instance, owner)</span><br><span class="line">        <span class="keyword">return</span> partial(self.fn, owner)  <span class="comment"># 固定fn的owner参数，就是固定bar函数的所属类A2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A2</span><span class="params">(object)</span>:</span></span><br><span class="line">    AGE = <span class="number">20</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.__age = age</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 装饰器语法</span></span><br><span class="line"><span class="meta">    @StaticMethod  # foo=StaticMethod(foo) 构建非数据描述器对象foo</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(x)</span>:</span></span><br><span class="line">        print(<span class="string">'_in foo'</span>)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 装饰器语法</span></span><br><span class="line"><span class="meta">    @ClassMethod  # bar=ClassMethod(bar) 构建非数据描述器对象bar</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">(cls, x)</span>:</span></span><br><span class="line">        print(<span class="string">'_in bar'</span>)</span><br><span class="line">        <span class="keyword">return</span> cls.AGE, x</span><br><span class="line"></span><br><span class="line">a = A2(<span class="string">'Tom'</span>, <span class="number">19</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里分两步，a.foo读取属性foo，会调用__get__返回A2里定义的foo函数，这个函数其实是描述器的属性fn，</span></span><br><span class="line"><span class="comment"># 然后调函数fn(3)，以此来实现静态方法foo</span></span><br><span class="line">print(a.foo(<span class="number">3</span>))</span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里分两步，a.bar读取属性bar，会调用__get__返回A2里定义的bar函数，这个函数其实是描述器的属性fn，</span></span><br><span class="line"><span class="comment"># 然后调函数fn(4)，cls参数已固定，实现了类方法</span></span><br><span class="line">print(a.bar(<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
-
-<p>用描述器实现Property（数据描述器的应用）：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Property</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fget, fset=None, fdel=None)</span>:</span></span><br><span class="line">        self.fget = fget  <span class="comment"># fget是A的方法age</span></span><br><span class="line">        self.fset = fset</span><br><span class="line">        self.fdel = fdel</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="comment"># fget是self实例的属性，不是Property的方法，所以不会把self自动传递给fget，所以需要instance参数</span></span><br><span class="line">        <span class="keyword">return</span> self.fget(instance)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        self.fset(instance, value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        self.fdel(instance)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setter</span><span class="params">(self, fset)</span>:</span></span><br><span class="line">        self.fset = fset</span><br><span class="line">        <span class="keyword">return</span> self  <span class="comment"># 必须返回Property实例才能构建描述器</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleter</span><span class="params">(self, fdel)</span>:</span></span><br><span class="line">        self.fdel = fdel</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.__age = <span class="number">13</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># age=Property(age)=描述器对象</span></span><br><span class="line">    <span class="comment"># @Property必需在@age.setter与@age.deleter的前面</span></span><br><span class="line">    <span class="comment"># 因为@Property创建了描述器对象add，下面才能使用add对象</span></span><br><span class="line"><span class="meta">    @Property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__age</span><br><span class="line"></span><br><span class="line">    <span class="comment"># age=age.setter(age)=描述器对象</span></span><br><span class="line">    <span class="comment"># 因为age是描述器对象，指向Property的实例，该实例有属性setter</span></span><br><span class="line"><span class="meta">    @age.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        self.__age = value</span><br><span class="line"></span><br><span class="line"><span class="meta">    @age.deleter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">del</span> self.__age</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">print(a.age)  <span class="comment"># 把方法调用变成了属性访问</span></span><br><span class="line">a.age = <span class="number">17</span>    <span class="comment"># 调__set__</span></span><br><span class="line">print(a.age)</span><br><span class="line"><span class="keyword">del</span> a.age     <span class="comment"># 调__delete__</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>描述器</tag>
-        <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python中的元编程</title>
-    <url>/2021/08/23/python-metaprograming.html</url>
-    <content><![CDATA[<h2 id="元编程"><a href="#元编程" class="headerlink" title="元编程"></a>元编程</h2><h3 id="什么是元编程？"><a href="#什么是元编程？" class="headerlink" title="什么是元编程？"></a>什么是元编程？</h3><p>用代码来生成代码，或者说，用程序来生成程序，就叫元编程。Python能通过反射实现元编程。</p>
-<h3 id="什么是元类？"><a href="#什么是元类？" class="headerlink" title="什么是元类？"></a>什么是元类？</h3><p>与元编程相关的一个概念是元类。什么是元类呢，具体到Python，用来创建类的类，就叫<strong>元类</strong>。元类是制造类的工厂。</p>
-<p>在Python中，一个普通类创建出来的东西是类的实例，实例是一个对象。而元类也是一种类，它创建出来的东西是<strong>另一个普通类</strong>，普通类也是一个对象（Python中一切皆对象），然后这个普通类，又可以创建出类的实例。所以说，元类是类的类。它们的构建过程如下图：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/class-and-metaclass1.png" alt=""></p>
-<p><strong>Python中：</strong></p>
-<p>1、所有非object类都继承自object类（包括type）<br>2、所有类的类型都是type（包括type、object、元类）<br>3、type类继承自object（符合第1句）</p>
-<p>虽然type也继承自object，但是我们自己写的类，继承自object与继承自type，会有些不同。</p>
-<h3 id="type元类"><a href="#type元类" class="headerlink" title="type元类"></a>type元类</h3><p>type这个类，不仅可以获取Python中对象的类型，比如type(123)，会告诉你123是int类型（int也是类）。</p>
-<p>type也可以作为元类，来构建其他类。语法是：</p>
-<p><code>type(name, bases, dict) -&gt; a new type</code> 返回一个新的类型</p>
-<a id="more"></a>
-
-<p>其中，name为类的名称，bases为类的继承列表，dict为类的属性字典。比如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.x = <span class="number">123</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用type创建了一个新的类，变量名NewClass，新类的类名是newclass</span></span><br><span class="line">NewClass = type(<span class="string">'newclass'</span>, (object,), &#123;<span class="string">'a'</span>:<span class="number">100</span>, <span class="string">'b'</span>:[], <span class="string">'__init__'</span>:__init__&#125;)</span><br><span class="line">print(NewClass.__dict__)  <span class="comment"># 类的属性里会有a, b, __init__</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 等价于如下class关键字创建的类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">newclass</span><span class="params">(object)</span>:</span></span><br><span class="line">    a = <span class="number">100</span></span><br><span class="line">    b = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.x = <span class="number">456</span></span><br><span class="line">print(newclass.__dict__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不同之处在于，type创建的newclass的__init__函数在全局作用域里，</span></span><br><span class="line"><span class="comment"># class关键字创建的newclass的__init__函数在类内部，即newclass.__init__</span></span><br></pre></td></tr></table></figure>
-
-<p>以上例子没有什么神奇。元类的真正用途，是在元类的构造方法（__new__, __init__）里写我们的代码，从而改变一个类的构建行为。</p>
-<p>上面用type构建了一个新的类，类在程序中是代码，type(…)调用也是代码。所以，<strong>这种用代码来生成代码的过程，就是元编程</strong>。</p>
-<h3 id="构建自己的元类"><a href="#构建自己的元类" class="headerlink" title="构建自己的元类"></a>构建自己的元类</h3><p>如果一个类继承自type（而不是object），它就会成为元类，比如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建元类，ModelMeta是元类，因为继承自type</span></span><br><span class="line"><span class="comment"># 我们把ModelMeta当作元类模版</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ModelMeta</span><span class="params">(type)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 因为继承自type，参数与type元类一样</span></span><br><span class="line">    <span class="comment"># 在__new__中可以改变构建普通类时的行为</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, name, bases, _dict)</span>:</span></span><br><span class="line">        print(cls)</span><br><span class="line">        print(name)</span><br><span class="line">        print(bases)</span><br><span class="line">        print(_dict)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 注意这里和普通类调用super不同: return super().__new__(cls)</span></span><br><span class="line">        <span class="keyword">return</span> super().__new__(cls, name, bases, _dict)</span><br><span class="line">        <span class="comment"># 或者</span></span><br><span class="line">        <span class="comment">#return type.__new__(cls, name, bases, _dict)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1、用metaclass关键字参数创建一个元类</span></span><br><span class="line"><span class="comment"># 这里的写法表示A这个类是被元类ModelMeta构建的，而不是继承</span></span><br><span class="line"><span class="comment"># 这种写法是用元类构建一个类A，所以元类里的__new__实例化方法会执行</span></span><br><span class="line"><span class="comment"># 即元类实例化出来的东西是另一个普通类(而不是一个类的实例)</span></span><br><span class="line"><span class="comment"># A是普通类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(metaclass=ModelMeta)</span>:</span></span><br><span class="line">    x = <span class="number">999</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'A.init'</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"><span class="comment"># 2、继承</span></span><br><span class="line"><span class="comment"># 这里才表示正常的类的继承，</span></span><br><span class="line"><span class="comment"># 但是B的构建路线是：ModelMeta-&gt;构建A-&gt;继承到B</span></span><br><span class="line"><span class="comment"># B是普通类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'B.init'</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"><span class="comment"># 3、元类模版也可以使用调用语法，创建新类，就像type那样</span></span><br><span class="line"><span class="comment"># C是普通类</span></span><br><span class="line">C = ModelMeta(<span class="string">'C'</span>, (), &#123;<span class="string">'x'</span>:<span class="number">999</span>&#125;)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"><span class="comment"># 4、继承元类</span></span><br><span class="line"><span class="comment"># D继承自元类ModelMeta，所以D也是一个元类(这里是继承而不是用元类构建D)</span></span><br><span class="line"><span class="comment"># 因为是继承，元类ModelMeta的__new__不会执行</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(ModelMeta)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="元类的应用"><a href="#元类的应用" class="headerlink" title="元类的应用"></a>元类的应用</h2><p>元编程可用于开发框架。比如ORM（对象关系映射）。将数据库的操作与类（以及实例）的操作联系起来，就可以使用元类。</p>
-<p><strong>映射关系：</strong></p>
-<p>表 ⟶ class<br>行 ⟶ 实例<br>字段 ⟶ 属性（描述器，见 <a href="https://izhaojie.com/2021/08/19/python-descriptor.html">这里</a>）</p>
-<p>一个简单的例子：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 字段类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Field</span>:</span></span><br><span class="line">    <span class="comment"># 字段名fn，类型tp，是否为主键pk，是否空null</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fn=None, tp=None, pk=False, null=True)</span>:</span></span><br><span class="line">        self.fn = fn</span><br><span class="line">        self.tp = tp</span><br><span class="line">        self.pk = pk</span><br><span class="line">        self.nl = null</span><br><span class="line">        self.value = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.tp:</span><br><span class="line">            self.value = self.tp(value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        <span class="keyword">del</span> self.value</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 模版元类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ModelMeta</span><span class="params">(type)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, name, bases, attrs)</span>:</span></span><br><span class="line">        <span class="comment">#print(cls)</span></span><br><span class="line">        <span class="comment">#print(name)</span></span><br><span class="line">        <span class="comment">#print(bases)</span></span><br><span class="line">        <span class="comment">#print(attrs)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 添加表名</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'__tblname__'</span> <span class="keyword">not</span> <span class="keyword">in</span> attrs.keys():</span><br><span class="line">            attrs[<span class="string">'__tblname__'</span>] = name</span><br><span class="line"></span><br><span class="line">        primarykeys = []</span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> attrs.items():</span><br><span class="line">            <span class="keyword">if</span> isinstance(v, Field):</span><br><span class="line">                <span class="keyword">if</span> v.fn <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                    v.fn = k  <span class="comment"># 属性名作为字段名</span></span><br><span class="line">                <span class="keyword">if</span> v.pk:</span><br><span class="line">                    primarykeys.append(v)</span><br><span class="line">                    v.nl = <span class="literal">False</span>  <span class="comment"># 有主键自动不为空</span></span><br><span class="line"></span><br><span class="line">        attrs[<span class="string">'__primarykeys__'</span>] = primarykeys</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> type.__new__(cls, name, bases, attrs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 基类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span><span class="params">(metaclass=ModelMeta)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():</span><br><span class="line">            <span class="keyword">if</span> k <span class="keyword">not</span> <span class="keyword">in</span> self.__class__.__dict__:</span><br><span class="line">                <span class="keyword">raise</span> AttributeError(<span class="string">f"'<span class="subst">&#123;k&#125;</span>' is not a field name"</span>)</span><br><span class="line">            setattr(self, k, v)  <span class="comment"># 将调用描述器的__set__</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设计学生表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Base)</span>:</span></span><br><span class="line">    sid = Field(tp=int, pk=<span class="literal">True</span>)  <span class="comment"># 描述器</span></span><br><span class="line">    name = Field(<span class="string">'username'</span>, tp=str, null=<span class="literal">False</span>)</span><br><span class="line">    age = Field(tp=int)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"&lt;<span class="subst">&#123;self.__class__.__name__&#125;</span> sid=<span class="subst">&#123;self.sid&#125;</span> name=<span class="subst">&#123;self.name&#125;</span> age=<span class="subst">&#123;self.age&#125;</span>&gt;"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># s = Student(sid=1, gender=112)</span></span><br><span class="line">s = Student(sid=<span class="number">1</span>)</span><br><span class="line">print(s)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line">s.name = <span class="number">123</span></span><br><span class="line">s.age=<span class="number">20</span></span><br><span class="line">print(s)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line">print(s.name, s.age, type(s.name))</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>元编程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>设置 Ubuntu 18.04 夜灯的色温</title>
-    <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
-    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
-<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-01-58%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
-
-<p>但是，没有调整夜灯色温的功能。</p>
-<a id="more"></a>
-
-<h2 id="设置夜灯色温"><a href="#设置夜灯色温" class="headerlink" title="设置夜灯色温"></a>设置夜灯色温</h2><ol>
-<li>安装软件</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>打开软件 <code>dconf-editor</code>：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dconf-editor</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>鼠标点击找到如下路径：</li>
-</ol>
-<p><code>/org/gnome/settings-daemon/plugins/color/night-light-temperature</code></p>
-<ol start="4">
-<li>设置自定义值：</li>
-</ol>
-<p>关闭 <code>使用默认值</code>，然后输入一个 <code>自定义值</code>：</p>
-<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-11-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
-
-<h2 id="色温值参考"><a href="#色温值参考" class="headerlink" title="色温值参考"></a>色温值参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1000  —  最低值（最暖色调/效果最红）</span><br><span class="line">4000  —  默认值</span><br><span class="line">5500  —  适中值</span><br><span class="line">6500  —  关闭夜灯时的色温值</span><br><span class="line">10000 —  最高值（最冷色调/效果最蓝）</span><br></pre></td></tr></table></figure>
-
-<p>参考：</p>
-<blockquote>
-<p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -1471,6 +1435,103 @@
       </tags>
   </entry>
   <entry>
+    <title>Python中的元编程</title>
+    <url>/2021/08/23/python-metaprograming.html</url>
+    <content><![CDATA[<h2 id="元编程"><a href="#元编程" class="headerlink" title="元编程"></a>元编程</h2><h3 id="什么是元编程？"><a href="#什么是元编程？" class="headerlink" title="什么是元编程？"></a>什么是元编程？</h3><p>用代码来生成代码，或者说，用程序来生成程序，就叫元编程。Python能通过反射实现元编程。</p>
+<h3 id="什么是元类？"><a href="#什么是元类？" class="headerlink" title="什么是元类？"></a>什么是元类？</h3><p>与元编程相关的一个概念是元类。什么是元类呢，具体到Python，用来创建类的类，就叫<strong>元类</strong>。元类是制造类的工厂。</p>
+<p>在Python中，一个普通类创建出来的东西是类的实例，实例是一个对象。而元类也是一种类，它创建出来的东西是<strong>另一个普通类</strong>，普通类也是一个对象（Python中一切皆对象），然后这个普通类，又可以创建出类的实例。所以说，元类是类的类。它们的构建过程如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/class-and-metaclass1.png" alt=""></p>
+<p><strong>Python中：</strong></p>
+<p>1、所有非object类都继承自object类（包括type）<br>2、所有类的类型都是type（包括type、object、元类）<br>3、type类继承自object（符合第1句）</p>
+<p>虽然type也继承自object，但是我们自己写的类，继承自object与继承自type，会有些不同。</p>
+<h3 id="type元类"><a href="#type元类" class="headerlink" title="type元类"></a>type元类</h3><p>type这个类，不仅可以获取Python中对象的类型，比如type(123)，会告诉你123是int类型（int也是类）。</p>
+<p>type也可以作为元类，来构建其他类。语法是：</p>
+<p><code>type(name, bases, dict) -&gt; a new type</code> 返回一个新的类型</p>
+<a id="more"></a>
+
+<p>其中，name为类的名称，bases为类的继承列表，dict为类的属性字典。比如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.x = <span class="number">123</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用type创建了一个新的类，变量名NewClass，新类的类名是newclass</span></span><br><span class="line">NewClass = type(<span class="string">'newclass'</span>, (object,), &#123;<span class="string">'a'</span>:<span class="number">100</span>, <span class="string">'b'</span>:[], <span class="string">'__init__'</span>:__init__&#125;)</span><br><span class="line">print(NewClass.__dict__)  <span class="comment"># 类的属性里会有a, b, __init__</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 等价于如下class关键字创建的类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">newclass</span><span class="params">(object)</span>:</span></span><br><span class="line">    a = <span class="number">100</span></span><br><span class="line">    b = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.x = <span class="number">456</span></span><br><span class="line">print(newclass.__dict__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不同之处在于，type创建的newclass的__init__函数在全局作用域里，</span></span><br><span class="line"><span class="comment"># class关键字创建的newclass的__init__函数在类内部，即newclass.__init__</span></span><br></pre></td></tr></table></figure>
+
+<p>以上例子没有什么神奇。元类的真正用途，是在元类的构造方法（__new__, __init__）里写我们的代码，从而改变一个类的构建行为。</p>
+<p>上面用type构建了一个新的类，类在程序中是代码，type(…)调用也是代码。所以，<strong>这种用代码来生成代码的过程，就是元编程</strong>。</p>
+<h3 id="构建自己的元类"><a href="#构建自己的元类" class="headerlink" title="构建自己的元类"></a>构建自己的元类</h3><p>如果一个类继承自type（而不是object），它就会成为元类，比如：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建元类，ModelMeta是元类，因为继承自type</span></span><br><span class="line"><span class="comment"># 我们把ModelMeta当作元类模版</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ModelMeta</span><span class="params">(type)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 因为继承自type，参数与type元类一样</span></span><br><span class="line">    <span class="comment"># 在__new__中可以改变构建普通类时的行为</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, name, bases, _dict)</span>:</span></span><br><span class="line">        print(cls)</span><br><span class="line">        print(name)</span><br><span class="line">        print(bases)</span><br><span class="line">        print(_dict)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 注意这里和普通类调用super不同: return super().__new__(cls)</span></span><br><span class="line">        <span class="keyword">return</span> super().__new__(cls, name, bases, _dict)</span><br><span class="line">        <span class="comment"># 或者</span></span><br><span class="line">        <span class="comment">#return type.__new__(cls, name, bases, _dict)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1、用metaclass关键字参数创建一个元类</span></span><br><span class="line"><span class="comment"># 这里的写法表示A这个类是被元类ModelMeta构建的，而不是继承</span></span><br><span class="line"><span class="comment"># 这种写法是用元类构建一个类A，所以元类里的__new__实例化方法会执行</span></span><br><span class="line"><span class="comment"># 即元类实例化出来的东西是另一个普通类(而不是一个类的实例)</span></span><br><span class="line"><span class="comment"># A是普通类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(metaclass=ModelMeta)</span>:</span></span><br><span class="line">    x = <span class="number">999</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'A.init'</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"><span class="comment"># 2、继承</span></span><br><span class="line"><span class="comment"># 这里才表示正常的类的继承，</span></span><br><span class="line"><span class="comment"># 但是B的构建路线是：ModelMeta-&gt;构建A-&gt;继承到B</span></span><br><span class="line"><span class="comment"># B是普通类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'B.init'</span>)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"><span class="comment"># 3、元类模版也可以使用调用语法，创建新类，就像type那样</span></span><br><span class="line"><span class="comment"># C是普通类</span></span><br><span class="line">C = ModelMeta(<span class="string">'C'</span>, (), &#123;<span class="string">'x'</span>:<span class="number">999</span>&#125;)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line"><span class="comment"># 4、继承元类</span></span><br><span class="line"><span class="comment"># D继承自元类ModelMeta，所以D也是一个元类(这里是继承而不是用元类构建D)</span></span><br><span class="line"><span class="comment"># 因为是继承，元类ModelMeta的__new__不会执行</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(ModelMeta)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="元类的应用"><a href="#元类的应用" class="headerlink" title="元类的应用"></a>元类的应用</h2><p>元编程可用于开发框架。比如ORM（对象关系映射）。将数据库的操作与类（以及实例）的操作联系起来，就可以使用元类。</p>
+<p><strong>映射关系：</strong></p>
+<p>表 ⟶ class<br>行 ⟶ 实例<br>字段 ⟶ 属性（描述器，见 <a href="https://izhaojie.com/2021/08/19/python-descriptor.html">这里</a>）</p>
+<p>一个简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 字段类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Field</span>:</span></span><br><span class="line">    <span class="comment"># 字段名fn，类型tp，是否为主键pk，是否空null</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fn=None, tp=None, pk=False, null=True)</span>:</span></span><br><span class="line">        self.fn = fn</span><br><span class="line">        self.tp = tp</span><br><span class="line">        self.pk = pk</span><br><span class="line">        self.nl = null</span><br><span class="line">        self.value = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.tp:</span><br><span class="line">            self.value = self.tp(value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        <span class="keyword">del</span> self.value</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 模版元类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ModelMeta</span><span class="params">(type)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, name, bases, attrs)</span>:</span></span><br><span class="line">        <span class="comment">#print(cls)</span></span><br><span class="line">        <span class="comment">#print(name)</span></span><br><span class="line">        <span class="comment">#print(bases)</span></span><br><span class="line">        <span class="comment">#print(attrs)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 添加表名</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'__tblname__'</span> <span class="keyword">not</span> <span class="keyword">in</span> attrs.keys():</span><br><span class="line">            attrs[<span class="string">'__tblname__'</span>] = name</span><br><span class="line"></span><br><span class="line">        primarykeys = []</span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> attrs.items():</span><br><span class="line">            <span class="keyword">if</span> isinstance(v, Field):</span><br><span class="line">                <span class="keyword">if</span> v.fn <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                    v.fn = k  <span class="comment"># 属性名作为字段名</span></span><br><span class="line">                <span class="keyword">if</span> v.pk:</span><br><span class="line">                    primarykeys.append(v)</span><br><span class="line">                    v.nl = <span class="literal">False</span>  <span class="comment"># 有主键自动不为空</span></span><br><span class="line"></span><br><span class="line">        attrs[<span class="string">'__primarykeys__'</span>] = primarykeys</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> type.__new__(cls, name, bases, attrs)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 基类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span><span class="params">(metaclass=ModelMeta)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> k,v <span class="keyword">in</span> kwargs.items():</span><br><span class="line">            <span class="keyword">if</span> k <span class="keyword">not</span> <span class="keyword">in</span> self.__class__.__dict__:</span><br><span class="line">                <span class="keyword">raise</span> AttributeError(<span class="string">f"'<span class="subst">&#123;k&#125;</span>' is not a field name"</span>)</span><br><span class="line">            setattr(self, k, v)  <span class="comment"># 将调用描述器的__set__</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设计学生表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Base)</span>:</span></span><br><span class="line">    sid = Field(tp=int, pk=<span class="literal">True</span>)  <span class="comment"># 描述器</span></span><br><span class="line">    name = Field(<span class="string">'username'</span>, tp=str, null=<span class="literal">False</span>)</span><br><span class="line">    age = Field(tp=int)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">f"&lt;<span class="subst">&#123;self.__class__.__name__&#125;</span> sid=<span class="subst">&#123;self.sid&#125;</span> name=<span class="subst">&#123;self.name&#125;</span> age=<span class="subst">&#123;self.age&#125;</span>&gt;"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># s = Student(sid=1, gender=112)</span></span><br><span class="line">s = Student(sid=<span class="number">1</span>)</span><br><span class="line">print(s)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line">s.name = <span class="number">123</span></span><br><span class="line">s.age=<span class="number">20</span></span><br><span class="line">print(s)</span><br><span class="line"></span><br><span class="line">print(<span class="string">'='</span> * <span class="number">30</span>)</span><br><span class="line">print(s.name, s.age, type(s.name))</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>元编程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设置 Ubuntu 18.04 夜灯的色温</title>
+    <url>/2018/12/24/set-ubuntu-night-light-temperature.html</url>
+    <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在 Ubuntu 18.04 里，系统设置，设备，显示 里可以开启夜灯：</p>
+<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-01-58%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
+
+<p>但是，没有调整夜灯色温的功能。</p>
+<a id="more"></a>
+
+<h2 id="设置夜灯色温"><a href="#设置夜灯色温" class="headerlink" title="设置夜灯色温"></a>设置夜灯色温</h2><ol>
+<li>安装软件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt-get install dconf-editor</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开软件 <code>dconf-editor</code>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dconf-editor</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>鼠标点击找到如下路径：</li>
+</ol>
+<p><code>/org/gnome/settings-daemon/plugins/color/night-light-temperature</code></p>
+<ol start="4">
+<li>设置自定义值：</li>
+</ol>
+<p>关闭 <code>使用默认值</code>，然后输入一个 <code>自定义值</code>：</p>
+<img src="/2018/12/24/set-ubuntu-night-light-temperature/2018-12-24%2022-11-12%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png" class="">
+
+<h2 id="色温值参考"><a href="#色温值参考" class="headerlink" title="色温值参考"></a>色温值参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1000  —  最低值（最暖色调/效果最红）</span><br><span class="line">4000  —  默认值</span><br><span class="line">5500  —  适中值</span><br><span class="line">6500  —  关闭夜灯时的色温值</span><br><span class="line">10000 —  最高值（最冷色调/效果最蓝）</span><br></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<blockquote>
+<p><a href="https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light" target="_blank" rel="noopener">https://www.omgubuntu.co.uk/2017/07/adjust-color-temperature-gnome-night-light</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora+Github+jsDelivr+PicGo图床测试</title>
+    <url>/2020/12/13/test-github-jsdelivr-pichost.html</url>
+    <content><![CDATA[<p>Typora：MarkDown编辑器</p>
+<p>PicGo：图床图片上传插件</p>
+<p>Github：图床</p>
+<p>jsDelivr：CDN</p>
+<h3 id="图片测试："><a href="#图片测试：" class="headerlink" title="图片测试："></a>图片测试：</h3><p>复制粘贴：</p>
+<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_funny.jpeg" alt="test_pichost_funny" style="zoom:50%;" />
+
+<a id="more"></a>
+
+<p>插入(ctrl+cmd+I)：</p>
+<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_funny2.png" alt="test_pichost_funny2" style="zoom:50%;" />
+
+<p>拖拽：</p>
+<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_cat.png" alt="test_pichost_cat" style="zoom:25%;" />
+
+<p>完毕。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Bash 的输入输出重定向详解</title>
     <url>/2019/01/02/stdin-stdout-and-redirection.html</url>
     <content><![CDATA[<p>Linux 中每个进程维护了一个文件描述符表，如 shell 终端，默认有三个文件已打开，他们的文件描述符和文件对应关系为：</p>
@@ -1568,27 +1629,6 @@
       <tags>
         <tag>Bash</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Typora+Github+jsDelivr+PicGo图床测试</title>
-    <url>/2020/12/13/test-github-jsdelivr-pichost.html</url>
-    <content><![CDATA[<p>Typora：MarkDown编辑器</p>
-<p>PicGo：图床图片上传插件</p>
-<p>Github：图床</p>
-<p>jsDelivr：CDN</p>
-<h3 id="图片测试："><a href="#图片测试：" class="headerlink" title="图片测试："></a>图片测试：</h3><p>复制粘贴：</p>
-<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_funny.jpeg" alt="test_pichost_funny" style="zoom:50%;" />
-
-<a id="more"></a>
-
-<p>插入(ctrl+cmd+I)：</p>
-<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_funny2.png" alt="test_pichost_funny2" style="zoom:50%;" />
-
-<p>拖拽：</p>
-<img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/test_pichost_cat.png" alt="test_pichost_cat" style="zoom:25%;" />
-
-<p>完毕。</p>
-]]></content>
   </entry>
   <entry>
     <title>Ubuntu 18.04 禁用 nouveau 安装 NVIDIA 显卡驱动</title>
@@ -1901,43 +1941,58 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker Compose 运行 etcd3</title>
-    <url>/2023/09/13/etcd-docker-compose.html</url>
-    <content><![CDATA[<p>本文以MacOS docker desktop为例。</p>
-<h2 id="下载安装MacOS版docker-desktop"><a href="#下载安装MacOS版docker-desktop" class="headerlink" title="下载安装MacOS版docker desktop"></a>下载安装MacOS版docker desktop</h2><ol>
-<li><p><a href="https://desktop.docker.com/mac/main/amd64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=dd-smartbutton&utm_location=module" target="_blank" rel="noopener">下载地址</a></p>
-</li>
-<li><p>双击安装 <code>Docker.dmg</code></p>
-</li>
-</ol>
-<h2 id="创建etcd3目录"><a href="#创建etcd3目录" class="headerlink" title="创建etcd3目录"></a>创建etcd3目录</h2><ol>
-<li><p>创建一个目录用于运行docker etcd3，如：<code>/path/to/etcd3</code></p>
-</li>
-<li><p>在如上目录内创建 <code>docker-compose.yml</code> 文件，内容如下：</p>
-</li>
-</ol>
-<a id="more"></a>
+    <title>安装OpenVpn的Ubuntu22.04服务端和Windows10客户端</title>
+    <url>/2024/06/13/install-ubuntu22-openvpn-server-and-win10-client.html</url>
+    <content><![CDATA[<p>本文将在Ubuntu22.04服务器安装OpenVpn服务端，并在Windows10安装OpenVpn客户端。</p>
+<h2 id="安装OpenVpn和Easy-RSA"><a href="#安装OpenVpn和Easy-RSA" class="headerlink" title="安装OpenVpn和Easy-RSA"></a>安装OpenVpn和Easy-RSA</h2><p>Easy-RSA主要用来生成CA证书，服务端证书和key，客户端证书和key。先登录Ubuntu服务器，然后用root身份执行下文的命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install openvpn easy-rsa</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装完可以查看下openvpn版本</span></span><br><span class="line">openvpn --version</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">etcd:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">quay.io/coreos/etcd:latest</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2379</span><span class="string">:2379</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">2380</span><span class="string">:2380</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcdnet</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">replicas:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">restart_policy:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">on-failure</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">etcd-data:/etcd-data</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_ADVERTISE_PEER_URLS=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ALLOW_NONE_AUTHENTICATION=yes"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_INITIAL_CLUSTER=node1=http://0.0.0.0:2380"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_NAME=node1"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"ETCD_DATA_DIR=./data"</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">etcdnet:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">etcdnet</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">etcd-data:</span></span><br></pre></td></tr></table></figure>
+<h2 id="制作所需的证书"><a href="#制作所需的证书" class="headerlink" title="制作所需的证书"></a>制作所需的证书</h2><p>执行如下命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/share/easy-rsa</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝一份vars文件</span></span><br><span class="line">cp vars.example vars</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑vars文件</span></span><br><span class="line">vim vars</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在最后一行添加如下内容，这个 KEY_NAME 下文会用到，请记住</span></span><br><span class="line"><span class="built_in">export</span> KEY_NAME=<span class="string">"myserver"</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="运行docker-etcd3"><a href="#运行docker-etcd3" class="headerlink" title="运行docker etcd3"></a>运行docker etcd3</h2><ol>
-<li>进入上文创建的etcd3目录：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/etcd3  <span class="comment"># 该目录内已经创建好文件 docker-compose.yml</span></span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+<p>开始制作证书</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 执行完这个命令，会在/usr/share/easy-rsa下多出个pki目录</span></span><br><span class="line">./easyrsa init-pki</span><br><span class="line">chmod 777 pki</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建ca证书，此时在pki目录下会多出 ca.crt</span></span><br><span class="line">./easyrsa build-ca nopass</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建服务端证书，命令中的myserver要换成前面vars文件中设置的KEY_NAME</span></span><br><span class="line"><span class="comment"># 此时，pki下的issued和private目录会多出myserver.crt、myserver.key 等文件</span></span><br><span class="line">./easyrsa build-server-full myserver nopass</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建客户端证书</span></span><br><span class="line"><span class="comment"># 再次查看，pki下的issued和private目录会多出myclient.crt、myclient.key 等文件</span></span><br><span class="line">./easyrsa build-client-full myclient nopass</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建DH密钥</span></span><br><span class="line">./easyrsa gen-dh</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>docker desktop App上会看到容器已经运行（也可以用命令行查看）：</li>
-</ol>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/macos-docker-desktop-etcd3-container.png" alt=""></p>
-<h2 id="测试etcd3是否运行正常"><a href="#测试etcd3是否运行正常" class="headerlink" title="测试etcd3是否运行正常"></a>测试etcd3是否运行正常</h2><p>执行如下命令，输出如下版本信息表示ok：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/get-etcd3-version.png" alt=""></p>
+<h2 id="配置OpenVpn服务端"><a href="#配置OpenVpn服务端" class="headerlink" title="配置OpenVpn服务端"></a>配置OpenVpn服务端</h2><p>拷贝配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf /etc/openvpn/</span><br></pre></td></tr></table></figure>
+
+<p>拷贝刚才创建的CA证书，服务端证书和key(私钥)，客户端证书和key，以及创建tls的key</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/openvpn/</span><br><span class="line">cp /usr/share/easy-rsa/pki/ca.crt .</span><br><span class="line">cp /usr/share/easy-rsa/pki/dh.pem .</span><br><span class="line">cp /usr/share/easy-rsa/pki/issued/myserver.crt server/</span><br><span class="line">cp /usr/share/easy-rsa/pki/private/myserver.key server/</span><br><span class="line">cp /usr/share/easy-rsa/pki/issued/myclient.crt client/</span><br><span class="line">cp /usr/share/easy-rsa/pki/private/myclient.key client/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成tls需要的key</span></span><br><span class="line">openvpn --genkey tls-auth ta.key</span><br></pre></td></tr></table></figure>
+
+<p>编辑服务端配置文件server.conf，改成如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vpn服务端口</span></span><br><span class="line">port 1194</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用tcp协议</span></span><br><span class="line">proto tcp</span><br><span class="line"></span><br><span class="line"><span class="comment"># vpn使用的虚拟网卡设备</span></span><br><span class="line">dev tun</span><br><span class="line"></span><br><span class="line"><span class="comment"># CA以及证书和私钥</span></span><br><span class="line">ca /etc/openvpn/ca.crt</span><br><span class="line">cert /etc/openvpn/server/myserver.crt</span><br><span class="line">key /etc/openvpn/server/myserver.key  <span class="comment"># This file should be kept secret</span></span><br><span class="line">dh /etc/openvpn/dh.pem</span><br><span class="line"></span><br><span class="line"><span class="comment"># vpn服务端要给客户端分配的IP地址（以及网段）</span></span><br><span class="line">server 10.8.100.0 255.255.255.0</span><br><span class="line"></span><br><span class="line">ifconfig-pool-persist /var/<span class="built_in">log</span>/openvpn/ipp.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># vpn服务端要帮客户端转发的网段（即192.168.0.0/255.255.255.224这些地址，才会经过vpn）</span></span><br><span class="line">push <span class="string">"route 192.168.0.0 255.255.255.224"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 让客户端使用下面的dns服务器</span></span><br><span class="line">push <span class="string">"dhcp-option DNS 114.114.114.114"</span></span><br><span class="line">push <span class="string">"dhcp-option DNS 8.8.8.8"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 客户端之间可以互相访问</span></span><br><span class="line">client-to-client</span><br><span class="line"></span><br><span class="line"><span class="comment"># 支持多个客户端连接服务端</span></span><br><span class="line">duplicate-cn</span><br><span class="line">keepalive 10 120</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启tls安全，上文的ta.key就用在这里</span></span><br><span class="line">tls-auth ta.key 0 <span class="comment"># This file is secret</span></span><br><span class="line">cipher AES-256-CBC</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用lzo压缩</span></span><br><span class="line">comp-lzo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行最多30个客户端连接</span></span><br><span class="line">max-clients 30</span><br><span class="line"></span><br><span class="line"><span class="comment"># 持久key和tun设备</span></span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line"></span><br><span class="line">status /var/<span class="built_in">log</span>/openvpn/openvpn-status.log</span><br><span class="line"><span class="built_in">log</span>    /var/<span class="built_in">log</span>/openvpn/openvpn.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 记录的日期等级为3</span></span><br><span class="line">verb 3</span><br></pre></td></tr></table></figure>
+
+<p>启动vpn服务端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl start openvpn@server</span><br><span class="line">systemctl status openvpn@server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 感兴趣的话，可以查看日志</span></span><br><span class="line">tail -f /var/<span class="built_in">log</span>/openvpn/openvpn.log</span><br></pre></td></tr></table></figure>
+
+<p>如果你的Ubuntu系统是云服务器，通常管理后台可以设置防火墙，建议在Ubuntu关闭ufw：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 停止ufw</span></span><br><span class="line">sudo ufw <span class="built_in">disable</span></span><br><span class="line"><span class="comment"># 禁用ufw</span></span><br><span class="line">sudo systemctl stop ufw</span><br><span class="line">sudo systemctl <span class="built_in">disable</span> ufw</span><br></pre></td></tr></table></figure>
+<h2 id="设置IP转发"><a href="#设置IP转发" class="headerlink" title="设置IP转发"></a>设置IP转发</h2><p>如果你搭建的VPN服务器所在的内网还有其他云服务器，你想访问其他云服务器就应该设置ip转发。就如上文描述的，我们在VPN服务端配置文件server.conf中配置了 <code>push &quot;route 192.168.0.0 255.255.255.224&quot;</code>。</p>
+<p>打开内核ip转发：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 编辑文件/etc/sysctl.conf</span></span><br><span class="line">vim /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开如下一行，改为：</span></span><br><span class="line">net.ipv4.ip_forward = 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然修改永久生效</span></span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
+
+<p>设置防火墙（iptables ）转发规则：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 设置 NAT 规则，将来自 tun0 的流量变成来自 ens3</span></span><br><span class="line">iptables -t nat -A POSTROUTING -o ens3 -j MASQUERADE</span><br><span class="line"></span><br><span class="line"><span class="comment"># 允许转发来自 tun0 的流量，目标是 192.168.0.0/27 网段</span></span><br><span class="line">iptables -A FORWARD -i tun0 -o ens3 -d 192.168.0.0/27 -j ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 允许返回的流量从 ens3 到 tun0</span></span><br><span class="line">iptables -A FORWARD -i ens3 -o tun0 -m state --state RELATED,ESTABLISHED -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<p>重启下vpn服务端：<code>systemctl start openvpn@server</code>。到这里，服务端安装完成。</p>
+<h2 id="安装Windows客户端"><a href="#安装Windows客户端" class="headerlink" title="安装Windows客户端"></a>安装Windows客户端</h2><p>在openvpn官网下载客户端：<a href="https://openvpn.net/client/client-connect-vpn-for-windows/" target="_blank" rel="noopener">这里</a>。下载好以后点击运行，进行安装。</p>
+<p>vpn客户端配置文件路径在：<code>C:\Program Files\OpenVPN\config</code> 目录下。</p>
+<p>把上文在Ubuntu创建的4个文件下载到Windows系统的 C:\Program Files\OpenVPN\config 目录下（可以用scp命令或FileZilla这样的工具来下文件，如果你安装了32位的openvpn，应该是目录 C:\Program Files (x86)\OpenVPN\config）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Ubuntu上的这4个文件，下载放到Windows的C:\Program Files\OpenVPN\config目录内</span></span><br><span class="line">/etc/openvpn/ca.crt</span><br><span class="line">/etc/openvpn/ta.key</span><br><span class="line">/etc/openvpn/client/myclient.crt</span><br><span class="line">/etc/openvpn/client/myclient.key</span><br></pre></td></tr></table></figure>
+<h2 id="创建客户端配置文件"><a href="#创建客户端配置文件" class="headerlink" title="创建客户端配置文件"></a>创建客户端配置文件</h2><p>进入 <code>C:\Program Files\OpenVPN\config</code>  目录，在里面创建一个ovpn配置文件，比如叫 test-001.ovpn，内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">client</span><br><span class="line">dev tun</span><br><span class="line">proto tcp</span><br><span class="line">remote 你的公网IP地址 1194</span><br><span class="line">resolv-retry infinite</span><br><span class="line">nobind</span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line">remote-cert-tls server</span><br><span class="line">verb 3</span><br><span class="line">ca ca.crt</span><br><span class="line">cert myclient.crt</span><br><span class="line">key myclient.key</span><br><span class="line">tls-auth ta.key 1</span><br><span class="line">comp-lzo</span><br><span class="line">route 192.168.0.0 255.255.255.224</span><br></pre></td></tr></table></figure>
+
+<p>上面的 <code>route 192.168.0.0 255.255.255.224</code> 也是告诉服务端，客户端访问这些 192.168.0.0/255.255.255.224 地址时，才经过VPN。</p>
+<p>保存配置文件，然后启动 openvpn gui 客户端。通常，客户端会在Windows托盘停留，右键选择 test-001.ovpn 配置，点连接即可。连接成功显示如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/11.png" alt=""></p>
+<p><strong>如果你发现你的vpn客户端不是这样的界面，请下载 openvpn-install-2.4.8-I601-Win10.exe 这个版本的vpn（I601-Win10不重要，主要是版本最好是2.4.8），卸载原来的版本，并重新安装就行。</strong></p>
+<p>然后，在CMD中ping VPN服务端的地址（下面10.8.100.1是vpn分配的网关地址，vpn客户端分配到的是10.8.100.6，192.168.0.28是vpn服务器内网ip，192.168.0.4是vpn服务所在内网的另一条机器的内网ip）：<br><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/22.png" alt=""><br>至此，vpn客户端和服务端全部安装完成。</p>
 ]]></content>
       <categories>
-        <category>docker</category>
+        <category>vpn</category>
       </categories>
       <tags>
-        <tag>docker</tag>
-        <tag>etcd</tag>
+        <tag>vpn</tag>
       </tags>
   </entry>
 </search>

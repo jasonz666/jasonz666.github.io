@@ -193,6 +193,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2021/06/21/assembly-course-design2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/cropped-avatar1-180x180.png">
+      <meta itemprop="name" content="Jason">
+      <meta itemprop="description" content="小杰玩编程，有趣又有料">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小杰玩编程">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/21/assembly-course-design2.html" class="post-title-link" itemprop="url">汇编：史上最全注释，王爽汇编语言，课程设计2源码</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-21 21:27:04" itemprop="dateCreated datePublished" datetime="2021-06-21T21:27:04+08:00">2021-06-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">汇编实战</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>课程设计2</p>
+<p>题目见 汇编语言 第四版 作者王爽 p312</p>
+<p>这篇文章是《汇编语言 第四版》的完结篇。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>1、vm虚拟机中安装win98se，以下称为<code>win98</code>。</p>
+<p>2、成功安装系统后，虚拟机添加一个新软盘（需要创建软盘映像.img文件）。</p>
+<p>3、启动win98系统，将下文源码编译，然后执行程序（需要masm汇编器）。</p>
+<p>4、关闭win98系统，在虚拟机中，设置<code>软盘</code>为启动盘。</p>
+<p>5、启动虚拟机，我们自己写的程序就能执行了。</p>
+<p>如果用两个硬盘，即添加新硬盘代替软盘，然后设新硬盘为启动盘后，启动失败（暂不管此问题）！</p>
+<h2 id="程序结构"><a href="#程序结构" class="headerlink" title="程序结构"></a>程序结构</h2><p>软盘：第1扇区存放我们的引导程序，第2-3扇区存放主程序，实现4个功能。</p>
+<p>硬盘1：是win98系统盘，第1扇区有mbr引导程序。</p>
+<p>开机后，软盘为启动盘，加载我们自己的引导程序，执行引导程序，然后加载2-3扇区的主程序。</p>
+<h2 id="内存结构"><a href="#内存结构" class="headerlink" title="内存结构"></a>内存结构</h2><p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png" alt=""></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/21/assembly-course-design2.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2021/06/16/assembly-experiment16.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1005,97 +1105,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://izhaojie.com/2021/05/28/assembly-experiment9.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/cropped-avatar1-180x180.png">
-      <meta itemprop="name" content="Jason">
-      <meta itemprop="description" content="小杰玩编程，有趣又有料">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小杰玩编程">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/28/assembly-experiment9.html" class="post-title-link" itemprop="url">汇编：实验9：在屏幕中间显示彩色字符串</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-28 12:39:01" itemprop="dateCreated datePublished" datetime="2021-05-28T12:39:01+08:00">2021-05-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">汇编实战</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>在屏幕中间分别显示绿色、绿底红色、白底蓝色的字符串 <code>welcome to masm!</code>。</p>
-<p>这里的屏幕指的是，显卡文本模式下的屏幕，屏幕尺寸 80x25，可以显示彩色、高亮、闪烁的ASCII字符。</p>
-<p>文本模式下一个字符由2个字节组成，即 ASCII+属性 = 2字节。属性字节的格式：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/jasonz666/imgHost/blogPic/1-%E5%B1%9E%E6%80%A7%E5%AD%97%E8%8A%82.png" alt="属性字节格式"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/28/assembly-experiment9.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1167,20 +1176,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1209,7 +1218,7 @@
 <div class="copyright">
   
   &copy; 2017 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -1218,12 +1227,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">111k</span>
+    <span title="站点总字数">115k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:41</span>
+    <span title="站点阅读时长">1:45</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
