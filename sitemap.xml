@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://izhaojie.com/2024/06/22/openvpn-server-and-client-access-each-other.html</loc>
+    
+    <lastmod>2024-06-22</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://izhaojie.com/2024/06/13/install-ubuntu22-openvpn-server-and-win10-client.html</loc>
     
     <lastmod>2024-06-21</lastmod>
@@ -284,7 +291,7 @@
 
   <url>
     <loc>https://izhaojie.com/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -292,203 +299,203 @@
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/docker/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/etcd/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Shell/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Bash/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/CS/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Python/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%B5%AE%E7%82%B9%E6%95%B0/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Github/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Gpg/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Encryption/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/SSH/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/JavaScript/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/ES6-ES7/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/MySQL/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/MRO/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E5%B1%9E%E6%80%A7/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E6%8F%8F%E8%BF%B0%E5%99%A8/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E5%8F%8D%E5%B0%84/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E5%81%8F%E5%87%BD%E6%95%B0/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E5%85%83%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/Ubuntu/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/ChatGPT/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/OpenAI/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/UEFI/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/tags/vpn/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -497,56 +504,56 @@
   
   <url>
     <loc>https://izhaojie.com/categories/%E6%B1%87%E7%BC%96%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/docker/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/Python/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/JavaScript/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://izhaojie.com/categories/vpn/</loc>
-    <lastmod>2024-06-21</lastmod>
+    <lastmod>2024-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
